@@ -3,36 +3,83 @@ from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from sys import stdout
-import hashlib
+import hashlib, json
+
+def dict_print(dict):
+	for key in dict.iterkeys():
+		print '%s: %s' % (key,dict[key])
 
 class Client(Protocol):
-	def __init__(self,factory):
+	def __init__(self,parent):
 		self.state = 'handshake'
-		self.factory = factory
+		self.parent = parent
+	
+	def parse_line(self, line):
+		#Server expects a line similar to: GET/PUT::OPT::VAL
+		line = line[:len(line)-2]
+		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 
-	def dataReceived(self, data):
-		#print repr(data)
-		if self.state=='handshake':
-			_passwd = hashlib.sha224('derp').hexdigest()
-			self.transport.write(_passwd+'\r\n')
-			self.state='login'
-		else:
-			if data=='Welcome\r\n':
-				self.factory.log('[client->server] Password accepted.')
-				self.transport.write('Give me a file!')
-			else:
-				print repr(data)
-				self.factory.log('[client->server] Password incorrect.')
+	def sendLine(self, line):
+		self.transport.write(line+'\r\n')
 
-class ClientFactory(ClientFactory):
+	def dataReceived(self, line):
+		line = self.parse_line(line)
+		#print repr(line)
+		
+		if line['com']=='get':
+			if line['opt']=='hnd':
+				self.sendLine('put::hnd::%s' % self.parent.name)
+			#elif line['opt']=='pwd':
+			#	if line['val']=='okay':
+					
+		elif line['com']=='put':
+			if line['opt']=='hnd':
+				if line['val']=='okay':
+					self.parent.log('[client->server] Handshake accepted')
+					
+					#This needs to be done serverside
+					_passwd = hashlib.sha224('derp').hexdigest()
+					self.sendLine('put::pwd::'+_passwd)
+					self.state = 'password'
+				else:
+					self.parent.log('[client->server] Server didn\'t like us. Abort.')
+					self.transport.loseConnection()
+			elif line['opt']=='pwd':
+				if line['val']=='okay':
+					self.parent.log('[client->server] Password accepted')
+					self.sendLine('get::inf::null')
+				else:
+					self.parent.log('[client->server] Password incorrect. Abort.')
+					self.transport.loseConnection()
+			elif line['opt']=='inf':
+				self.parent.info = json.loads(line['val'])
+		
+class ClientParent(ClientFactory):
+	def __init__(self):
+		self.name = 'testconnection'
+		
+		self.info = None
+		
+		self.debug = False
+	
 	def log(self, text):
-		print text
+		if self.debug: print text
+	
+	def has_info(self):
+		if self.info: return True
+		else: return False
+	
+	def get_info(self):
+		return self.info()
+		#print 'NAME:\t\t%s' % _info['name']
+		#print 'CLIENTS:\t%s' % _info['clients']
 	
 	def startedConnecting(self, connector):
-		self.log('[client->server] Connecting...')
+		#self.log('[client->server] Connecting...')
+		pass
 
 	def buildProtocol(self, addr):	
-		self.log('[client->server] Connected')
+		#self.log('[client->server] Connected')
 		return Client(self)
 
 	def clientConnectionLost(self, connector, reason):
@@ -43,6 +90,6 @@ class ClientFactory(ClientFactory):
 		print 'Connection failed. Reason:', reason
 
 point = TCP4ClientEndpoint(reactor, "localhost", 9001)
-d = point.connect(ClientFactory())
+d = point.connect(ClientParent())
 #d.addCallback(gotProtocol)
 reactor.run()
