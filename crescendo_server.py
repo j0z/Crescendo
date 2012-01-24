@@ -17,6 +17,7 @@ class Connection(LineReceiver):
 		self.host = self.transport.getHost()
 
 	def connectionLost(self, reason):
+		print reason
 		pass
 
 	def parse_line(self, line):

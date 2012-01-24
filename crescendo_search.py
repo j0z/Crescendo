@@ -18,19 +18,23 @@ class HostFinder(threading.Thread):
 		try:
 			_out = '%s' % self.host[0]
 			self.socket.connect(self.host)
+			self.engine.add_working(self.host)
 			_out += '...found!'
-			self.engine.working.append(self)
 		except:
 			_out += '...failed'
 		
-		print _out
+		self.socket.close()
+		
+		#print _out
 
 		self.engine.active.remove(self)
 		#self.hostname = socket.gethostname()
 
 class Engine(threading.Thread):
-	def __init__(self):
-		self.ip_list = ['10.232.16.242','10.0.50.98']
+	def __init__(self,parent):
+		self.parent = parent
+
+		self.ip_list = ['10.234.16.131']#,'10.234.16.130'
 		self.active = []
 		self.working = []
 
@@ -48,10 +52,9 @@ class Engine(threading.Thread):
 			_f.start()
 
 		while (self.running):
-			if not len(self.active) and len(self.working):
-				#if len(self.working)==1: print '1 working host.'
-				#elif len(self.working)>1: print '%s working hosts.', len(self.working)
-
+			if not len(self.active):
+				if len(self.working)==1: self.parent.log('[search.Engine] Found 1 working node')
+				elif len(self.working)>1: self.parent.log('[search.Engine] Found %s working nodes' % len(self.working))
 				self.running = False
 		
 	def has_clients(self):
@@ -59,3 +62,7 @@ class Engine(threading.Thread):
 	
 	def get_clients(self):
 		return self.working
+	
+	def add_working(self,host):
+		self.working.append(host)
+		self.parent.add_node(host)

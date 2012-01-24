@@ -3,16 +3,18 @@ from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from sys import stdout
-import hashlib, json
-
-def dict_print(dict):
-	for key in dict.iterkeys():
-		print '%s: %s' % (key,dict[key])
+import hashlib, json, threading
 
 class Client(Protocol):
 	def __init__(self,parent):
 		self.state = 'handshake'
 		self.parent = parent
+		
+		self.parent.parent.parent.add_node_callback(self.parent.parent.host,self)
+	
+	def stop(self):
+		self.transport.loseConnection()
+		self.parent.stop()
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -21,6 +23,7 @@ class Client(Protocol):
 
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
+	
 
 	def dataReceived(self, line):
 		line = self.parse_line(line)
@@ -55,7 +58,8 @@ class Client(Protocol):
 				self.parent.info = json.loads(line['val'])
 		
 class ClientParent(ClientFactory):
-	def __init__(self):
+	def __init__(self,parent):
+		self.parent = parent
 		self.name = 'testconnection'
 		
 		self.info = None
@@ -74,6 +78,9 @@ class ClientParent(ClientFactory):
 		#print 'NAME:\t\t%s' % _info['name']
 		#print 'CLIENTS:\t%s' % _info['clients']
 	
+	def stop(self):
+		self.parent.reactor.stop()
+	
 	def startedConnecting(self, connector):
 		#self.log('[client->server] Connecting...')
 		pass
@@ -84,12 +91,23 @@ class ClientParent(ClientFactory):
 
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason
-		connector.connect()
 
 	def clientConnectionFailed(self, connector, reason):
 		print 'Connection failed. Reason:', reason
+	
+class connect(threading.Thread):
+	def __init__(self,host,parent):
+		self.host = host
+		self.parent = parent
+		
+		threading.Thread.__init__(self)
+	
+	def run(self):
+		point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
+		self.reactor = reactor
+		point.connect(ClientParent(self))
+		reactor.run(installSignalHandlers=0)
 
-point = TCP4ClientEndpoint(reactor, "localhost", 9001)
-d = point.connect(ClientParent())
-#d.addCallback(gotProtocol)
-reactor.run()
+#point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
+#point.connect(ClientParent(reactor))
+#reactor.run()
