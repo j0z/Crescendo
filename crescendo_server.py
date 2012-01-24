@@ -19,18 +19,16 @@ class Chat(LineReceiver):
 		#	del self.users[self.name]
 
 	def lineReceived(self, line):
-		#print repr(line)
 		if self.state == 'GETPASSWD':
 			self.handle_GETPASSWD(line)
 		else:
 			self.handle_CHAT(line)
 
 	def handle_GETPASSWD(self, passwd):
-		print repr(passwd)
 		if not passwd==self.passwd:
 			self.sendLine('Wrong.')
 			return
-		print 'RIGHT'
+		
 		self.sendLine('Welcome')
 		self.state = "CHAT"
 

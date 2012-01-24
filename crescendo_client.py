@@ -15,7 +15,6 @@ class Client(Protocol):
 		if self.state=='handshake':
 			_passwd = hashlib.sha224('derp').hexdigest()
 			self.transport.write(_passwd+'\r\n')
-			#print 'sent derp'
 			self.state='login'
 		else:
 			if data=='Welcome\r\n':

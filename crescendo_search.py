@@ -8,10 +8,10 @@ class HostFinder(threading.Thread):
 		self.engine = engine
 
 		threading.Thread.__init__(self)
- 
- 	def get_result(self):
+
+	def get_result(self):
 		return self.result
-	 
+	
 	def run(self):
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		
