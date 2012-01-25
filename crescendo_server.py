@@ -42,7 +42,8 @@ class Connection(LineReceiver):
 	
 	def lineReceived(self, line):
 		line = self.parse_line(line)
-		
+		#print line
+
 		if line['com']=='put':
 			if line['opt']=='hnd':
 				#Shake hands if we haven't already.

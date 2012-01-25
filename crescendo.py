@@ -9,6 +9,8 @@ class crescendo:
 		self.node_list = []
 		
 		self._log = []
+	
+		self.client = client.connect(self)
 		
 		self.running = True		
 
@@ -37,9 +39,9 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
-				_c = client.connect(node['host'],self)
-				_c.start()
-				
+				#_c.start()
+				self.client.add_client(node['host'])
+
 				node['connected']=True
 				
 				self.log('[node] Connecting to %s:%s' % node['host'])
@@ -47,8 +49,15 @@ class crescendo:
 	def disconnect_node_list(self):
 		for node in self.node_list:
 			if node['connected']:
-				self.log('[node-%s] Disconnecting...' % node['info']['name'],flush=True)
-				node['callback'].stop()
+				if node.has_key('info'):
+					self.log('[node-%s] Disconnecting...' % node['info']['name'],flush=True)
+				else:
+					self.log('[node-%s:%s] Disconnecting...' % node['host'],flush=True)
+				
+				if node.has_key('callback'):
+					node['callback'].stop()
+				else:
+					self.log('[node-%s:%s] Connection is a zombie. Dying' % node['host'],flush=True)
 	
 	def has_node(self,host):
 		for node in self.node_list:

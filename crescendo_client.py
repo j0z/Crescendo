@@ -7,12 +7,12 @@ from sys import stdout
 import hashlib, json, threading
 
 class Client(Protocol):
-	def __init__(self,parent):
+	def __init__(self,host,parent):
 		self.state = 'handshake'
+		self.host = host
 		self.parent = parent
 		self.main_parent = self.parent.parent.parent
-		self.host = self.parent.parent.host
-		
+	
 		self.file_data = ''
 		
 		self.main_parent.add_node_callback(self.host,self)
@@ -93,7 +93,8 @@ class Client(Protocol):
 				self.stop()
 		
 class ClientParent(ClientFactory):
-	def __init__(self,parent):
+	def __init__(self,host,parent):
+		self.host = host
 		self.parent = parent
 		self.name = 'testconnection'
 		
@@ -116,7 +117,7 @@ class ClientParent(ClientFactory):
 
 	def buildProtocol(self, addr):	
 		#self.log('[client->server] Connected')
-		return Client(self)
+		return Client(self.host,self)
 
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason
@@ -125,17 +126,26 @@ class ClientParent(ClientFactory):
 		print 'Connection failed. Reason:', reason
 	
 class connect(threading.Thread):
-	def __init__(self,host,parent):
-		self.host = host
+	def __init__(self,parent):
+		#self.host = host
 		self.parent = parent
 		
+		self.running = False
+
 		threading.Thread.__init__(self)
 	
 	def run(self):
-		point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
+		print 'reactor coming online'
+		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
 		self.reactor = reactor
-		point.connect(ClientParent(self))
+		#self.point.connect(ClientParent(self))
 		reactor.run(installSignalHandlers=0)
+
+	def add_client(self,host):	
+		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
+		self.point.connect(ClientParent(host,self))
+
+		if not self.running: self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))

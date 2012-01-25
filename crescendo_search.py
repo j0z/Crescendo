@@ -34,7 +34,7 @@ class Engine(threading.Thread):
 	def __init__(self,parent):
 		self.parent = parent
 
-		self.ip_list = ['10.234.16.131']#,'10.234.16.130'
+		self.ip_list = ['127.0.0.1']#,'10.234.16.130'
 		self.active = []
 		self.working = []
 
