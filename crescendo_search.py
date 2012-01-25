@@ -28,7 +28,6 @@ class HostFinder(threading.Thread):
 		#print _out
 
 		self.engine.active.remove(self)
-		#self.hostname = socket.gethostname()
 
 class Engine(threading.Thread):
 	def __init__(self,parent):

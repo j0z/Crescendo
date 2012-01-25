@@ -55,6 +55,7 @@ class Client(Protocol):
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')
 					self.stop()
+					
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
@@ -63,13 +64,15 @@ class Client(Protocol):
 				else:
 					self.parent.log('[client->server] Password incorrect. Abort.')
 					self.stop()
+					
 			elif line['opt']=='inf':
 				self.parent.info = json.loads(line['val'])
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				self.sendLine('get::fil::helloworld.exe')
+				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':
-					self.main_parent.log('[client->server] Grabbing file INSERT NAME HERE')
+					self.main_parent.log('[client->%s] Grabbing file INSERT NAME HERE' % (self.parent.info['name']))
 					self.state = 'grabbing'
 				
 				self.file_data+=line['val']
@@ -80,12 +83,12 @@ class Client(Protocol):
 				_f.write(self.file_data)
 				_f.close()
 				
-				self.main_parent.log('[client->server] Grabbed file INSERT NAME HERE')
+				self.main_parent.log('[client->%s] Grabbed file INSERT NAME HERE' % (self.parent.info['name']))
 				
 				self.state = 'running'
 			
 			elif line['opt']=='fib':
-				self.main_parent.log('[client->server] Failed grabbing file INSERT NAME HERE')
+				self.main_parent.log('[client->%s] Failed grabbing file INSERT NAME HERE' % (self.parent.info['name']))
 				self.state = 'running'
 				
 			elif line['opt']=='kil':
@@ -135,7 +138,6 @@ class connect(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def run(self):
-		print 'reactor coming online'
 		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
 		self.reactor = reactor
 		#self.point.connect(ClientParent(self))

@@ -11,6 +11,7 @@ class crescendo:
 		self._log = []
 	
 		self.client = client.connect(self)
+		self.server = server.start_server(self,name='Master')
 		
 		self.running = True		
 
@@ -23,8 +24,12 @@ class crescendo:
 			print self._log.pop(0)
 	
 	def start_server(self):
-		#server.
-		pass
+		self.log('[server] Starting...')
+		try:
+			self.server.start()
+			self.log('[server] Server is now running')
+		except:
+			self.log('[server] Failed to start server')
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
@@ -39,7 +44,6 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
-				#_c.start()
 				self.client.add_client(node['host'])
 
 				node['connected']=True
@@ -101,4 +105,5 @@ class crescendo:
 
 _c = crescendo()
 _c.populate_node_list()
+_c.start_server()
 _c.tick()

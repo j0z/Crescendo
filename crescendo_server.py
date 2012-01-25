@@ -53,11 +53,14 @@ class Connection(LineReceiver):
 					self.state='GETPASSWD'
 				else:
 					self.sendLine('put::hnd::Already shook hands!')
+			
 			elif line['opt']=='pwd':
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
+		
 		elif line['com']=='get':
 			if line['opt']=='inf':
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
+				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
 				
@@ -88,8 +91,9 @@ class Connection(LineReceiver):
 		self.state = "GET"
 
 class Node(Factory):
-	def __init__(self,name='default',searchable=False,network=None,passwd=None):
-		self.name=name
+	def __init__(self,parent,name,searchable,network,passwd):
+		self.parent = parent
+		self.name = name
 		self.passwd = passwd
 		self.searchable = searchable
 		self.network = network
@@ -100,7 +104,7 @@ class Node(Factory):
 		self.populate_file_list()
 
 	def log(self,text):
-		print text
+		self.parent.log(text)
 	
 	def populate_file_list(self):
 		for root, dirs, files in os.walk('files'):
@@ -139,28 +143,20 @@ class Node(Factory):
 		return {'name':self.name,'searchable':self.searchable,'network':self.network,'clients':len(self.clients)}
 	
 	def buildProtocol(self, addr):
-		#self.log('[client.New] %s:%s' % (addr.host,addr.port))
 		_c = Connection(self)
 		self.connections.append(_c)
 		
 		return _c
-	
-	def sigTerm(self, *args):
-		"""Handle a SIGTERM interrupt."""
-		print 'dobne'
-		#log.msg("Received SIGTERM, shutting down.")
-		#self.callFromThread(self.stop)
 
-if __name__ == '__main__':
-	#if len(sys.argv)==2 and sys.argv[1]=='runserver':
-	_n = Node(passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8')
-	reactor.listenTCP(9001, _n)
-
-	reactor.run()
-	#print 'derp'
-	#while len(_n.clients):
-	#	for client in _n.connections:
-	#		print client
-	#		client.stop()
+class start_server:
+	def __init__(self,parent,name='default',searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
+		self.parent = parent
+		
+		self.name = name
+		self.passwd = passwd
+		self.searchable = searchable
+		self.network = network
 	
-	#reactor.stop()
+	def start(self):
+		_n = Node(self.parent,name=self.name,passwd=self.passwd,searchable=self.searchable,network=self.network)
+		reactor.listenTCP(9001, _n)
