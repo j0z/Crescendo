@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import with_statement
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
@@ -9,10 +10,15 @@ class Client(Protocol):
 	def __init__(self,parent):
 		self.state = 'handshake'
 		self.parent = parent
+		self.main_parent = self.parent.parent.parent
+		self.host = self.parent.parent.host
 		
-		self.parent.parent.parent.add_node_callback(self.parent.parent.host,self)
+		self.file_data = ''
+		
+		self.main_parent.add_node_callback(self.host,self)
 	
 	def stop(self):
+		self.main_parent.remove_node(self.host)
 		self.transport.loseConnection()
 		self.parent.stop()
 	
@@ -24,7 +30,9 @@ class Client(Protocol):
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
 	
-
+	def connectionLost(self, reason):
+		self.stop()
+	
 	def dataReceived(self, line):
 		line = self.parse_line(line)
 		#print repr(line)
@@ -46,16 +54,43 @@ class Client(Protocol):
 					self.state = 'password'
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')
-					self.transport.loseConnection()
+					self.stop()
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
 					self.sendLine('get::inf::null')
+					self.state = 'running'
 				else:
 					self.parent.log('[client->server] Password incorrect. Abort.')
-					self.transport.loseConnection()
+					self.stop()
 			elif line['opt']=='inf':
 				self.parent.info = json.loads(line['val'])
+				self.main_parent.add_node_info(self.host,self.parent.info)
+				self.sendLine('get::fil::helloworld.exe')
+			elif line['opt']=='fil':
+				if not self.state=='grabbing':
+					self.main_parent.log('[client->server] Grabbing file INSERT NAME HERE')
+					self.state = 'grabbing'
+				
+				self.file_data+=line['val']
+				self.sendLine('get::fil::helloworld.exe')
+				
+			elif line['opt']=='fie':
+				_f = open('test.exe','wb')
+				_f.write(self.file_data)
+				_f.close()
+				
+				self.main_parent.log('[client->server] Grabbed file INSERT NAME HERE')
+				
+				self.state = 'running'
+			
+			elif line['opt']=='fib':
+				self.main_parent.log('[client->server] Failed grabbing file INSERT NAME HERE')
+				self.state = 'running'
+				
+			elif line['opt']=='kil':
+				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
+				self.stop()
 		
 class ClientParent(ClientFactory):
 	def __init__(self,parent):
@@ -67,19 +102,13 @@ class ClientParent(ClientFactory):
 		self.debug = False
 	
 	def log(self, text):
-		if self.debug: print text
-	
-	def has_info(self):
-		if self.info: return True
-		else: return False
-	
-	def get_info(self):
-		return self.info()
-		#print 'NAME:\t\t%s' % _info['name']
-		#print 'CLIENTS:\t%s' % _info['clients']
+		if self.debug: self.parent.parent.log(text)
 	
 	def stop(self):
-		self.parent.reactor.stop()
+		try:
+			self.parent.reactor.stop()
+		except:
+			self.log('[client.Failure] Parent reactor already stopped')
 	
 	def startedConnecting(self, connector):
 		#self.log('[client->server] Connecting...')

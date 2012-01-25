@@ -8,10 +8,17 @@ class crescendo:
 	def __init__(self):
 		self.node_list = []
 		
+		self._log = []
+		
 		self.running = True		
 
-	def log(self,text):
-		print text
+	def log(self,text,flush=False):
+		if flush: print text
+		else: self._log.append(text)
+	
+	def print_log(self):
+		while (len(self._log)):
+			print self._log.pop(0)
 	
 	def start_server(self):
 		#server.
@@ -26,14 +33,6 @@ class crescendo:
 		except:
 			self.log('[search.Engine] Failed.')
 			return False
-		
-		#while _s.is_running(): pass
-		
-		#if _s.has_clients():
-		#	self.client_list = _s.get_clients()
-		#	self.log('[search.Engine] Found: %s' % len(self.client_list))
-		#else:
-		#	self.log('[search.Engine] No clients found')
 	
 	def connect_node_list(self):
 		for node in self.node_list:
@@ -48,25 +47,45 @@ class crescendo:
 	def disconnect_node_list(self):
 		for node in self.node_list:
 			if node['connected']:
-				self.log('[node-%s:%s] Disconnecting...' % node['host'])
+				self.log('[node-%s] Disconnecting...' % node['info']['name'],flush=True)
 				node['callback'].stop()
+	
+	def has_node(self,host):
+		for node in self.node_list:
+			if node['host']==host: return True
+		
+		return False
 	
 	def add_node(self,host):
 		self.node_list.append({'host':host,'connected':False})
 		self.log('[node] Found node at %s:%s' % (host))
+	
+	def remove_node(self,host):
+		for node in self.node_list:
+			if node['host']==host:
+				self.node_list.remove(node)
+				self.log('[node-%s] Disconnecting' % node['info']['name'])
 	
 	def add_node_callback(self,host,obj):
 		for node in self.node_list:
 			if node['host']==host:
 				node['callback']=obj
 	
+	def add_node_info(self,host,info):
+		for node in self.node_list:
+			if node['host']==host:
+				node['info']=info
+				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
+	
 	def tick(self):
 		while self.running:
 			try:
 				self.connect_node_list()
+				self.print_log()
 			except KeyboardInterrupt:
-				self.log('[crescendo] KeyboardInterrupt caught')
-				self.log('[crescendo] Killing node connections')
+				self.log('[crescendo] KeyboardInterrupt caught',flush=True)
+				if len(self.node_list): self.log('[crescendo] Killing node connections',flush=True)
+				else: self.log('[crescendo] No node connections to kill',flush=True)
 				self.disconnect_node_list()
 				
 				self.running = False
