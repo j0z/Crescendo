@@ -33,6 +33,13 @@ class crescendo:
 			self.log('[server] Server is now running')
 		except:
 			self.log('[server] Failed to start server')
+	
+	def stop_server(self):
+		try:
+			self.server.reactor.stop()
+			self.log('[server.Reactor] Stopped',flush=True)
+		except:
+			self.log('[server.Reactor.Failure] Failed to stop',flush=True)
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
@@ -100,6 +107,10 @@ class crescendo:
 				self.print_log()
 			except KeyboardInterrupt:
 				self.log('[crescendo] KeyboardInterrupt caught',flush=True)
+				self.log('[crescendo] Stopping server...',flush=True)
+				
+				self.stop_server()
+				
 				if len(self.node_list): self.log('[crescendo] Killing node connections',flush=True)
 				else: self.log('[crescendo] No node connections to kill',flush=True)
 				self.disconnect_node_list()
