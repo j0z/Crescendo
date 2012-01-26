@@ -136,6 +136,7 @@ class connect(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def run(self):
+		self.running=True
 		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
 		self.reactor = reactor
 		#self.point.connect(ClientParent(self))
