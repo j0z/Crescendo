@@ -8,6 +8,9 @@ class crescendo:
 	def __init__(self):
 		self.node_list = []
 		
+		self.wanted_files = []
+		self.shared_files = []
+		
 		self._log = []
 	
 		self.client = client.connect(self)

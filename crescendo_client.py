@@ -40,8 +40,6 @@ class Client(Protocol):
 		if line['com']=='get':
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
-			#elif line['opt']=='pwd':
-			#	if line['val']=='okay':
 					
 		elif line['com']=='put':
 			if line['opt']=='hnd':
@@ -96,10 +94,10 @@ class Client(Protocol):
 				self.stop()
 		
 class ClientParent(ClientFactory):
-	def __init__(self,host,parent):
+	def __init__(self,host,parent,name='Unnamed'):
 		self.host = host
 		self.parent = parent
-		self.name = 'testconnection'
+		self.name = name
 		
 		self.info = None
 		
