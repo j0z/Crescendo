@@ -31,7 +31,8 @@ class Client(Protocol):
 		#self.stop()
 	
 	def ping(self):
-		self.sendLine('get::pin::null');
+		#self.sendLine('get::pin::null');
+		self.sendLine('put::pin::%s:%s' % (self.host))
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -108,8 +109,8 @@ class Client(Protocol):
 				self.main_parent.log('[client->%s] Failed grabbing file INSERT NAME HERE' % (self.parent.info['name']))
 				self.state = 'running'
 			
-			elif line['opt']=='pin':
-				self.sendLine('put::pin::%s:%s' % (self.host))
+				#elif line['opt']=='pin':
+				#self.sendLine('put::pin::%s:%s' % (self.host))
 				
 			elif line['opt']=='kil':
 				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
