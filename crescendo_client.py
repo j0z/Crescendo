@@ -33,6 +33,9 @@ class Client(Protocol):
 	def connectionLost(self, reason):
 		self.stop()
 	
+	def lineReceived(self, line):
+		print line
+	
 	def dataReceived(self, line):
 		print repr(line)
 		line = self.parse_line(line)
