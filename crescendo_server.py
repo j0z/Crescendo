@@ -166,7 +166,7 @@ class start_server:
 		
 		self.node = None
 	
-	def run(self):
+	def start(self):
 		_n = Node(self.parent,name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor

@@ -10,6 +10,9 @@ class Crescendo_Thread(threading.Thread):
 		
 		threading.Thread.__init__(self)
 	
+	def start(self):
+		self.run()
+	
 	def shutdown(self):
 		self.client.shutdown()
 	
