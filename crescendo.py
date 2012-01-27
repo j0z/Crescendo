@@ -114,7 +114,7 @@ class crescendo:
 		
 		self.running = False
 	
-	def tick(self):
+	def tick(self,using_thread=False):
 		try:	
 			while self.running:
 				self.connect_node_list()
@@ -122,7 +122,7 @@ class crescendo:
 		except KeyboardInterrupt:
 			self.running = False
 		
-		self.shutdown()
+		if not using_thread: self.shutdown()
 
 if __name__ == "__main__":
 	_c = crescendo()
