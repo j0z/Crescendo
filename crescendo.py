@@ -28,13 +28,13 @@ class crescendo:
 		while (len(self._log)):
 			print self._log.pop(0)
 	
-	def start_server(self):
-		self.log('[server] Starting...')
-		try:
-			self.server.start()
-			self.log('[server] Server is now running')
-		except:
-			self.log('[server] Failed to start server')
+		#def start_server(self):
+		#self.log('[server] Starting...')
+		#try:
+		#	self.server.start()
+		#	self.log('[server] Server is now running')
+		#except:
+		#	self.log('[server] Failed to start server')
 	
 	def stop_server(self):
 		self.server.stop()
