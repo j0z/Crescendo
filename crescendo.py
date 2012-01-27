@@ -100,24 +100,28 @@ class crescendo:
 				node['info']=info
 				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
 	
+	def shutdown(self):
+		self.log('[crescendo] KeyboardInterrupt caught',flush=True)
+		self.log('[crescendo] Stopping server...',flush=True)
+		
+		self.stop_server()
+		
+		if len(self.node_list): self.log('[crescendo] Killing node connections',flush=True)
+		else: self.log('[crescendo] No node connections to kill',flush=True)
+		self.disconnect_node_list()
+		
+		self.running = False
+	
 	def tick(self):
 		while self.running:
 			try:
 				self.connect_node_list()
 				self.print_log()
 			except KeyboardInterrupt:
-				self.log('[crescendo] KeyboardInterrupt caught',flush=True)
-				self.log('[crescendo] Stopping server...',flush=True)
-				
-				self.stop_server()
-				
-				if len(self.node_list): self.log('[crescendo] Killing node connections',flush=True)
-				else: self.log('[crescendo] No node connections to kill',flush=True)
-				self.disconnect_node_list()
-				
-				self.running = False
+				self.shutdown()
 
-_c = crescendo()
-_c.populate_node_list()
-_c.start_server()
-_c.tick()
+if __name__ == "__main__":
+	_c = crescendo()
+	_c.populate_node_list()
+	_c.start_server()
+	_c.tick()

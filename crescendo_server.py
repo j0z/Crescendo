@@ -91,10 +91,11 @@ class Connection(LineReceiver):
 		self.state = "GET"
 
 class Node(Factory):
-	def __init__(self,parent,name,searchable,network,passwd):
+	def __init__(self,parent,name,broadcast,searchable,network,passwd):
 		self.parent = parent
 		self.name = name
 		self.passwd = passwd
+		self.broadcast = broadcast
 		self.searchable = searchable
 		self.network = network
 		self.clients = []
@@ -149,16 +150,17 @@ class Node(Factory):
 		return _c
 
 class start_server:
-	def __init__(self,parent,name='default',searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
+	def __init__(self,parent,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
 		self.parent = parent
 		
 		self.name = name
 		self.passwd = passwd
+		self.broadcast = broadcast
 		self.searchable = searchable
 		self.network = network
 	
 	def start(self):
-		_n = Node(self.parent,name=self.name,passwd=self.passwd,searchable=self.searchable,network=self.network)
+		_n = Node(self.parent,name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 	
