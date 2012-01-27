@@ -42,7 +42,7 @@ class Connection(LineReceiver):
 	
 	def lineReceived(self, line):
 		line = self.parse_line(line)
-		#print line
+		print line
 
 		if line['com']=='put':
 			if line['opt']=='hnd':
@@ -57,7 +57,7 @@ class Connection(LineReceiver):
 			elif line['opt']=='pwd':
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
 			
-			elif line['opt']=='con':
+			elif line['opt']=='pin':
 				_n = tuple(line['val'].split(':'))
 				
 				print _n

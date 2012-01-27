@@ -80,11 +80,11 @@ class Client(Protocol):
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				
 				#lol
-				if self.parent.parent.parent.server.running:
-					#if not self.parent.parent.parent.has_node(self.host):
-					#if self.parent.parent.parent.server.node.host == self.host: print 'YES'
-					self.sendLine('put::con::%s:%s' % (self.host))
-				
+				#if self.parent.parent.parent.server.running:
+				#	#if not self.parent.parent.parent.has_node(self.host):
+				#	#if self.parent.parent.parent.server.node.host == self.host: print 'YES'
+				#	#self.sendLine('put::con::%s:%s' % (self.host))
+				#
 				#self.sendLine('get::fil::helloworld.exe')
 				
 			elif line['opt']=='fil':
@@ -107,6 +107,9 @@ class Client(Protocol):
 			elif line['opt']=='fib':
 				self.main_parent.log('[client->%s] Failed grabbing file INSERT NAME HERE' % (self.parent.info['name']))
 				self.state = 'running'
+			
+			elif line['opt']=='pin':
+				self.sendLine('put::pin::%s:%s' % (self.host))
 				
 			elif line['opt']=='kil':
 				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
