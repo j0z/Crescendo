@@ -33,6 +33,7 @@ class Connection(LineReceiver):
 		print 'Got die command'
 	
 	def connectionLost(self, reason):
+		print 'Would this go first for whatever reason?'
 		self.node.connections.remove(self)
 		self.node.remove_client((self.host.host,self.name))
 	
