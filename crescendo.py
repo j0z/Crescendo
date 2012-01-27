@@ -37,10 +37,9 @@ class crescendo:
 			self.log('[server] Failed to start server')
 	
 	def stop_server(self):
-		#try:
 		self.server.stop()
 		#self.server.reactor.stop()
-		self.log('[server.Reactor] Stopped',flush=True)
+		#self.log('[server.Reactor] Stopped',flush=True)
 		#except:
 		#	self.log('[server.Reactor.Failure] Failed to stop',flush=True)
 
@@ -129,7 +128,7 @@ class crescendo:
 				self.shutdown()
 			
 		print 'We still here?'
-		while 1: print self.server.isAlive()
+		while self.server.isAlive(): self.shutdown()
 
 if __name__ == "__main__":
 	_c = crescendo()
