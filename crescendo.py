@@ -37,12 +37,12 @@ class crescendo:
 			self.log('[server] Failed to start server')
 	
 	def stop_server(self):
-		try:
-			self.server.stop()
-			#self.server.reactor.stop()
-			self.log('[server.Reactor] Stopped',flush=True)
-		except:
-			self.log('[server.Reactor.Failure] Failed to stop',flush=True)
+		#try:
+		self.server.stop()
+		#self.server.reactor.stop()
+		self.log('[server.Reactor] Stopped',flush=True)
+		#except:
+		#	self.log('[server.Reactor.Failure] Failed to stop',flush=True)
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')

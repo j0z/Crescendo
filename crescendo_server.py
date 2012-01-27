@@ -175,7 +175,7 @@ class start_server(threading.Thread):
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
-		self.log('[node-%s] Dying. Closing connections' % self.name)
+		self.parent.log('\n[node-%s] Dying. Closing connections' % self.name)
 		
 		for connection in self.node.connections:
 			connection.kill()
