@@ -39,7 +39,7 @@ class Client(Protocol):
 		self.sendLine('get::pin::null');
 	
 	def dataReceived(self, line):
-		#print repr(line)
+		print repr(line)
 		line = self.parse_line(line)
 		
 		if line['com']=='get':
@@ -74,8 +74,8 @@ class Client(Protocol):
 				self.parent.info = json.loads(line['val'])
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				
-				if self.parent.server.running:
-					self.sendLine('put::con::%s' % (self.host))
+				#if self.parent.server.running:
+				self.sendLine('put::con::%s' % (self.host))
 				#self.sendLine('get::fil::helloworld.exe')
 				
 			elif line['opt']=='fil':
