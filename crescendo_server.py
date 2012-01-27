@@ -175,4 +175,7 @@ class start_server(threading.Thread):
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
-		self.reactor.stop()
+		try:
+			self.reactor.stop()
+		except:
+			pass
