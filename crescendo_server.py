@@ -29,6 +29,7 @@ class Connection(LineReceiver):
 
 	def kill(self):
 		self.sendLine('put::kil::null')
+		self.trasport.write('lol')
 		
 		print 'Got die command'
 	
