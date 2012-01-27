@@ -152,10 +152,10 @@ class Node(Factory):
 		
 		return _c
 
-class start_server(threading.Thread):
+class start_server:
 	def __init__(self,parent,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
 				
-		threading.Thread.__init__(self)
+		#threading.Thread.__init__(self)
 		self.parent = parent
 		
 		self.name = name
@@ -171,13 +171,12 @@ class start_server(threading.Thread):
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n
-		
-		print 'lol'
-		
-		reactor.run(installSignalHandlers=0)
+
+		reactor.run()
 	
 	def stop(self):
-		try:
-			self.reactor.stop()
-		except:
-			pass
+		#print 'Stopping via SystemEventHandler'
+		#try:
+		reactor.stop()
+		#except:
+		#	pass

@@ -28,13 +28,13 @@ class crescendo:
 		while (len(self._log)):
 			print self._log.pop(0)
 	
-	def start_server(self):
-		self.log('[server] Starting...')
-		try:
-			self.server.start()
-			self.log('[server] Server is now running')
-		except:
-			self.log('[server] Failed to start server')
+		#def start_server(self):
+		#self.log('[server] Starting...')
+		#try:
+		#	self.server.start()
+		#	self.log('[server] Server is now running')
+		#except:
+		#	self.log('[server] Failed to start server')
 	
 	def stop_server(self):
 		self.server.stop()
@@ -120,13 +120,13 @@ class crescendo:
 		self.running = False
 	
 	def tick(self):
-		while self.running:
-			try:
+		try:	
+			while self.running:
 				self.connect_node_list()
 				if len(self._log): print self._log.pop(0)
 				#self.print_log()
-			except KeyboardInterrupt:
-				self.shutdown()
+		except KeyboardInterrupt:
+			self.shutdown()
 			
 		print 'We still here?'
 		while self.server.isAlive(): self.shutdown()
