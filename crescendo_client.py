@@ -81,8 +81,9 @@ class Client(Protocol):
 				
 				#lol
 				if self.parent.parent.parent.server.running:
-					if not self.parent.parent.parent.has_node(self.host):
-						self.sendLine('put::con::%s:%s' % (self.host))
+					#if not self.parent.parent.parent.has_node(self.host):
+					#if self.parent.parent.parent.server.node.host == self.host: print 'YES'
+					self.sendLine('put::con::%s:%s' % (self.host))
 				
 				#self.sendLine('get::fil::helloworld.exe')
 				

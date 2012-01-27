@@ -59,8 +59,10 @@ class Connection(LineReceiver):
 			
 			elif line['opt']=='con':
 				_n = tuple(line['val'].split(':'))
-				self.node.log('[client-%s] Shared new node at: %s:%s' % (self.name,_n))
-				self.node.parent.add_node(_n)
+				
+				if not self.node.parent.has_node(_n):
+					self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
+					self.node.parent.add_node(_n)
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
