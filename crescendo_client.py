@@ -32,7 +32,8 @@ class Client(Protocol):
 		self.transport.write(line+'\r\n')
 	
 	def connectionLost(self, reason):
-		self.stop()
+		pass
+		#self.stop()
 	
 	def ping(self):
 		self.sendLine('get::pin::null');
