@@ -123,7 +123,8 @@ class crescendo:
 		while self.running:
 			try:
 				self.connect_node_list()
-				self.print_log()
+				if len(self._log): self._log.pop(0)
+				#self.print_log()
 			except KeyboardInterrupt:
 				self.shutdown()
 			
