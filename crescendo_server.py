@@ -29,6 +29,10 @@ class Connection(LineReceiver):
 
 	def kill(self):
 		self.sendLine('put::kil::null')
+		self.sendLine('put::kil::null')
+		self.sendLine('put::kil::null')
+		self.sendLine('put::kil::null')
+		self.sendLine('put::kil::null')
 		print 'Got die command'
 	
 	def connectionLost(self, reason):
