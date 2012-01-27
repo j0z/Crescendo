@@ -136,16 +136,19 @@ class connect(threading.Thread):
 	def __init__(self,parent):
 		#self.host = host
 		self.parent = parent
+		self.ClientParent = None
 		
 		self.running = False
 
 		threading.Thread.__init__(self)
 	
+	def stop(self):
+		if self.ClientParent: self.ClientParent.stop()
+	
 	def run(self):
 		self.running=True
-		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
 		self.reactor = reactor
-		#self.point.connect(ClientParent(self))
+		
 		try:
 			reactor.run(installSignalHandlers=0)
 		except:
@@ -153,7 +156,8 @@ class connect(threading.Thread):
 
 	def add_client(self,host):	
 		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
-		self.point.connect(ClientParent(host,self))
+		self.ClientParent = ClientParent(host,self)
+		self.point.connect(self.ClientParent)
 
 		if not self.running: self.start()
 

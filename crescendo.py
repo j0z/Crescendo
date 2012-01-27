@@ -1,6 +1,5 @@
 #/usr/bin/python
 import subprocess
-import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
 
@@ -16,7 +15,6 @@ class crescendo:
 		self._log = []
 	
 		self.client = client.connect(self)
-		self.server = server.start_server(self,name='Master')
 		
 		self.running = True		
 
@@ -27,21 +25,6 @@ class crescendo:
 	def print_log(self):
 		while (len(self._log)):
 			print self._log.pop(0)
-	
-	def start_server(self):
-		self.log('[server] Starting...')
-		try:
-			self.server.start()
-			self.log('[server] Server is now running')
-		except:
-			self.log('[server] Failed to start server')
-	
-	def stop_server(self):
-		self.server.stop()
-		#self.server.reactor.stop()
-		#self.log('[server.Reactor] Stopped',flush=True)
-		#except:
-		#	self.log('[server.Reactor.Failure] Failed to stop',flush=True)
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
@@ -110,7 +93,7 @@ class crescendo:
 		self.log('[crescendo] KeyboardInterrupt caught',flush=True)
 		self.log('[crescendo] Stopping server...',flush=True)
 		
-		self.stop_server()
+		self.client.stop()
 		
 		if len(self.node_list):
 			self.log('[crescendo] Killing node connections',flush=True)
@@ -124,15 +107,14 @@ class crescendo:
 			while self.running:
 				self.connect_node_list()
 				if len(self._log): print self._log.pop(0)
-				#self.print_log()
 		except KeyboardInterrupt:
-			self.shutdown()
+			self.running = False
+		
+		self.shutdown()
 			
 		print 'We still here?'
-		while self.server.isAlive(): self.shutdown()
 
 if __name__ == "__main__":
 	_c = crescendo()
 	_c.populate_node_list()
-	_c.start_server()
 	_c.tick()

@@ -94,8 +94,7 @@ class Connection(LineReceiver):
 		self.state = "GET"
 
 class Node(Factory):
-	def __init__(self,parent,name,broadcast,searchable,network,passwd):
-		self.parent = parent
+	def __init__(self,name,broadcast,searchable,network,passwd):
 		self.name = name
 		self.passwd = passwd
 		self.broadcast = broadcast
@@ -108,7 +107,8 @@ class Node(Factory):
 		self.populate_file_list()
 
 	def log(self,text):
-		self.parent.log(text)
+		#self.parent.log(text)
+		print text
 	
 	def populate_file_list(self):
 		for root, dirs, files in os.walk('files'):
@@ -153,10 +153,10 @@ class Node(Factory):
 		return _c
 
 class start_server:
-	def __init__(self,parent,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
+	def __init__(self,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
 				
 		#threading.Thread.__init__(self)
-		self.parent = parent
+		#self.parent = parent
 		
 		self.name = name
 		self.passwd = passwd
@@ -167,7 +167,7 @@ class start_server:
 		self.node = None
 	
 	def start(self):
-		_n = Node(self.parent,name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
+		_n = Node(name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n
@@ -175,8 +175,7 @@ class start_server:
 		reactor.run()
 	
 	def stop(self):
-		#print 'Stopping via SystemEventHandler'
-		#try:
 		reactor.stop()
-		#except:
-		#	pass
+
+if __name__ == "__main__":
+	start_server().start()

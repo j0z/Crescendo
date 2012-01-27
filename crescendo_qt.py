@@ -4,21 +4,17 @@ from ui import Ui_MainWindow
 
 import crescendo
 
-class Crescendo_Thread(threading.Thread):
+class Crescendo_Thread(QtCore.QThread):
 	def __init__(self,gui):
 		self.client = crescendo.crescendo(callback=gui)
 		
-		threading.Thread.__init__(self)
-	
-	def start(self):
-		self.run()
+		QtCore.QThread.__init__(self)
 	
 	def shutdown(self):
 		self.client.shutdown()
 	
 	def run(self):
 		self.client.populate_node_list()
-		self.client.start_server()
 		self.client.tick()
 
 class Crescendo_GUI(QtGui.QMainWindow):
