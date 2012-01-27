@@ -126,6 +126,8 @@ class crescendo:
 				self.print_log()
 			except KeyboardInterrupt:
 				self.shutdown()
+			
+			print 'We still here?'
 
 if __name__ == "__main__":
 	_c = crescendo()
