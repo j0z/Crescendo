@@ -21,6 +21,7 @@ class crescendo:
 		self.running = True
 	
 	def start_server(self):
+		self.log('[server] Starting server...')
 		self.server.start()
 
 	def log(self,text,flush=False):
