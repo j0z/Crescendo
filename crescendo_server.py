@@ -58,8 +58,9 @@ class Connection(LineReceiver):
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
 			
 			elif line['opt']=='con':
-				#print line['val']
-				self.node.parent.add_node(tuple(line['val'].split(':')))
+				_n = tuple(line['val'].split(':'))
+				self.node.log('[client-%s] Shared new node at: %s:%s' % (self.name,_n))
+				self.node.parent.add_node(_n)
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':

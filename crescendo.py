@@ -52,7 +52,6 @@ class crescendo:
 
 				node['connected']=True
 				
-				print node['host']
 				self.log('[node] Connecting to %s:%s' % node['host'])
 	
 	def disconnect_node_list(self):
