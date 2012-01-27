@@ -96,15 +96,16 @@ class crescendo:
 				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
 	
 	def shutdown(self):
+		print 'SHUTDOWN INITIATED'
 		if self.client.running:
 			self.log('[crescendo] Stopping client...',flush=True)
 		
 		self.client.stop()
 		
-		#try:
-		self.server.stop()
-		#except:
-		#	pass
+		try:
+			self.server.stop()
+		except:
+			pass
 		
 		if len(self.node_list):
 			self.log('[crescendo] Killing node connections',flush=True)
