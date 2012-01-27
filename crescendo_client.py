@@ -73,6 +73,9 @@ class Client(Protocol):
 			elif line['opt']=='inf':
 				self.parent.info = json.loads(line['val'])
 				self.main_parent.add_node_info(self.host,self.parent.info)
+				
+				if self.parent.server.running:
+					self.sendLine('put::con::%s' % (self.host))
 				#self.sendLine('get::fil::helloworld.exe')
 				
 			elif line['opt']=='fil':

@@ -56,6 +56,10 @@ class Connection(LineReceiver):
 			
 			elif line['opt']=='pwd':
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
+			
+			elif line['opt']=='con':
+				print line['val']
+				#self.node.parent.add_client()
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
@@ -94,7 +98,8 @@ class Connection(LineReceiver):
 		self.state = "GET"
 
 class Node(Factory):
-	def __init__(self,name,broadcast,searchable,network,passwd):
+	def __init__(self,name,broadcast,searchable,network,passwd,parent=None):
+		self.parent = parent
 		self.name = name
 		self.passwd = passwd
 		self.broadcast = broadcast
@@ -107,8 +112,8 @@ class Node(Factory):
 		self.populate_file_list()
 
 	def log(self,text):
-		#self.parent.log(text)
-		print text
+		if self.parent: self.parent.log(text)
+		else: print text
 	
 	def populate_file_list(self):
 		for root, dirs, files in os.walk('files'):
@@ -153,8 +158,8 @@ class Node(Factory):
 		return _c
 
 class start_server(threading.Thread):
-	def __init__(self,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8',use_threading=True):
-		
+	def __init__(self,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8',parent=None,use_threading=True):
+		self.parent = parent
 		self.use_threading = use_threading
 		
 		if self.use_threading:
@@ -180,7 +185,7 @@ class start_server(threading.Thread):
 		self.running = True
 	
 	def run(self):
-		_n = Node(name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
+		_n = Node(name=self.name,parent=self.parent,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n

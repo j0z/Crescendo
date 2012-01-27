@@ -16,7 +16,7 @@ class crescendo:
 		self._log = []
 	
 		self.client = client.connect(self)
-		self.server = server.start_server()
+		self.server = server.start_server(parent=self)
 		
 		self.running = True
 	
@@ -84,8 +84,6 @@ class crescendo:
 		for node in self.node_list:
 			if node['host']==host:
 				self.node_list.remove(node)
-				
-				#self.log('[node-%s] Disconnecting' % node['info']['name'])
 	
 	def add_node_callback(self,host,obj):
 		for node in self.node_list:
