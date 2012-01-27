@@ -171,11 +171,13 @@ class start_server(threading.Thread):
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n
+		#reactor.addSystemEventTrigger('before','shutdown',self.stop)
 		
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
-		try:
-			self.reactor.stop()
-		except:
-			pass
+		#print 'Stopping via SystemEventHandler'
+		#try:
+		reactor.stop()
+		#except:
+		#	pass
