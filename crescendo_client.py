@@ -66,7 +66,7 @@ class Client(Protocol):
 			elif line['opt']=='inf':
 				self.parent.info = json.loads(line['val'])
 				self.main_parent.add_node_info(self.host,self.parent.info)
-				self.sendLine('get::fil::helloworld.exe')
+				#self.sendLine('get::fil::helloworld.exe')
 				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':

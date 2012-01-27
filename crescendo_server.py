@@ -181,4 +181,4 @@ class start_server(threading.Thread):
 		for connection in self.node.connections:
 			connection.kill()
 		
-		self.reactor.stop()
+		#self.reactor.stop()
