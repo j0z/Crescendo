@@ -33,7 +33,6 @@ class Connection(LineReceiver):
 		print 'Got die command'
 	
 	def connectionLost(self, reason):
-		print 'Would this go first for whatever reason?'
 		self.node.connections.remove(self)
 		self.node.remove_client((self.host.host,self.name))
 	
@@ -183,4 +182,4 @@ class start_server(threading.Thread):
 		for connection in self.node.connections:
 			connection.kill()
 		
-		#self.reactor.stop()
+		self.reactor.stop()
