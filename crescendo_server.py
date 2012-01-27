@@ -20,7 +20,7 @@ class Connection(LineReceiver):
 		self.name = ''
 
 	def connectionMade(self):
-		self.sendLine('get::hnd::null')
+		self.sendLine('get::hnd::null\r\n')
 		self.host = self.transport.getHost()
 
 		#def stop(self):
