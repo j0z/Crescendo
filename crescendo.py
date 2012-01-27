@@ -129,7 +129,7 @@ class crescendo:
 				self.shutdown()
 			
 		print 'We still here?'
-		print self.server.isAlive()
+		while 1: print self.server.isAlive()
 
 if __name__ == "__main__":
 	_c = crescendo()
