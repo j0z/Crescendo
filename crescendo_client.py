@@ -38,7 +38,7 @@ class Client(Protocol):
 		self.sendLine('get::pin::null');
 	
 	def dataReceived(self, line):
-		print repr(line)
+		#print repr(line)
 		line = self.parse_line(line)
 		
 		if line['com']=='get':

@@ -172,6 +172,8 @@ class start_server(threading.Thread):
 		self.reactor = reactor
 		self.node = _n
 		
+		print 'lol'
+		
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
