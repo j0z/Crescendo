@@ -22,11 +22,6 @@ class Client(Protocol):
 		self.main_parent.remove_node(self.host)
 		self.transport.loseConnection()
 		self.parent.stop()
-	
-	def parse_line(self, line):
-		#Server expects a line similar to: GET/PUT::OPT::VAL
-		line = line[:len(line)-2]
-		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
@@ -38,10 +33,20 @@ class Client(Protocol):
 	def ping(self):
 		self.sendLine('get::pin::null');
 	
-	def dataReceived(self, line):
-		print repr(line)
-		line = self.parse_line(line)
+	def parse_line(self, line):
+		#Server expects a line similar to: GET/PUT::OPT::VAL
+		if line.count('\r\n'): line = line[:len(line)-2]
 		
+		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
+	
+	def dataReceived(self, line):
+		#print repr(line)
+		if line.count('\r\n')>=2:
+			for _l in line.split('\r\n'):
+				self.parse_data(self.parse_line(_l))
+		else: self.parse_data(self.parse_line(line))
+	
+	def parse_data(self,line):
 		if line['com']=='get':
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
@@ -75,7 +80,7 @@ class Client(Protocol):
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				
 				#if self.parent.server.running:
-				self.sendLine('put::con::%s' % (self.host))
+				self.sendLine('put::con::%s:%s' % (self.host))
 				#self.sendLine('get::fil::helloworld.exe')
 				
 			elif line['opt']=='fil':
@@ -111,7 +116,7 @@ class ClientParent(ClientFactory):
 		
 		self.info = None
 		
-		self.debug = False
+		self.debug = True
 	
 	def log(self, text):
 		if self.debug: self.parent.parent.log(text)
