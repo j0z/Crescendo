@@ -38,7 +38,8 @@ class crescendo:
 	
 	def stop_server(self):
 		try:
-			self.server.reactor.stop()
+			self.server.stop()
+			#self.server.reactor.stop()
 			self.log('[server.Reactor] Stopped',flush=True)
 		except:
 			self.log('[server.Reactor.Failure] Failed to stop',flush=True)
@@ -92,7 +93,8 @@ class crescendo:
 		for node in self.node_list:
 			if node['host']==host:
 				self.node_list.remove(node)
-				self.log('[node-%s] Disconnecting' % node['info']['name'])
+				
+				#self.log('[node-%s] Disconnecting' % node['info']['name'])
 	
 	def add_node_callback(self,host,obj):
 		for node in self.node_list:

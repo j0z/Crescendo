@@ -140,7 +140,10 @@ class connect(threading.Thread):
 		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
 		self.reactor = reactor
 		#self.point.connect(ClientParent(self))
-		reactor.run(installSignalHandlers=0)
+		try:
+			reactor.run(installSignalHandlers=0)
+		except:
+			pass
 
 	def add_client(self,host):	
 		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])

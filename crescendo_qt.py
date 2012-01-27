@@ -5,8 +5,8 @@ from ui import Ui_MainWindow
 import crescendo
 
 class Crescendo_Thread(threading.Thread):
-	def __init__(self):
-		self.client = crescendo.crescendo(callback=self)
+	def __init__(self,gui):
+		self.client = crescendo.crescendo(callback=gui)
 		
 		threading.Thread.__init__(self)
 	
@@ -23,8 +23,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		QtGui.QWidget.__init__(self, parent)
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
+		self.setWindowIcon(QtGui.QIcon('gfx\\icon.ico'))
 		
-		self.crescendo = Crescendo_Thread()
+		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
 	
 	def add_client(self,name):

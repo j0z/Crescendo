@@ -27,6 +27,9 @@ class Connection(LineReceiver):
 		#self.sendLine('put::kil::sorry')
 		#self.transport.loseConnection()
 
+	def kill(self):
+		self.sendLine('put::kill:null')
+	
 	def connectionLost(self, reason):
 		self.node.connections.remove(self)
 		self.node.remove_client((self.host.host,self.name))
@@ -160,12 +163,21 @@ class start_server(threading.Thread):
 		self.broadcast = broadcast
 		self.searchable = searchable
 		self.network = network
+		
+		self.node = None
 	
 	def run(self):
 		_n = Node(self.parent,name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
+		self.node = _n
+		
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
+		self.log('[node-%s] Dying. Closing connections' % self.name)
+		
+		for connection in self.node.connections:
+			connection.kill()
+		
 		self.reactor.stop()
