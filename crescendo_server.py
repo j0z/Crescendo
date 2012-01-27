@@ -152,10 +152,13 @@ class Node(Factory):
 		
 		return _c
 
-class start_server:
-	def __init__(self,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
-				
-		#threading.Thread.__init__(self)
+class start_server(threading.Thread):
+	def __init__(self,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8',use_threading=True):
+		
+		self.use_threading = use_threading
+		
+		if self.use_threading:
+			threading.Thread.__init__(self)
 		#self.parent = parent
 		
 		self.name = name
@@ -165,17 +168,29 @@ class start_server:
 		self.network = network
 		
 		self.node = None
+		
+		self.running = False
 	
 	def start(self):
+		if self.use_threading:
+			threading.Thread.start(self)
+		else:
+			self.run()
+		
+		self.running = True
+	
+	def run(self):
 		_n = Node(name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n
 
-		reactor.run()
+		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
 		reactor.stop()
+		
+		self.running = False
 
 if __name__ == "__main__":
 	start_server().start()

@@ -1,5 +1,6 @@
 #/usr/bin/python
 import subprocess
+import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
 
@@ -15,8 +16,12 @@ class crescendo:
 		self._log = []
 	
 		self.client = client.connect(self)
+		self.server = server.start_server()
 		
-		self.running = True		
+		self.running = True
+	
+	def start_server(self):
+		self.server.start()
 
 	def log(self,text,flush=False):
 		if flush: print text
@@ -90,8 +95,8 @@ class crescendo:
 				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
 	
 	def shutdown(self):
-		self.log('[crescendo] KeyboardInterrupt caught',flush=True)
-		self.log('[crescendo] Stopping server...',flush=True)
+		if self.client.running:
+			self.log('[crescendo] Stopping client...',flush=True)
 		
 		self.client.stop()
 		
@@ -111,10 +116,9 @@ class crescendo:
 			self.running = False
 		
 		self.shutdown()
-			
-		print 'We still here?'
 
 if __name__ == "__main__":
 	_c = crescendo()
 	_c.populate_node_list()
+	_c.start_server()
 	_c.tick()

@@ -144,9 +144,10 @@ class connect(threading.Thread):
 	
 	def stop(self):
 		if self.ClientParent: self.ClientParent.stop()
+		self.running = False
 	
 	def run(self):
-		self.running=True
+		self.running = True
 		self.reactor = reactor
 		
 		try:
