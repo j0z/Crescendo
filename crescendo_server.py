@@ -28,6 +28,7 @@ class Connection(LineReceiver):
 		#self.transport.loseConnection()
 
 	def kill(self):
+		self.clearLineBuffer()
 		self.sendLine('put::kil::null')
 		self.transport.write('put::kil::null')
 		
