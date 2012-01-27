@@ -26,13 +26,6 @@ class Connection(LineReceiver):
 		#def stop(self):
 		#self.sendLine('put::kil::sorry')
 		#self.transport.loseConnection()
-
-	def kill(self):
-		self.clearLineBuffer()
-		self.sendLine('put::kil::null')
-		self.transport.write('put::kil::null')
-		
-		print 'Got die command'
 	
 	def connectionLost(self, reason):
 		self.node.connections.remove(self)
@@ -168,8 +161,6 @@ class start_server(threading.Thread):
 		self.searchable = searchable
 		self.network = network
 		
-		self.running = True
-		
 		self.node = None
 	
 	def run(self):
@@ -181,9 +172,4 @@ class start_server(threading.Thread):
 		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
-		self.parent.log('\n[node-%s] Dying. Closing connections' % self.name,flush=True)
-		
-		for connection in self.node.connections:
-			connection.kill()
-		
 		self.reactor.stop()

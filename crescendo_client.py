@@ -3,7 +3,8 @@ from __future__ import with_statement
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
-from sys import stdout
+from twisted.internet.task import LoopingCall
+
 import hashlib, json, threading
 
 class Client(Protocol):
@@ -16,6 +17,9 @@ class Client(Protocol):
 		self.file_data = ''
 		
 		self.main_parent.add_node_callback(self.host,self)
+		
+		lc = LoopingCall(self.ping)
+		lc.start(5)
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -33,8 +37,8 @@ class Client(Protocol):
 	def connectionLost(self, reason):
 		self.stop()
 	
-	def lineReceived(self, line):
-		print line
+	def ping(self):
+		self.sendLine('get::pin::null');
 	
 	def dataReceived(self, line):
 		print repr(line)
