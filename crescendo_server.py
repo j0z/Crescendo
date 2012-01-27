@@ -28,7 +28,7 @@ class Connection(LineReceiver):
 		#self.transport.loseConnection()
 
 	def kill(self):
-		self.sendLine('put::kill:null')
+		self.sendLine('put::kill::null')
 		print 'Got die command'
 	
 	def connectionLost(self, reason):
@@ -181,4 +181,4 @@ class start_server(threading.Thread):
 		for connection in self.node.connections:
 			connection.kill()
 		
-		#self.reactor.stop()
+		self.reactor.stop()
