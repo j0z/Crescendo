@@ -34,6 +34,9 @@ class crescendo:
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
+		
+		while not self.server.running: pass
+		
 		try:
 			_s = search.Engine(self)
 			_s.start()
@@ -126,6 +129,6 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	_c.populate_node_list()
 	_c.start_server()
+	_c.populate_node_list()
 	_c.tick()
