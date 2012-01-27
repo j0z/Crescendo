@@ -17,9 +17,6 @@ class Client(Protocol):
 		self.file_data = ''
 		
 		self.main_parent.add_node_callback(self.host,self)
-		
-		lc = LoopingCall(self.ping)
-		lc.start(5)
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -52,6 +49,8 @@ class Client(Protocol):
 			if line['opt']=='hnd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Handshake accepted')
+					lc = LoopingCall(self.ping)
+					lc.start(5)
 					
 					#This needs to be done serverside
 					_passwd = hashlib.sha224('derp').hexdigest()

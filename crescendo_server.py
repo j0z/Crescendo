@@ -60,6 +60,9 @@ class Connection(LineReceiver):
 		elif line['com']=='get':
 			if line['opt']=='inf':
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
+			
+			elif line['opt']=='pin':
+				self.sendLine('put::pin::null')
 				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
