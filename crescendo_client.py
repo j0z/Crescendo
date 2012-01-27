@@ -35,7 +35,7 @@ class Client(Protocol):
 	
 	def dataReceived(self, line):
 		line = self.parse_line(line)
-		#print repr(line)
+		print repr(line)
 		
 		if line['com']=='get':
 			if line['opt']=='hnd':
