@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, hashlib, json
+import os, hashlib, json, threading
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
@@ -42,7 +42,7 @@ class Connection(LineReceiver):
 	
 	def lineReceived(self, line):
 		line = self.parse_line(line)
-		print line
+		#print line
 
 		if line['com']=='put':
 			if line['opt']=='hnd':
@@ -149,8 +149,10 @@ class Node(Factory):
 		
 		return _c
 
-class start_server:
+class start_server(threading.Thread):
 	def __init__(self,parent,name='default',broadcast=False,searchable=False,network=None,passwd='22c7d75bd36e271adc1ef873aee4f95db6bc54a9c2f9f4bcf0cd18a8'):
+				
+		threading.Thread.__init__(self)
 		self.parent = parent
 		
 		self.name = name
@@ -159,10 +161,11 @@ class start_server:
 		self.searchable = searchable
 		self.network = network
 	
-	def start(self):
+	def run(self):
 		_n = Node(self.parent,name=self.name,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
+		reactor.run(installSignalHandlers=0)
 	
 	def stop(self):
 		self.reactor.stop()

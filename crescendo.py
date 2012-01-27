@@ -5,7 +5,9 @@ import crescendo_search as search
 import crescendo_client as client
 
 class crescendo:
-	def __init__(self):
+	def __init__(self,callback=None):
+		self.callback = callback
+		
 		self.node_list = []
 		
 		self.wanted_files = []
@@ -82,6 +84,9 @@ class crescendo:
 	def add_node(self,host):
 		self.node_list.append({'host':host,'connected':False})
 		self.log('[node] Found node at %s:%s' % (host))
+		
+		if self.callback:
+			self.callback.add_node(host[0])
 	
 	def remove_node(self,host):
 		for node in self.node_list:
