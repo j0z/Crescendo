@@ -107,16 +107,18 @@ class Client(Protocol):
 				self.sendLine('get::fil::%s' % str(self.getting_file))
 				
 			elif line['opt']=='fie':
+				if not len(self.data):
+					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
 				_f = open(self.getting_file,'wb')
 				_f.write(self.file.data)
 				_f.close()
 				
-				self.main_parent.log('[client->%s] Grabbed file INSERT NAME HERE' % (self.parent.info['name']))
+				self.main_parent.log('[client->%s] Grabbed file \'%s\'' % (self.parent.info['name'],self.getting_file))
 				
 				self.state = 'running'
 			
 			elif line['opt']=='fib':
-				self.main_parent.log('[client->%s] Failed grabbing file INSERT NAME HERE' % (self.parent.info['name']))
+				self.main_parent.log('[client->%s] Failed grabbing file \'%s\'' % (self.parent.info['name'],self.getting_file))
 				self.state = 'running'
 			
 				#elif line['opt']=='pin':
