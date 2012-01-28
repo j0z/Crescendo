@@ -44,7 +44,7 @@ class Client(Protocol):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def dataReceived(self, line):
-		#print repr(line)
+		print repr(line)
 		
 		#if not self.pinging:
 		#	lc = LoopingCall(self.ping)
