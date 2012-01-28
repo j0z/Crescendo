@@ -112,12 +112,12 @@ class crescendo:
 		if self.client.running:
 			self.log('[crescendo] Stopping client...',flush=True)
 		
-		self.client.stop()
-		
 		try:
 			self.server.stop()
 		except:
 			pass
+		
+		self.client.stop()
 		
 		if len(self.node_list):
 			self.log('[crescendo] Killing node connections',flush=True)
