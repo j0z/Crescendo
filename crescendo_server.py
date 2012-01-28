@@ -119,10 +119,10 @@ class Node(Factory):
 				
 				if os.path.getsize(_fname):
 					_f = File(infile,_fname)
-				
-				self.files.append(_f)
-				self.info['files'].append(_f.info)
-				self.log('[Files] Sharing %s' % _fname)
+					
+					self.files.append(_f)
+					self.info['files'].append(_f.info)
+					self.log('[Files] Sharing %s' % _fname)
 	
 	def get_file(self,name):
 		for file in self.files:
