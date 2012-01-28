@@ -61,9 +61,9 @@ class Connection(LineReceiver):
 			if line['opt']=='inf':
 				_n = tuple(line['val'].split(':'))
 				
-				if not self.node.parent.has_node(_n):
-					self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
-					self.node.parent.add_node(_n)
+				#if not self.node.parent.has_node(_n):
+				#	self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
+				#	self.node.parent.add_node(_n)
 				
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
 			
@@ -164,8 +164,8 @@ class start_server(threading.Thread):
 		self.parent = parent
 		self.use_threading = use_threading
 		
-		if self.use_threading:
-			threading.Thread.__init__(self)
+		#if self.use_threading:
+		threading.Thread.__init__(self)
 		#self.parent = parent
 		
 		self.name = name
@@ -192,7 +192,10 @@ class start_server(threading.Thread):
 		
 		self.running = True
 		
-		reactor.run(installSignalHandlers=0)
+		if self.use_threading:
+			reactor.run(installSignalHandlers=0)
+		else:
+			reactor.run()
 	
 	def stop(self):
 		reactor.stop()
@@ -200,4 +203,4 @@ class start_server(threading.Thread):
 		self.running = False
 
 if __name__ == "__main__":
-	start_server().start()
+	start_server(use_threading=False).start()
