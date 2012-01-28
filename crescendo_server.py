@@ -117,7 +117,8 @@ class Node(Factory):
 				_fname = os.path.join(root, infile)
 				file, ext = os.path.splitext(_fname)
 				
-				_f = File(infile,_fname)
+				if os.path.getsize(_fname):
+					_f = File(infile,_fname)
 				
 				self.files.append(_f)
 				self.info['files'].append(_f.info)
