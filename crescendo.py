@@ -25,7 +25,7 @@ class crescendo:
 		_f.close()
 		
 		self.ip_list = ['10.234.16.131','10.234.16.10']
-		#self.ip_list.remove(self.ip)
+		self.ip_list.remove(self.ip)
 		
 		self.ip+=':9001'
 		
@@ -123,7 +123,6 @@ class crescendo:
 			self.log('[crescendo] Killing node connections',flush=True)
 			self.disconnect_node_list()
 		else: self.log('[crescendo] No node connections to kill',flush=True)
-		self.disconnect_node_list()
 		
 		self.running = False
 	
