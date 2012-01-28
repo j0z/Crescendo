@@ -34,7 +34,6 @@ class Client(Protocol):
 	
 	def ping(self):
 		#self.sendLine('get::pin::null');
-		print 'ping'
 		self.sendLine('put::pin::%s:%s' % (self.host))
 	
 	def parse_line(self, line):
