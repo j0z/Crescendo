@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess, time
+import subprocess, sys
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -139,6 +139,8 @@ class crescendo:
 			self.running = False
 		
 		if not using_thread: self.shutdown()
+		
+		sys.exit()
 
 if __name__ == "__main__":
 	_c = crescendo()
