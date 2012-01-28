@@ -145,7 +145,6 @@ class ClientParent(ClientFactory):
 		
 		for con in self.connections:
 			con.transport.loseConnection()
-			print 'YEAH'
 	
 	def startedConnecting(self, connector):
 		#self.log('[client->server] Connecting...')
