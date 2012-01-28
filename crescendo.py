@@ -34,6 +34,10 @@ class crescendo:
 	def start_server(self):
 		self.log('[server] Starting server...')
 		self.server.start()
+	
+	def start_client(self):
+		self.log('[server] Starting client...')
+		self.client.start()
 
 	def log(self,text,flush=False):
 		if flush: print text
