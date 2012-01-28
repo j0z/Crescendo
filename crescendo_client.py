@@ -18,8 +18,7 @@ class Client(Protocol):
 		
 		self.main_parent.add_node_callback(self.host,self)
 		
-		lc = LoopingCall(self.ping)
-		lc.start(5)
+		self.pinging = False
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -46,6 +45,13 @@ class Client(Protocol):
 	
 	def dataReceived(self, line):
 		#print repr(line)
+		
+		if not self.pinging:
+			lc = LoopingCall(self.ping)
+			lc.start(5)
+			
+			self.pinging = True
+		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
 				self.parse_data(self.parse_line(_l))
