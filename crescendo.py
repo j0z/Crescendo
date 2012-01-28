@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess, sys
+import subprocess, json
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -18,16 +18,16 @@ class crescendo:
 		self.client = client.connect(self)
 		#self.server = server.start_server(parent=self)
 		
-		_f = open('config.txt','r')
-		for line in _f.readlines():
-			self.ip = line.replace('\n','')
+		_temp_info = ''
 		
+		_f = open('config.conf','r')
+		for line in _f.readlines():
+			_temp_info += line.replace('\n','')
 		_f.close()
 		
-		self.ip_list = ['10.234.16.131','10.234.16.10']
-		#self.ip_list.remove(self.ip)
+		self.info = json.loads(_temp_info)
 		
-		self.ip+=':9001'
+		self.ip_list = ['10.234.16.131','10.234.16.10']
 		
 		self.running = True
 	
@@ -42,15 +42,9 @@ class crescendo:
 	def log(self,text,flush=False):
 		if flush: print text
 		else: self._log.append(text)
-	
-	def print_log(self):
-		while (len(self._log)):
-			print self._log.pop(0)
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
-		
-		#while not self.server.running: pass
 		
 		try:
 			_s = search.Engine(self,ip_list=self.ip_list)
@@ -63,7 +57,7 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
-				print node['host']
+				#print node['host']
 				self.client.add_client(node['host'])
 
 				node['connected']=True
@@ -139,8 +133,6 @@ class crescendo:
 			self.running = False
 		
 		if not using_thread: self.shutdown()
-		
-		sys.exit()
 
 if __name__ == "__main__":
 	_c = crescendo()

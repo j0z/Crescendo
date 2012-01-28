@@ -22,10 +22,6 @@ class Connection(LineReceiver):
 	def connectionMade(self):
 		self.sendLine('get::hnd::null\r\n')
 		self.host = self.transport.getHost()
-
-		#def stop(self):
-		#self.sendLine('put::kil::sorry')
-		#self.transport.loseConnection()
 	
 	def connectionLost(self, reason):
 		self.node.connections.remove(self)
@@ -61,10 +57,6 @@ class Connection(LineReceiver):
 			if line['opt']=='inf':
 				_n = tuple(line['val'].split(':'))
 				
-				#if not self.node.parent.has_node(_n):
-				#	self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
-				#	self.node.parent.add_node(_n)
-				
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
 			
 			elif line['opt']=='pin':
@@ -91,7 +83,7 @@ class Connection(LineReceiver):
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 
 	def handle_GETPASSWD(self, passwd):
-		if not passwd==self.node.passwd:
+		if not passwd==self.node.info['passwd']:
 			self.sendLine('put::pwd::wrong')
 			return
 		
@@ -100,13 +92,11 @@ class Connection(LineReceiver):
 		self.state = "GET"
 
 class Node(Factory):
-	def __init__(self,name,broadcast,searchable,network,passwd,parent=None):
+	def __init__(self,info,parent=None):
+		self.info = info
+		
 		self.parent = parent
-		self.name = name
-		self.passwd = passwd
-		self.broadcast = broadcast
-		self.searchable = searchable
-		self.network = network
+		
 		self.clients = []
 		self.connections = []
 		self.files = []
@@ -151,7 +141,7 @@ class Node(Factory):
 				self.clients.remove(client)
 
 	def get_info(self):
-		return {'name':self.name,'searchable':self.searchable,'network':self.network,'clients':len(self.clients)}
+		return self.info
 	
 	def buildProtocol(self, addr):
 		_c = Connection(self)
@@ -168,14 +158,16 @@ class start_server(threading.Thread):
 		threading.Thread.__init__(self)
 		#self.parent = parent
 		
-		self.name = name
-		self.passwd = passwd
-		self.broadcast = broadcast
-		self.searchable = searchable
-		self.network = network
+		_temp_info = ''
+		
+		_f = open('node.conf','r')
+		for line in _f.readlines():
+			_temp_info += line.replace('\n','')
+		_f.close()
+		
+		self.info = json.loads(_temp_info)
 		
 		self.node = None
-		
 		self.running = False
 	
 	def start(self):
@@ -185,7 +177,7 @@ class start_server(threading.Thread):
 			self.run()
 	
 	def run(self):
-		_n = Node(name=self.name,parent=self.parent,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
+		_n = Node(self.info)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n

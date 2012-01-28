@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet.task import LoopingCall
 
-import hashlib, json, threading, sys
+import hashlib, json, threading
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -17,8 +17,6 @@ class Client(Protocol):
 		self.file_data = ''
 		
 		self.main_parent.add_node_callback(self.host,self)
-		
-		self.pinging = False
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -30,7 +28,6 @@ class Client(Protocol):
 	
 	def connectionLost(self, reason):
 		pass
-		#self.stop()
 	
 	def ping(self):
 		#self.sendLine('get::pin::null');
@@ -44,12 +41,6 @@ class Client(Protocol):
 	
 	def dataReceived(self, line):
 		#print repr(line)
-		
-		#if not self.pinging:
-		#	lc = LoopingCall(self.ping)
-		#	lc.start(5)
-		#	
-		#	self.pinging = True
 		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
@@ -77,7 +68,7 @@ class Client(Protocol):
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
-					self.sendLine('get::inf::%s' % self.parent.parent.parent.ip)
+					self.sendLine('get::inf::derp')
 					self.state = 'running'
 				else:
 					self.parent.log('[client->server] Password incorrect. Abort.')
@@ -175,7 +166,6 @@ class connect(threading.Thread):
 	def stop(self):
 		if self.ClientParent: self.ClientParent.stop()
 		self.running = False
-		sys.exit()
 	
 	def run(self):
 		self.running = True
