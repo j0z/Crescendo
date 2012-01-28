@@ -167,6 +167,7 @@ class connect(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def stop(self):
+		print 'stop'
 		reactor.stop()
 		#if self.ClientParent: self.ClientParent.stop()
 		#self.running = False
