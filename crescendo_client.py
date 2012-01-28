@@ -9,7 +9,6 @@ import hashlib, json, threading
 
 class Client(Protocol):
 	def __init__(self,host,parent):
-		print 'wut'
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
@@ -44,7 +43,7 @@ class Client(Protocol):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def dataReceived(self, line):
-		print repr(line)
+		#print repr(line)
 		
 		#if not self.pinging:
 		#	lc = LoopingCall(self.ping)
@@ -168,8 +167,9 @@ class connect(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def stop(self):
-		if self.ClientParent: self.ClientParent.stop()
-		self.running = False
+		reactor.stop()
+		#if self.ClientParent: self.ClientParent.stop()
+		#self.running = False
 	
 	def run(self):
 		self.running = True
