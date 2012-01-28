@@ -20,7 +20,7 @@ class crescendo:
 		
 		_f = open('config.txt','r')
 		for line in _f.readlines():
-			self.ip = line
+			self.ip = line.replace('\n','')
 		
 		_f.close()
 		
