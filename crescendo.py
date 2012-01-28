@@ -18,6 +18,15 @@ class crescendo:
 		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
 		
+		_f = open('config.txt','r')
+		for line in self.ips.readlines():
+			self.ip = line
+		
+		_f.close()
+		
+		self.ip_list = ['10.234.16.131','10.234.16.10']
+		self.ip_list.remove(self.ip)
+		
 		self.running = True
 	
 	def start_server(self):
@@ -38,7 +47,7 @@ class crescendo:
 		while not self.server.running: pass
 		
 		try:
-			_s = search.Engine(self)
+			_s = search.Engine(self,ip_list=self.ip_list)
 			_s.start()
 			self.log('[search.Engine] Search invoked and starting')
 		except:

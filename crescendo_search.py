@@ -30,10 +30,10 @@ class HostFinder(threading.Thread):
 		self.engine.active.remove(self)
 
 class Engine(threading.Thread):
-	def __init__(self,parent):
+	def __init__(self,parent,ip_list=[]):
 		self.parent = parent
 
-		self.ip_list = ['10.234.16.10']
+		self.ip_list = ip_list
 		self.active = []
 		self.working = []
 
