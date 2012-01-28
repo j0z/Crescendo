@@ -9,6 +9,7 @@ import hashlib, json, threading
 
 class Client(Protocol):
 	def __init__(self,host,parent):
+		print 'wut'
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
