@@ -128,6 +128,7 @@ class ClientParent(ClientFactory):
 		self.host = host
 		self.parent = parent
 		self.name = name
+		self.connections = []
 		
 		self.info = None
 		
@@ -141,6 +142,9 @@ class ClientParent(ClientFactory):
 			self.parent.reactor.stop()
 		except:
 			self.log('[client.Failure] Parent reactor already stopped')
+		
+		for con in self.connections:
+			con.transport.loseConnection()
 	
 	def startedConnecting(self, connector):
 		#self.log('[client->server] Connecting...')
@@ -148,7 +152,9 @@ class ClientParent(ClientFactory):
 
 	def buildProtocol(self, addr):	
 		#self.log('[client->server] Connected')
-		return Client(self.host,self)
+		_c = Client(self.host,self)
+		self.connections.append(_c)
+		return _c
 
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason
@@ -167,10 +173,8 @@ class connect(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def stop(self):
-		print 'stop'
-		reactor.stop()
-		#if self.ClientParent: self.ClientParent.stop()
-		#self.running = False
+		if self.ClientParent: self.ClientParent.stop()
+		self.running = False
 	
 	def run(self):
 		self.running = True
