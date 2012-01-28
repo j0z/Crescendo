@@ -45,11 +45,11 @@ class Client(Protocol):
 	def dataReceived(self, line):
 		#print repr(line)
 		
-		if not self.pinging:
-			lc = LoopingCall(self.ping)
-			lc.start(5)
-			
-			self.pinging = True
+		#if not self.pinging:
+		#	lc = LoopingCall(self.ping)
+		#	lc.start(5)
+		#	
+		#	self.pinging = True
 		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):

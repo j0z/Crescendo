@@ -34,8 +34,6 @@ class crescendo:
 	def start_server(self):
 		self.log('[server] Starting server...')
 		self.server.start()
-		
-		time.sleep(1)
 
 	def log(self,text,flush=False):
 		if flush: print text
