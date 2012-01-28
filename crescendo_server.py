@@ -55,9 +55,10 @@ class Connection(LineReceiver):
 					self.sendLine('put::hnd::Already shook hands!')
 			
 			elif line['opt']=='pwd':
-				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
-			
-			elif line['opt']=='pin':
+				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])				
+		
+		elif line['com']=='get':
+			if line['opt']=='inf':
 				_n = tuple(line['val'].split(':'))
 				
 				print _n
@@ -65,9 +66,7 @@ class Connection(LineReceiver):
 				if not self.node.parent.has_node(_n):
 					self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
 					self.node.parent.add_node(_n)
-		
-		elif line['com']=='get':
-			if line['opt']=='inf':
+				
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
 			
 			elif line['opt']=='pin':
