@@ -19,7 +19,7 @@ class crescendo:
 		self.server = server.start_server(parent=self)
 		
 		_f = open('config.txt','r')
-		for line in self.ips.readlines():
+		for line in _f.readlines():
 			self.ip = line
 		
 		_f.close()
