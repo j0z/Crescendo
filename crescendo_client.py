@@ -78,7 +78,7 @@ class Client(Protocol):
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
-					self.sendLine('get::inf::%s:%S' % self.host)
+					self.sendLine('get::inf::%s:%s' % self.host)
 					self.state = 'running'
 				else:
 					self.parent.log('[client->server] Password incorrect. Abort.')
