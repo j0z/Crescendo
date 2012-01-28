@@ -61,8 +61,6 @@ class Connection(LineReceiver):
 			if line['opt']=='inf':
 				_n = tuple(line['val'].split(':'))
 				
-				print _n
-				
 				if not self.node.parent.has_node(_n):
 					self.node.log('[client-%s] Shared new node at: %s' % (self.name,_n))
 					self.node.parent.add_node(_n)
