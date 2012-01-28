@@ -176,7 +176,7 @@ class start_server(threading.Thread):
 		
 		self.node = None
 		
-		self.running = True
+		self.running = False
 	
 	def start(self):
 		if self.use_threading:
