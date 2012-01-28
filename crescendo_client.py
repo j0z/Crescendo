@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet.task import LoopingCall
 
-import hashlib, json, threading
+import hashlib, json, threading, sys
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -175,6 +175,7 @@ class connect(threading.Thread):
 	def stop(self):
 		if self.ClientParent: self.ClientParent.stop()
 		self.running = False
+		sys.exit()
 	
 	def run(self):
 		self.running = True
