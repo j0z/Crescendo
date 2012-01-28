@@ -107,7 +107,7 @@ class Client(Protocol):
 				self.sendLine('get::fil::%s' % str(self.getting_file))
 				
 			elif line['opt']=='fie':
-				if not len(self.data):
+				if not len(self.file.data):
 					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
 				_f = open(self.getting_file,'wb')
 				_f.write(self.file.data)
