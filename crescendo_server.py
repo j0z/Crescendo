@@ -183,8 +183,6 @@ class start_server(threading.Thread):
 			threading.Thread.start(self)
 		else:
 			self.run()
-		
-		self.running = True
 	
 	def run(self):
 		_n = Node(name=self.name,parent=self.parent,passwd=self.passwd,broadcast=self.broadcast,searchable=self.searchable,network=self.network)
@@ -193,6 +191,7 @@ class start_server(threading.Thread):
 		self.node = _n
 
 		reactor.run(installSignalHandlers=0)
+		self.running = True
 	
 	def stop(self):
 		reactor.stop()
