@@ -59,6 +59,7 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
+				print node['host']
 				self.client.add_client(node['host'])
 
 				node['connected']=True
