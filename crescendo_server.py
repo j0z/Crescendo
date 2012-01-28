@@ -8,6 +8,10 @@ class File:
 	def __init__(self,name,fname):
 		self.name = name
 		self.fname = fname
+		self.size = os.path.getsize(self.fname)
+		
+		self.info = {'name':name,'fname':fname,'size':self.size}
+		
 		self.fpos = 0
 
 class Connection(LineReceiver):
@@ -99,8 +103,8 @@ class Node(Factory):
 		
 		self.clients = []
 		self.connections = []
-		self.files = []
 		
+		self.files = []
 		self.populate_file_list()
 
 	def log(self,text):
@@ -108,17 +112,19 @@ class Node(Factory):
 		else: print text
 	
 	def populate_file_list(self):
-		for root, dirs, files in os.walk('files'):
+		for root, dirs, files in os.walk(self.info['share_dir']):
 			for infile in files:
 				_fname = os.path.join(root, infile)
 				file, ext = os.path.splitext(_fname)
 				
-				self.files.append(File(infile,_fname))
-				if ext in ['.exe','.JPG','.png','.PNG']:
-					pass
+				_f = File(infile,_fname)
+				
+				self.files.append(_f)
+				self.info['files'].append(_f.info)
+				self.log('[Files] Sharing %s' % _fname)
 	
 	def get_file(self,name):
-		for file in self.files:
+		for file in self.info['files']:
 			if file.name==name:
 				return file
 		
@@ -166,6 +172,7 @@ class start_server(threading.Thread):
 		_f.close()
 		
 		self.info = json.loads(_temp_info)
+		self.info['files'] = []
 		
 		self.node = None
 		self.running = False

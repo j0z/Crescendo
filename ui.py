@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sat Jan 28 13:39:29 2012
+# Created: Sat Jan 28 16:25:20 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -63,18 +63,26 @@ class Ui_MainWindow(object):
         self.btn_info_node = QtGui.QPushButton(self.gridLayoutWidget)
         self.btn_info_node.setObjectName(_fromUtf8("btn_info_node"))
         self.gridLayout.addWidget(self.btn_info_node, 1, 5, 1, 1)
-        self.lst_clients = QtGui.QListWidget(self.gridLayoutWidget)
-        self.lst_clients.setObjectName(_fromUtf8("lst_clients"))
-        self.gridLayout.addWidget(self.lst_clients, 0, 1, 1, 1)
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.btn_info_client = QtGui.QPushButton(self.gridLayoutWidget)
         self.btn_info_client.setObjectName(_fromUtf8("btn_info_client"))
         self.horizontalLayout_5.addWidget(self.btn_info_client)
-        self.btn_kick = QtGui.QPushButton(self.gridLayoutWidget)
-        self.btn_kick.setObjectName(_fromUtf8("btn_kick"))
-        self.horizontalLayout_5.addWidget(self.btn_kick)
+        self.btn_grab = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btn_grab.setObjectName(_fromUtf8("btn_grab"))
+        self.horizontalLayout_5.addWidget(self.btn_grab)
         self.gridLayout.addLayout(self.horizontalLayout_5, 1, 1, 1, 1)
+        self.lst_files = QtGui.QTreeWidget(self.gridLayoutWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lst_files.sizePolicy().hasHeightForWidth())
+        self.lst_files.setSizePolicy(sizePolicy)
+        self.lst_files.setIndentation(0)
+        self.lst_files.setRootIsDecorated(False)
+        self.lst_files.setObjectName(_fromUtf8("lst_files"))
+        self.lst_files.headerItem().setBackground(1, QtGui.QColor(120, 0, 0))
+        self.gridLayout.addWidget(self.lst_files, 0, 1, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -94,8 +102,10 @@ class Ui_MainWindow(object):
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded files:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("MainWindow", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Clients/Nodes", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Files/Nodes", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_node.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_client.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.btn_kick.setText(QtGui.QApplication.translate("MainWindow", "Kick", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "Grab", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
 
