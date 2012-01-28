@@ -24,8 +24,6 @@ class crescendo:
 		
 		_f.close()
 		
-		print repr(self.ip)
-		
 		self.ip_list = ['10.234.16.131','10.234.16.10']
 		self.ip_list.remove(self.ip)
 		
