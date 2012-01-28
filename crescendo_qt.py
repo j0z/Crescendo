@@ -27,11 +27,14 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.info = {'nodes':[]}
 		
-		#QtCore.QObject.connect(self.ui.lst_nodes, QtCore.SIGNAL('currentItemChanged()'), self.select_node)
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
+		self.ui.btn_grab.clicked.connect(self.grab_file)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
+	
+	def log(self,text):
+		self.ui.lst_log.insertItem(0,text)
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})
@@ -43,13 +46,13 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for row in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(row).text() == node:
 				self.ui.lst_nodes.item(row).setText(info['name'])
+				self.info['nodes'][row]['host'] = self.info['nodes'][row]['name']
 				self.info['nodes'][row]['name'] = info['name']
 				self.info['nodes'][row]['files'] = info['files']
 				
 				break
 	
 	def select_node(self):
-		print 'wut'
 		self.ui.lst_files.clear()
 		
 		_n = self.ui.lst_nodes.currentRow()
@@ -57,7 +60,17 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for file in self.info['nodes'][_n]['files']:
 			item=QtGui.QTreeWidgetItem([file['name'],str(file['size']/1024)])
 			self.ui.lst_files.addTopLevelItem(item)
-			#self.ui.lst_files.addItem(str(file['name']))
+	
+	def grab_file(self):
+		_nr = self.ui.lst_nodes.currentRow()
+		_fr = self.ui.lst_files.currentItem().text(0)
+		
+		_h = self.info['nodes'][_nr]['host']
+		_f = _fr#_h['files'][_fr]
+		
+		self.crescendo.client.get_file(_h,_f)
+		
+		#print _h,_f
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

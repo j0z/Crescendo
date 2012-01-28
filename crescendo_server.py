@@ -124,7 +124,7 @@ class Node(Factory):
 				self.log('[Files] Sharing %s' % _fname)
 	
 	def get_file(self,name):
-		for file in self.info['files']:
+		for file in self.files:
 			if file.name==name:
 				return file
 		

@@ -12,20 +12,25 @@ class File:
 		self.name = name
 		self.fname = fname
 		self.fpos = 0
+		self.data = ''
 
 class Client(Protocol):
 	def __init__(self,host,parent):
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
+		self.file = None
 		self.main_parent = self.parent.parent.parent
-		
 		self.main_parent.add_node_callback(self.host,self)
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
 		self.transport.loseConnection()
 		#self.parent.stop()
+	
+	def get_file(self,file):
+		self.getting_file = file
+		self.sendLine('get::fil::%s' % str(self.getting_file))
 
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
@@ -80,6 +85,7 @@ class Client(Protocol):
 					
 			elif line['opt']=='inf':
 				self.parent.info = json.loads(line['val'])
+				self.parent.info['host'] = self.host
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				
 				#lol
@@ -92,15 +98,17 @@ class Client(Protocol):
 				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':
-					self.main_parent.log('[client->%s] Grabbing file INSERT NAME HERE' % (self.parent.info['name']))
+					self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
+					self.file = File(self.getting_file,self.getting_file)
+					
 					self.state = 'grabbing'
 				
-				self.file_data+=line['val']
-				self.sendLine('get::fil::helloworld.exe')
+				self.file.data+=line['val']
+				self.sendLine('get::fil::%s' % str(self.getting_file))
 				
 			elif line['opt']=='fie':
-				_f = open('test.exe','wb')
-				_f.write(self.file_data)
+				_f = open(self.getting_file,'wb')
+				_f.write(self.file.data)
 				_f.close()
 				
 				self.main_parent.log('[client->%s] Grabbed file INSERT NAME HERE' % (self.parent.info['name']))
@@ -140,6 +148,11 @@ class ClientParent(ClientFactory):
 		
 		for con in self.connections:
 			con.transport.loseConnection()
+		
+		self.parent.clients.remove(self)
+	
+	def get_file(self,file):
+		self.client.get_file(file)
 	
 	def startedConnecting(self, connector):
 		#self.log('[client->server] Connecting...')
@@ -149,6 +162,7 @@ class ClientParent(ClientFactory):
 		#self.log('[client->server] Connected')
 		_c = Client(self.host,self)
 		self.connections.append(_c)
+		self.client = _c
 		return _c
 
 	def clientConnectionLost(self, connector, reason):
@@ -161,6 +175,7 @@ class connect(threading.Thread):
 	def __init__(self,parent):
 		#self.host = host
 		self.parent = parent
+		self.clients = []
 		self.ClientParent = None
 		
 		self.running = False
@@ -170,6 +185,22 @@ class connect(threading.Thread):
 	def stop(self):
 		if self.ClientParent: self.ClientParent.stop()
 		self.running = False
+	
+	def get_file(self,host,file):
+		_c = self.get_client(host)
+		
+		if _c:
+			_c.get_file(file)
+	
+	def get_client(self,host):
+		for client in self.clients:
+			print client.host[0],host
+			if client.host[0]==host:
+				return client
+		
+		self.parent.log('[client.Failure] Client %s does not exist!' % (host))
+		
+		return False
 	
 	def run(self):
 		self.running = True
@@ -184,6 +215,8 @@ class connect(threading.Thread):
 		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
 		self.ClientParent = ClientParent(host,self)
 		self.point.connect(self.ClientParent)
+		
+		self.clients.append(self.ClientParent)
 
 		if not self.running: self.start()
 

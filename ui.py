@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sat Jan 28 16:25:20 2012
+# Created: Sat Jan 28 17:56:48 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,6 +48,9 @@ class Ui_MainWindow(object):
         self.label_3 = QtGui.QLabel(self.horizontalLayoutWidget)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.verticalLayout_2.addWidget(self.label_3)
+        self.lst_log = QtGui.QListWidget(self.horizontalLayoutWidget)
+        self.lst_log.setObjectName(_fromUtf8("lst_log"))
+        self.verticalLayout_2.addWidget(self.lst_log)
         self.verticalLayout.addWidget(self.groupBox_2)
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -101,7 +104,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded files:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("MainWindow", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Files/Nodes", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_node.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_client.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))

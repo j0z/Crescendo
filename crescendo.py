@@ -42,6 +42,9 @@ class crescendo:
 	def log(self,text,flush=False):
 		if flush: print text
 		else: self._log.append(text)
+		
+		if self.callback:
+			self.callback.log(text)
 
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
@@ -108,6 +111,9 @@ class crescendo:
 				
 				if self.callback:
 					self.callback.update_node(node['host'][0],node['info'])
+	
+	def get_file(self,host,file):
+		self.client.get_file(host,file)
 	
 	def shutdown(self):
 		if self.client.running:
