@@ -27,6 +27,8 @@ class crescendo:
 		self.ip_list = ['10.234.16.131','10.234.16.10']
 		self.ip_list.remove(self.ip)
 		
+		self.ip+=':9001'
+		
 		self.running = True
 	
 	def start_server(self):
