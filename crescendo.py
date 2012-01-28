@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess
+import subprocess, time
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -25,7 +25,7 @@ class crescendo:
 		_f.close()
 		
 		self.ip_list = ['10.234.16.131','10.234.16.10']
-		self.ip_list.remove(self.ip)
+		#self.ip_list.remove(self.ip)
 		
 		self.ip+=':9001'
 		
@@ -34,6 +34,8 @@ class crescendo:
 	def start_server(self):
 		self.log('[server] Starting server...')
 		self.server.start()
+		
+		time.sleep(1)
 
 	def log(self,text,flush=False):
 		if flush: print text
