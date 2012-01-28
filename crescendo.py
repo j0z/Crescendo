@@ -105,6 +105,9 @@ class crescendo:
 			if node['host']==host:
 				node['info']=info
 				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
+				
+				if self.callback:
+					self.callback.change_node(node['host'][0],node['info']['name'])
 	
 	def shutdown(self):
 		if self.client.running:

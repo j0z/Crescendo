@@ -25,14 +25,27 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.setupUi(self)
 		self.setWindowIcon(QtGui.QIcon('gfx\\icon.ico'))
 		
+		self.info = {'nodes':0}
+		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
 	
 	def add_client(self,name):
+		
 		self.ui.lst_clients.addItem(name)
 	
 	def add_node(self,name):
+		self.info['nodes']+=1
+		
 		self.ui.lst_nodes.addItem(name)
+		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(self.info['nodes']))
+		
+		#self.change_node('10.234.16.131','shut')
+	
+	def change_node(self,name,newname):
+		for row in range(self.ui.lst_nodes.count()):
+			if self.ui.lst_nodes.item(row).text() == name:
+				self.ui.lst_nodes.item(row).setText(newname)
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

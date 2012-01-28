@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Thu Jan 26 20:23:35 2012
+# Created: Sat Jan 28 13:39:29 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,9 +36,18 @@ class Ui_MainWindow(object):
         self.horizontalLayoutWidget = QtGui.QWidget(self.groupBox_2)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 20, 521, 221))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setMargin(0)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.horizontalLayoutWidget)
+        self.verticalLayout_2.setMargin(0)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.lab_connected_nodes = QtGui.QLabel(self.horizontalLayoutWidget)
+        self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
+        self.verticalLayout_2.addWidget(self.lab_connected_nodes)
+        self.lab_downloaded_files = QtGui.QLabel(self.horizontalLayoutWidget)
+        self.lab_downloaded_files.setObjectName(_fromUtf8("lab_downloaded_files"))
+        self.verticalLayout_2.addWidget(self.lab_downloaded_files)
+        self.label_3 = QtGui.QLabel(self.horizontalLayoutWidget)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.verticalLayout_2.addWidget(self.label_3)
         self.verticalLayout.addWidget(self.groupBox_2)
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -82,6 +91,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "CrescendoQt", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded files:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("MainWindow", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Clients/Nodes", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_node.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_info_client.setText(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))

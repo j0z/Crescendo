@@ -7,21 +7,25 @@ from twisted.internet.task import LoopingCall
 
 import hashlib, json, threading
 
+class File:
+	def __init__(self,name,fname):
+		self.name = name
+		self.fname = fname
+		self.fpos = 0
+
 class Client(Protocol):
 	def __init__(self,host,parent):
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
 		self.main_parent = self.parent.parent.parent
-	
-		self.file_data = ''
 		
 		self.main_parent.add_node_callback(self.host,self)
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
 		self.transport.loseConnection()
-		self.parent.stop()
+		#self.parent.stop()
 
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
@@ -58,8 +62,8 @@ class Client(Protocol):
 					self.parent.log('[client->server] Handshake accepted')
 					
 					#This needs to be done serverside
-					_passwd = hashlib.sha224('derp').hexdigest()
-					self.sendLine('put::pwd::'+_passwd)
+					#_passwd = hashlib.sha224('derp').hexdigest()
+					self.sendLine('put::pwd::derp')
 					self.state = 'password'
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')

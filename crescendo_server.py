@@ -83,7 +83,7 @@ class Connection(LineReceiver):
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 
 	def handle_GETPASSWD(self, passwd):
-		if not passwd==self.node.info['passwd']:
+		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:
 			self.sendLine('put::pwd::wrong')
 			return
 		
