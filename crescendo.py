@@ -123,6 +123,7 @@ class crescendo:
 			self.log('[crescendo] Killing node connections',flush=True)
 			self.disconnect_node_list()
 		else: self.log('[crescendo] No node connections to kill',flush=True)
+		self.disconnect_node_list()
 		
 		self.running = False
 	
