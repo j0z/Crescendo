@@ -118,8 +118,7 @@ class Node(Factory):
 		else: print text
 	
 	def stop(self):
-		for con in self.connections:
-			con.loseConnection()
+		pass
 	
 	def populate_file_list(self):
 		for root, dirs, files in os.walk(self.info['share_dir']):
