@@ -99,7 +99,7 @@ class Client(Protocol):
 					
 					for node in self.parent.info['broadcasting']:
 						print 'adding',node
-						self.main_parent.add_node((str(node[0]),str(node[1])))
+						self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':
