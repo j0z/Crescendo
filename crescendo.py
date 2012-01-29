@@ -26,7 +26,7 @@ class crescendo:
 		
 		self.ip_list = ['127.0.0.1']
 		
-		self.client = client.connect(self)
+		self.client = None
 		self.server = server.start_server(parent=self)
 		self.search = search.Engine(self,ip_list=self.ip_list)
 		
@@ -61,7 +61,8 @@ class crescendo:
 		for node in self.node_list:
 			if not node['connected']:
 				#print node['host']
-				self.client.add_client(node['host'])
+				if not self.client: self.client = client.connect(self,node['host']);self.client.start()
+				else: self.client.add_client(node['host'])
 
 				node['connected']=True
 				

@@ -182,8 +182,8 @@ class ClientParent(ClientFactory):
 		print 'Connection failed. Reason:', reason
 	
 class connect(threading.Thread):
-	def __init__(self,parent):
-		#self.host = host
+	def __init__(self,parent,host):
+		self.host = host
 		self.parent = parent
 		self.clients = []
 		self.ClientParent = None
@@ -218,21 +218,22 @@ class connect(threading.Thread):
 		
 		print 'Client thread started'
 		
-		try:
-			reactor.run(installSignalHandlers=0)
-		except:
-			pass
-
-	def add_client(self,host):	
-		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
-		self.ClientParent = ClientParent(host,self)
+		self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
+		self.ClientParent = ClientParent(self.host,self)
 		self.point.connect(self.ClientParent)
-		
 		self.clients.append(self.ClientParent)
 		
-		print self.running
+		reactor.run(installSignalHandlers=0)
+
+	def add_client(self,host):	
+		
+		self.ClientParent = ClientParent(host,self)
+		self.point.connect(self.ClientParent)
+		self.clients.append(self.ClientParent)
+		
+		#print self.running
 		#reactor.run(installSignalHandlers=0)
-		self.start()
+		#self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))
