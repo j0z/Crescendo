@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess, json, threading
+import subprocess, json, threading, sys
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -26,7 +26,7 @@ class crescendo:
 		
 		self.ip_list = ['127.0.0.1']
 		
-		self.client = None
+		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
 		self.search = search.Engine(self,ip_list=self.ip_list)
 		
@@ -51,7 +51,7 @@ class crescendo:
 		self.log('[search.Engine] Running search.Engine')
 		
 		try:
-			threading.Timer(0.2,self.search.start,()).start()
+			threading.Timer(3,self.search.start,()).start()
 			self.log('[search.Engine] Search invoked and starting')
 		except:
 			self.log('[search.Engine] Failed.')
@@ -61,8 +61,7 @@ class crescendo:
 		for node in self.node_list:
 			if not node['connected']:
 				#print node['host']
-				if not self.client: self.client = client.connect(self,node['host']);self.client.start()
-				else: self.client.add_client(node['host'])
+				self.client.add_client(node['host'])
 
 				node['connected']=True
 				
@@ -90,9 +89,6 @@ class crescendo:
 	def add_node(self,host):
 		self.node_list.append({'host':host,'connected':False})
 		self.log('[node] Found node at %s:%s' % (host))
-		
-		if not self.client: self.client = client.connect(self,host);self.client.start()
-		else: self.client.add_client(host)
 		
 		if self.callback:
 			self.callback.add_node(host[0])
@@ -123,10 +119,10 @@ class crescendo:
 		if self.client.running:
 			self.log('[crescendo] Stopping client...',flush=True)
 		
-		#try:
-		self.server.stop()
-		#except:
-		#	pass
+		try:
+			self.server.stop()
+		except:
+			pass
 		
 		self.client.stop()
 		
@@ -138,10 +134,9 @@ class crescendo:
 		self.running = False
 	
 	def tick(self,using_thread=False):
-		#self.connect_node_list()
 		try:	
 			while self.running:
-				pass
+				self.connect_node_list()
 				if len(self._log): print self._log.pop(0)
 		except KeyboardInterrupt:
 			self.running = False
@@ -150,7 +145,9 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	#threading.Timer(5,_c.populate_node_list,()).start()
 	_c.populate_node_list()
-	_c.start_server()
+	
+	if len(sys.argv)==2 and sys.argv[1]=='-server':
+		_c.start_server()
+	
 	_c.tick()

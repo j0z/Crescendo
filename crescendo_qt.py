@@ -1,4 +1,4 @@
-import sys, threading
+import sys, threading, sys
 from PyQt4 import QtCore, QtGui
 from ui import Ui_MainWindow
 
@@ -14,7 +14,9 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.shutdown()
 	
 	def run(self):
-		self.client.start_server()
+		if len(sys.argv)==2 and sys.argv[1]=='-server':
+			self.client.start_server()
+		
 		self.client.populate_node_list()
 		self.client.tick(using_thread=True)
 
@@ -69,8 +71,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_f = _fr#_h['files'][_fr]
 		
 		self.crescendo.client.get_file(_h,_f)
-		
-		#print _h,_f
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

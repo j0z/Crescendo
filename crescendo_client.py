@@ -16,7 +16,6 @@ class File:
 
 class Client(Protocol):
 	def __init__(self,host,parent):
-		print 'client is made!'
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
@@ -40,14 +39,13 @@ class Client(Protocol):
 		pass
 	
 	def parse_line(self, line):
-		print line
 		#Server expects a line similar to: GET/PUT::OPT::VAL
 		if line.count('\r\n'): line = line[:len(line)-2]
 		
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def dataReceived(self, line):
-		print repr(line)
+		#print repr(line)
 		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
@@ -140,8 +138,6 @@ class ClientParent(ClientFactory):
 		self.name = name
 		self.connections = []
 		
-		print 'Client parent made'
-		
 		self.info = None
 		
 		self.debug = True
@@ -152,7 +148,6 @@ class ClientParent(ClientFactory):
 	def stop(self):
 		try:
 			self.parent.reactor.stop()
-			self.parent.reactor.disconnectAll()
 		except:
 			self.log('[client.Failure] Parent reactor already stopped')
 		
@@ -182,8 +177,8 @@ class ClientParent(ClientFactory):
 		print 'Connection failed. Reason:', reason
 	
 class connect(threading.Thread):
-	def __init__(self,parent,host):
-		self.host = host
+	def __init__(self,parent):
+		#self.host = host
 		self.parent = parent
 		self.clients = []
 		self.ClientParent = None
@@ -214,34 +209,23 @@ class connect(threading.Thread):
 	
 	def run(self):
 		self.running = True
-		#self.reactor = reactor
+		self.reactor = reactor
 		
 		print 'Client thread started'
 		
-		#self.point = TCP4ClientEndpoint(reactor, self.host[0], self.host[1])
-		#self.ClientParent = ClientParent(self.host,self)
-		#self.point.connect(self.ClientParent)
-		#self.clients.append(self.ClientParent)
-		#reactor.stop()
-		_c=ClientParent(self.host,self)
-		self.clients.append(ClientParent)
-		reactor.connectTCP(self.host[0],self.host[1],_c)
-		
-		#try:
-		reactor.run(installSignalHandlers=0)
-		#except:
-		#	print 'shit'
+		try:
+			reactor.run(installSignalHandlers=0)
+		except:
+			pass
 
 	def add_client(self,host):	
+		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
+		self.ClientParent = ClientParent(host,self)
+		self.point.connect(self.ClientParent)
 		
-		ClientParent = ClientParent(host,self)
-		#self.point.connect(self.ClientParent)
-		self.clients.append(ClientParent)
-		
-		reactor.connectTCP(host[0],host[1],ClientParent)
-		##print self.running
-		##reactor.run(installSignalHandlers=0)
-		##self.start()
+		self.clients.append(self.ClientParent)
+
+		if not self.running: self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))
