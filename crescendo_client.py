@@ -33,7 +33,7 @@ class Client(Protocol):
 		self.sendLine('get::fil::%s' % self.getting_file)
 
 	def sendLine(self, line):
-		self.transport.write(line+'\r\n')
+		self.transport.write(str(line)+'\r\n')
 	
 	def connectionLost(self, reason):
 		pass
