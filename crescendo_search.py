@@ -33,7 +33,7 @@ class Engine(threading.Thread):
 	def __init__(self,parent,ip_list=[]):
 		self.parent = parent
 
-		self.ip_list = ip_list
+		self.ip_list = ip_list[:]
 		self.active = []
 		self.working = []
 
@@ -57,6 +57,8 @@ class Engine(threading.Thread):
 				if len(self.working)==1: self.parent.log('[search.Engine] Found 1 working node')
 				elif len(self.working)>1: self.parent.log('[search.Engine] Found %s working nodes' % len(self.working))
 				self.running = False
+		
+		self.parent.search_done()
 		
 	def has_clients(self):
 		if len(self.working): return True

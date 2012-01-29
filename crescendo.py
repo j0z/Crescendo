@@ -31,6 +31,7 @@ class crescendo:
 		self.server = server.start_server(parent=self)
 		self.search = search.Engine(self,ip_list=self.ip_list)
 		
+		self.can_search = False
 		self.running = True
 	
 	def start_server(self):
@@ -40,6 +41,16 @@ class crescendo:
 	def start_client(self):
 		self.log('[server] Starting client...')
 		self.client.start()
+	
+	def search_done(self):
+		self.can_search = True
+		
+		_ip_list = self.ip_list[:]
+		for ip in self.ip_list:
+			if self.has_node([ip]):
+				_ip_list.remove(ip)
+		
+		self.search = search.Engine(self,ip_list=_ip_list)
 
 	def log(self,text,flush=False):
 		if flush: print text
@@ -51,12 +62,13 @@ class crescendo:
 	def populate_node_list(self):
 		self.log('[search.Engine] Running search.Engine')
 		
-		try:
-			self.search.start()
-			self.log('[search.Engine] Search invoked and starting')
-		except:
-			self.log('[search.Engine] Failed.')
-			return False
+		#try:
+		self.can_search = False
+		self.search.start()
+		self.log('[search.Engine] Search invoked and starting')
+		#except:
+		#	self.log('[search.Engine] Failed.')
+		#	return False
 	
 	def connect_node_list(self):
 		for node in self.node_list:
@@ -143,6 +155,7 @@ class crescendo:
 	def tick(self,using_thread=False):
 		try:	
 			while self.running:
+				if self.can_search: threading.Timer(5,self.populate_node_list,()).start();self.can_search = False
 				self.connect_node_list()
 				if len(self._log): print self._log.pop(0)
 		except KeyboardInterrupt:
@@ -152,8 +165,7 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	threading.Timer(10,_c.populate_node_list,()).start()
-	#_c.populate_node_list()
+	_c.populate_node_list()
 	
 	if len(sys.argv)==2 and sys.argv[1]=='-server':
 		_c.start_server()

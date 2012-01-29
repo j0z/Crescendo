@@ -18,6 +18,7 @@ class Crescendo_Thread(QtCore.QThread):
 			self.client.start_server()
 		
 		self.client.populate_node_list()
+		#threading.Timer(10,self.client.populate_node_list,()).start()
 		self.client.tick(using_thread=True)
 
 class Crescendo_GUI(QtGui.QMainWindow):
