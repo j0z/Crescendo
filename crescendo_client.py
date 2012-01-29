@@ -223,9 +223,9 @@ class connect(threading.Thread):
 		#self.point.connect(self.ClientParent)
 		#self.clients.append(self.ClientParent)
 		#reactor.stop()
-		self.ClientParent = ClientParent(self.host,self)
-		self.clients.append(self.ClientParent)
-		reactor.connectTCP(self.host[0],self.host[1],self.ClientParent)
+		_c=ClientParent(self.host,self)
+		self.clients.append(ClientParent)
+		reactor.connectTCP(self.host[0],self.host[1],_c)
 		
 		#try:
 		reactor.run(installSignalHandlers=0)
@@ -234,11 +234,11 @@ class connect(threading.Thread):
 
 	def add_client(self,host):	
 		
-		self.ClientParent = ClientParent(host,self)
+		ClientParent = ClientParent(host,self)
 		#self.point.connect(self.ClientParent)
-		self.clients.append(self.ClientParent)
+		self.clients.append(ClientParent)
 		
-		reactor.connectTCP(host[0],host[1],self.ClientParent)
+		reactor.connectTCP(host[0],host[1],ClientParent)
 		##print self.running
 		##reactor.run(installSignalHandlers=0)
 		##self.start()
