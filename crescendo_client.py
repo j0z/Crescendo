@@ -95,7 +95,7 @@ class Client(Protocol):
 					
 					#If we want to be join the broadcast, we have to add ourselves
 					if self.main_parent.server.info['searchable']:
-						self.sendLine('put::bro::%s:%s' % (self.main_parent.server.info['host']))
+						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
 					
 					for node in self.parent.info['broadcasting']:
 						self.main_parent.add_node((str(node[0]),int(node[1])))

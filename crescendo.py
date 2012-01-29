@@ -22,7 +22,9 @@ class crescendo:
 			_temp_info += line.replace('\n','')
 		_f.close()
 		
-		#self.info = json.loads(_temp_info)
+		self.info = json.loads(_temp_info)
+		
+		self.info['host'] = tuple(self.info['host'])
 		
 		self.ip_list = ['10.234.16.131']
 		
