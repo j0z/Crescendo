@@ -16,6 +16,7 @@ class File:
 
 class Client(Protocol):
 	def __init__(self,host,parent):
+		print 'client is made!'
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
