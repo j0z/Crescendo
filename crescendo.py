@@ -138,7 +138,7 @@ class crescendo:
 		self.running = False
 	
 	def tick(self,using_thread=False):
-		self.connect_node_list()
+		#self.connect_node_list()
 		try:	
 			while self.running:
 				pass
