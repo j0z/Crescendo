@@ -25,7 +25,7 @@ class HostFinder(threading.Thread):
 		
 		self.socket.close()
 		
-		#print _out
+		print _out
 
 		self.engine.active.remove(self)
 
@@ -37,7 +37,7 @@ class Engine(threading.Thread):
 		self.active = []
 		self.working = []
 
-		self.running = True
+		self.running = False
 
 		threading.Thread.__init__(self)
 
@@ -45,6 +45,8 @@ class Engine(threading.Thread):
 		return self.running
 
 	def run(self):
+		self.running = True
+		
 		while (len(self.ip_list)):
 			_f = HostFinder(self.ip_list.pop(),self)
 			self.active.append(_f)

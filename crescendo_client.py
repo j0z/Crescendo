@@ -45,7 +45,7 @@ class Client(Protocol):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def dataReceived(self, line):
-		print repr(line)
+		#print repr(line)
 		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
@@ -56,6 +56,10 @@ class Client(Protocol):
 		if line['com']=='get':
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
+			
+			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
+			if line['opt']=='bro':
+				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 					
 		elif line['com']=='put':
 			if line['opt']=='hnd':
@@ -88,6 +92,10 @@ class Client(Protocol):
 				#TODO: Some clients might not want to listen to broadcasts...
 				if self.parent.info['broadcast']:
 					self.main_parent.log('[node.%s] Broadcasting x nodes' % (self.parent.info['name']))
+					
+					#If we want to be join the broadcast, we have to add ourselves
+					if self.main_parent.server.info['searchable']:
+						self.sendLine('put::bro::%s:%s' % (self.host))
 					
 					for node in self.parent.info['broadcasting']:
 						self.main_parent.add_node(node)

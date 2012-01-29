@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess, json
+import subprocess, json, threading
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -14,9 +14,6 @@ class crescendo:
 		self.shared_files = []
 		
 		self._log = []
-	
-		self.client = client.connect(self)
-		self.server = server.start_server(parent=self)
 		
 		_temp_info = ''
 		
@@ -25,9 +22,13 @@ class crescendo:
 			_temp_info += line.replace('\n','')
 		_f.close()
 		
-		self.info = json.loads(_temp_info)
+		#self.info = json.loads(_temp_info)
 		
 		self.ip_list = ['10.234.16.131']
+		
+		self.client = client.connect(self)
+		self.server = server.start_server(parent=self)
+		self.search = search.Engine(self,ip_list=self.ip_list)
 		
 		self.running = True
 	
@@ -50,8 +51,7 @@ class crescendo:
 		self.log('[search.Engine] Running search.Engine')
 		
 		try:
-			_s = search.Engine(self,ip_list=self.ip_list)
-			_s.start()
+			threading.Timer(3,self.search.start,()).start()
 			self.log('[search.Engine] Search invoked and starting')
 		except:
 			self.log('[search.Engine] Failed.')
@@ -145,6 +145,6 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	#_c.start_server()
 	_c.populate_node_list()
+	_c.start_server()
 	_c.tick()

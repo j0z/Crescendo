@@ -55,13 +55,20 @@ class Connection(LineReceiver):
 					self.sendLine('put::hnd::Already shook hands!')
 			
 			elif line['opt']=='pwd':
-				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])				
+				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
+			
+			elif line['opt']=='bro':
+				_n = tuple(line['val'].split(':'))
+				
+				if not _n in self.node.info['broadcasting']:
+					self.node.info['broadcasting'].append(_n)
+					self.sendLine('get::bro::okay')
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
 				_n = tuple(line['val'].split(':'))
 				
-				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
+				self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
 				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
@@ -144,9 +151,6 @@ class Node(Factory):
 		for client in self.clients:
 			if client['name']==who:
 				self.clients.remove(client)
-
-	def get_info(self):
-		return self.info
 	
 	def buildProtocol(self, addr):
 		_c = Connection(self)
@@ -186,7 +190,7 @@ class start_server(threading.Thread):
 			self.run()
 	
 	def run(self):
-		_n = Node(self.info)
+		_n = Node(self.info,parent=self.parent)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n
