@@ -223,7 +223,7 @@ class connect(threading.Thread):
 		self.point.connect(self.ClientParent)
 		self.clients.append(self.ClientParent)
 		
-		#reactor.run(installSignalHandlers=0)
+		reactor.run(installSignalHandlers=0)
 
 	def add_client(self,host):	
 		
