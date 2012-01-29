@@ -119,10 +119,10 @@ class crescendo:
 		if self.client.running:
 			self.log('[crescendo] Stopping client...',flush=True)
 		
-		try:
-			self.server.stop()
-		except:
-			pass
+		#try:
+		self.server.stop()
+		#except:
+		#	pass
 		
 		self.client.stop()
 		
