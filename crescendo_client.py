@@ -98,6 +98,7 @@ class Client(Protocol):
 						self.sendLine('put::bro::%s:%s' % (self.host))
 					
 					for node in self.parent.info['broadcasting']:
+						print 'adding',node
 						self.main_parent.add_node(node)
 				
 			elif line['opt']=='fil':

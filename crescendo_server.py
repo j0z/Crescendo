@@ -60,6 +60,7 @@ class Connection(LineReceiver):
 			
 			elif line['opt']=='bro':
 				_n = tuple(line['val'].split(':'))
+				print _n
 				
 				if not _n in self.node.info['broadcasting']:
 					self.node.info['broadcasting'].append(_n)
