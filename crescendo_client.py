@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet.task import LoopingCall
 
-import os, sys, json, threading
+import os, json, threading
 
 class File:
 	def __init__(self,name,fname):
@@ -194,8 +194,6 @@ class connect(threading.Thread):
 	def stop(self):
 		if self.ClientParent: self.ClientParent.stop()
 		self.running = False
-		
-		sys.exit()
 	
 	def get_file(self,host,file):
 		_c = self.get_client(host)

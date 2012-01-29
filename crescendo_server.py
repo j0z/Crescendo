@@ -212,7 +212,6 @@ class start_server(threading.Thread):
 		reactor.stop()
 		
 		self.running = False
-		sys.exit()
 
 if __name__ == "__main__":
 	start_server(use_threading=False).start()
