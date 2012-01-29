@@ -230,7 +230,7 @@ class connect(threading.Thread):
 		self.clients.append(self.ClientParent)
 		
 		#reactor.run(installSignalHandlers=0)
-		#if not self.running: self.start()
+		if not self.running: self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))
