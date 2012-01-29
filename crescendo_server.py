@@ -210,6 +210,7 @@ class start_server(threading.Thread):
 	def stop(self):
 		self.node.stop()
 		reactor.stop()
+		reactor.disconnectAll()
 		
 		self.running = False
 

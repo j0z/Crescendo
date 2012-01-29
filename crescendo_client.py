@@ -152,6 +152,7 @@ class ClientParent(ClientFactory):
 	def stop(self):
 		try:
 			self.parent.reactor.stop()
+			self.parent.reactor.disconnectAll()
 		except:
 			self.log('[client.Failure] Parent reactor already stopped')
 		
