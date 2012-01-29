@@ -83,7 +83,6 @@ class crescendo:
 	
 	def has_node(self,host):
 		for node in self.node_list:
-			print 'has',repr(host[0]),repr(node['host'][0])
 			if node['host'][0]==host[0]: return True
 		
 		return False
