@@ -218,10 +218,9 @@ class connect(threading.Thread):
 		
 		print 'Client thread started'
 		
-		try:
-			reactor.run(installSignalHandlers=0)
-		except:
-			pass
+		reactor.run(installSignalHandlers=0)
+		#except:
+		#	pass
 
 	def add_client(self,host):	
 		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
@@ -229,8 +228,9 @@ class connect(threading.Thread):
 		self.point.connect(self.ClientParent)
 		
 		self.clients.append(self.ClientParent)
-
-		if not self.running: self.start()
+		
+		#reactor.run(installSignalHandlers=0)
+		#if not self.running: self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))

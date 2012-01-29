@@ -145,7 +145,7 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	threading.Timer(5,_c.populate_node_list,()).start()
-	#_c.populate_node_list()
+	#threading.Timer(5,_c.populate_node_list,()).start()
+	_c.populate_node_list()
 	_c.start_server()
 	_c.tick()
