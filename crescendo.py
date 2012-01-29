@@ -82,8 +82,8 @@ class crescendo:
 					self.log('[node-%s:%s] Connection is a zombie. Dying' % node['host'],flush=True)
 	
 	def has_node(self,host):
-		print 'has',host[0]
 		for node in self.node_list:
+			print 'has',repr(host[0]),repr(node['host'][0])
 			if node['host'][0]==host[0]: return True
 		
 		return False
@@ -93,8 +93,8 @@ class crescendo:
 			self.node_list.append({'host':host,'connected':False})
 			self.log('[node] Found node at %s:%s' % (host))
 		
-		if self.callback:
-			self.callback.add_node(host[0])
+			if self.callback:
+				self.callback.add_node(host[0])
 	
 	def remove_node(self,host):
 		for node in self.node_list:

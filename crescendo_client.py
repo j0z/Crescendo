@@ -84,6 +84,10 @@ class Client(Protocol):
 					self.stop()
 					
 			elif line['opt']=='inf':
+				_nodes=None
+				if self.parent.info:
+					_nodes = str(len(self.parent.info['broadcasting']))
+					
 				self.parent.info = json.loads(line['val'])
 				self.parent.info['host'] = self.host
 				self.main_parent.add_node_info(self.host,self.parent.info)
@@ -91,7 +95,8 @@ class Client(Protocol):
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
 				if self.parent.info['broadcast']:
-					self.main_parent.log('[node.%s] Broadcasting %s nodes' % (self.parent.info['name'],str(len(self.parent.info['broadcasting']))))
+					if not _nodes == str(len(self.parent.info['broadcasting'])):
+						self.main_parent.log('[node.%s] Broadcasting %s nodes' % (self.parent.info['name'],str(len(self.parent.info['broadcasting']))))
 					
 					#If we want to be join the broadcast, we have to add ourselves
 					if self.main_parent.server.info['searchable']:
