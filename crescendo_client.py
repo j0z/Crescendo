@@ -231,7 +231,7 @@ class connect(threading.Thread):
 		
 		print self.running
 		#reactor.run(installSignalHandlers=0)
-		if not self.running: self.start()
+		if not reactor.running: self.start()
 
 #point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
 #point.connect(ClientParent(reactor))
