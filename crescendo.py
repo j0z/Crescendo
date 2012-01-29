@@ -51,7 +51,7 @@ class crescendo:
 		self.log('[search.Engine] Running search.Engine')
 		
 		try:
-			threading.Timer(3,self.search.start,()).start()
+			threading.Timer(1.5,self.search.start,()).start()
 			self.log('[search.Engine] Search invoked and starting')
 		except:
 			self.log('[search.Engine] Failed.')
