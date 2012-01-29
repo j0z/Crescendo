@@ -17,6 +17,7 @@ class File:
 class Connection(LineReceiver):
 	def __init__(self, node):
 		#self.users = users
+		print 'connection made!'
 		self.node = node
 		self.state = 'GETHND'
 		self.file_pos = 0
