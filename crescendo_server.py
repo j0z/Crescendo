@@ -117,6 +117,10 @@ class Node(Factory):
 		if self.parent: self.parent.log(text)
 		else: print text
 	
+	def stop(self):
+		for con in self.connections:
+			con.loseConnection()
+	
 	def populate_file_list(self):
 		for root, dirs, files in os.walk(self.info['share_dir']):
 			for infile in files:
@@ -204,6 +208,7 @@ class start_server(threading.Thread):
 			reactor.run()
 	
 	def stop(self):
+		self.node.stop()
 		reactor.stop()
 		
 		self.running = False
