@@ -222,6 +222,7 @@ class connect(threading.Thread):
 		#self.ClientParent = ClientParent(self.host,self)
 		#self.point.connect(self.ClientParent)
 		#self.clients.append(self.ClientParent)
+		#reactor.stop()
 		self.ClientParent = ClientParent(self.host,self)
 		self.clients.append(self.ClientParent)
 		reactor.connectTCP(self.host[0],self.host[1],self.ClientParent)

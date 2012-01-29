@@ -91,6 +91,9 @@ class crescendo:
 		self.node_list.append({'host':host,'connected':False})
 		self.log('[node] Found node at %s:%s' % (host))
 		
+		if not self.client: self.client = client.connect(self,host);self.client.start()
+		else: self.client.add_client(host)
+		
 		if self.callback:
 			self.callback.add_node(host[0])
 	
@@ -135,9 +138,10 @@ class crescendo:
 		self.running = False
 	
 	def tick(self,using_thread=False):
+		self.connect_node_list()
 		try:	
 			while self.running:
-				self.connect_node_list()
+				pass
 				if len(self._log): print self._log.pop(0)
 		except KeyboardInterrupt:
 			self.running = False
