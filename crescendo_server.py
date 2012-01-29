@@ -59,7 +59,8 @@ class Connection(LineReceiver):
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
 			
 			elif line['opt']=='bro':
-				_n = tuple(line['val'].split(':'))
+				_t = line['val'].split(':')
+				_n = (str(_t[0]),str(_t[1]))
 				print _n
 				
 				if not _n in self.node.info['broadcasting']:
