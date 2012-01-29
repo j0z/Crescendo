@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, hashlib, json, threading
+import os, sys, hashlib, json, threading
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
@@ -212,6 +212,7 @@ class start_server(threading.Thread):
 		reactor.stop()
 		
 		self.running = False
+		sys.exit()
 
 if __name__ == "__main__":
 	start_server(use_threading=False).start()
