@@ -85,6 +85,7 @@ class Connection(LineReceiver):
 					else:
 						self.sendLine('put::fie::end')
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
+						_f.fpos = 0
 
 	def handle_GETPASSWD(self, passwd):
 		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:

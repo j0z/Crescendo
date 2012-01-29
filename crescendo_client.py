@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet.task import LoopingCall
 
-import hashlib, json, threading
+import os, json, threading
 
 class File:
 	def __init__(self,name,fname):
@@ -29,8 +29,8 @@ class Client(Protocol):
 		#self.parent.stop()
 	
 	def get_file(self,file):
-		self.getting_file = file
-		self.sendLine('get::fil::%s' % str(self.getting_file))
+		self.getting_file = str(file)
+		self.sendLine('get::fil::%s' % self.getting_file)
 
 	def sendLine(self, line):
 		self.transport.write(line+'\r\n')
@@ -104,12 +104,13 @@ class Client(Protocol):
 					self.state = 'grabbing'
 				
 				self.file.data+=line['val']
-				self.sendLine('get::fil::%s' % str(self.getting_file))
+				self.sendLine('get::fil::%s' % self.getting_file)
 				
 			elif line['opt']=='fie':
 				if not len(self.file.data):
 					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
-				_f = open(self.getting_file,'wb')
+					return False
+				_f = open(os.path.join('downloads',self.getting_file),'wb')
 				_f.write(self.file.data)
 				_f.close()
 				
@@ -120,9 +121,6 @@ class Client(Protocol):
 			elif line['opt']=='fib':
 				self.main_parent.log('[client->%s] Failed grabbing file \'%s\'' % (self.parent.info['name'],self.getting_file))
 				self.state = 'running'
-			
-				#elif line['opt']=='pin':
-				#self.sendLine('put::pin::%s:%s' % (self.host))
 				
 			elif line['opt']=='kil':
 				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
