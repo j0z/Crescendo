@@ -23,7 +23,6 @@ class crescendo:
 		_f.close()
 		
 		self.info = json.loads(_temp_info)
-		
 		self.info['host'] = tuple(self.info['host'])
 		
 		self.ip_list = ['10.234.16.131']
@@ -89,8 +88,9 @@ class crescendo:
 		return False
 	
 	def add_node(self,host):
-		self.node_list.append({'host':host,'connected':False})
-		self.log('[node] Found node at %s:%s' % (host))
+		if not self.has_node(host):
+			self.node_list.append({'host':host,'connected':False})
+			self.log('[node] Found node at %s:%s' % (host))
 		
 		if self.callback:
 			self.callback.add_node(host[0])
@@ -108,8 +108,13 @@ class crescendo:
 	def add_node_info(self,host,info):
 		for node in self.node_list:
 			if node['host']==host:
+				_oname = None
+				if node.has_key('info'):
+					_oname = node['info']['name']
+				
 				node['info']=info
-				self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
+				if not node['info']['name']==_oname:
+					self.log('[node.Info.name] %s -> %s ' % (node['host'][0],node['info']['name']),flush=True)
 				
 				if self.callback:
 					self.callback.update_node(node['host'][0],node['info'])

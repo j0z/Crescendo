@@ -3,6 +3,7 @@ import os, sys, hashlib, json, threading
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
+from twisted.internet import task
 
 class File:
 	def __init__(self,name,fname):
@@ -24,7 +25,6 @@ class Connection(LineReceiver):
 		self.name = ''
 
 	def connectionMade(self):
-		print 'connection made!'
 		self.sendLine('get::hnd::null\r\n')
 		self.host = self.transport.getHost()
 	
@@ -68,9 +68,10 @@ class Connection(LineReceiver):
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
-				_n = tuple(line['val'].split(':'))
+				#_n = tuple(line['val'].split(':'))
 				
-				self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
+				l = task.LoopingCall(self.broadcast)
+				l.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
@@ -101,6 +102,9 @@ class Connection(LineReceiver):
 		self.sendLine('put::pwd::okay')
 		self.node.add_client((self.host.host,self.name))
 		self.state = "GET"
+	
+	def broadcast(self):
+		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
 
 class Node(Factory):
 	def __init__(self,info,parent=None):
@@ -181,6 +185,7 @@ class start_server(threading.Thread):
 		
 		self.info = json.loads(_temp_info)
 		self.info['files'] = []
+		self.info['broadcast_every'] = int(self.info['broadcast_every'])
 		
 		if self.info['broadcast']:
 			self.info['broadcasting'] = []

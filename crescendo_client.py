@@ -91,7 +91,7 @@ class Client(Protocol):
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
 				if self.parent.info['broadcast']:
-					self.main_parent.log('[node.%s] Broadcasting x nodes' % (self.parent.info['name']))
+					self.main_parent.log('[node.%s] Broadcasting %s nodes' % (self.parent.info['name'],str(len(self.parent.info['broadcasting']))))
 					
 					#If we want to be join the broadcast, we have to add ourselves
 					if self.main_parent.server.info['searchable']:
@@ -210,8 +210,6 @@ class connect(threading.Thread):
 	def run(self):
 		self.running = True
 		self.reactor = reactor
-		
-		print 'Client thread started'
 		
 		try:
 			reactor.run(installSignalHandlers=0)
