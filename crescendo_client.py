@@ -226,10 +226,10 @@ class connect(threading.Thread):
 		self.clients.append(self.ClientParent)
 		reactor.connectTCP(self.host[0],self.host[1],self.ClientParent)
 		
-		try:
-			reactor.run(installSignalHandlers=0)
-		except:
-			print 'shit'
+		#try:
+		reactor.run(installSignalHandlers=0)
+		#except:
+		#	print 'shit'
 
 	def add_client(self,host):	
 		
