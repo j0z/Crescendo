@@ -40,6 +40,7 @@ class Client(Protocol):
 		pass
 	
 	def parse_line(self, line):
+		print line
 		#Server expects a line similar to: GET/PUT::OPT::VAL
 		if line.count('\r\n'): line = line[:len(line)-2]
 		
