@@ -138,6 +138,8 @@ class ClientParent(ClientFactory):
 		self.name = name
 		self.connections = []
 		
+		print 'Client parent made'
+		
 		self.info = None
 		
 		self.debug = True
@@ -210,6 +212,8 @@ class connect(threading.Thread):
 	def run(self):
 		self.running = True
 		self.reactor = reactor
+		
+		print 'Client thread started'
 		
 		try:
 			reactor.run(installSignalHandlers=0)
