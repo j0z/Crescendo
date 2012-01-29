@@ -98,7 +98,8 @@ class Client(Protocol):
 						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
 					
 					for node in self.parent.info['broadcasting']:
-						self.main_parent.add_node((str(node[0]),int(node[1])))
+						if not str(node[0]) == self.main_parent.info['host']:
+							self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':
