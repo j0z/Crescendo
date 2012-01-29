@@ -32,6 +32,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
+		self.ui.btn_connect.clicked.connect(self.add_node)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
@@ -63,6 +64,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for file in self.info['nodes'][_n]['files']:
 			item=QtGui.QTreeWidgetItem([file['name'],str(file['size']/1024)])
 			self.ui.lst_files.addTopLevelItem(item)
+	
+	def add_node(self):
+		self.client.add_node(self.ui.lne_ip.text)
 	
 	def grab_file(self):
 		_nr = self.ui.lst_nodes.currentRow()
