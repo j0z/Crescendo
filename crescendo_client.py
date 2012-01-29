@@ -214,7 +214,7 @@ class connect(threading.Thread):
 	
 	def run(self):
 		self.running = True
-		self.reactor = reactor
+		#self.reactor = reactor
 		
 		print 'Client thread started'
 		
