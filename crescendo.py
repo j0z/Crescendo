@@ -60,12 +60,12 @@ class crescendo:
 			self.callback.log(text)
 
 	def populate_node_list(self):
-		self.log('[search.Engine] Running search.Engine')
+		#self.log('[search.Engine] Running search.Engine')
 		
 		#try:
 		self.can_search = False
 		self.search.start()
-		self.log('[search.Engine] Search invoked and starting')
+		#self.log('[search.Engine] Search invoked and starting')
 		#except:
 		#	self.log('[search.Engine] Failed.')
 		#	return False
