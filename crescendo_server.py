@@ -62,9 +62,6 @@ class Connection(LineReceiver):
 				_n = tuple(line['val'].split(':'))
 				
 				self.sendLine('put::inf::%s' % (json.dumps(self.node.get_info())))
-			
-			elif line['opt']=='pin':
-				self.sendLine('put::pin::null')
 				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
@@ -175,6 +172,9 @@ class start_server(threading.Thread):
 		
 		self.info = json.loads(_temp_info)
 		self.info['files'] = []
+		
+		if self.info['broadcast']:
+			self.info['broadcasting'] = []
 		
 		self.node = None
 		self.running = False

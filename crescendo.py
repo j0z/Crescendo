@@ -16,7 +16,7 @@ class crescendo:
 		self._log = []
 	
 		self.client = client.connect(self)
-		#self.server = server.start_server(parent=self)
+		self.server = server.start_server(parent=self)
 		
 		_temp_info = ''
 		
@@ -27,7 +27,7 @@ class crescendo:
 		
 		self.info = json.loads(_temp_info)
 		
-		self.ip_list = ['10.234.16.131','10.234.16.10']
+		self.ip_list = ['10.234.16.131']
 		
 		self.running = True
 	

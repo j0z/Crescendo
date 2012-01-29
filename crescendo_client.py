@@ -38,10 +38,6 @@ class Client(Protocol):
 	def connectionLost(self, reason):
 		pass
 	
-	def ping(self):
-		#self.sendLine('get::pin::null');
-		self.sendLine('put::pin::%s:%s' % (self.host))
-	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
 		if line.count('\r\n'): line = line[:len(line)-2]
@@ -49,7 +45,7 @@ class Client(Protocol):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def dataReceived(self, line):
-		#print repr(line)
+		print repr(line)
 		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
@@ -88,13 +84,13 @@ class Client(Protocol):
 				self.parent.info['host'] = self.host
 				self.main_parent.add_node_info(self.host,self.parent.info)
 				
-				#lol
-				#if self.parent.parent.parent.server.running:
-				#	#if not self.parent.parent.parent.has_node(self.host):
-				#	#if self.parent.parent.parent.server.node.host == self.host: print 'YES'
-				#	#self.sendLine('put::con::%s:%s' % (self.host))
-				#
-				#self.sendLine('get::fil::helloworld.exe')
+				#If broadcast node, handle it accordingly
+				#TODO: Some clients might not want to listen to broadcasts...
+				if self.parent.info['broadcast']:
+					self.main_parent.log('[node.%s] Broadcasting x nodes' % (self.parent.info['name']))
+					
+					for node in self.parent.info['broadcasting']:
+						self.main_parent.add_node(node)
 				
 			elif line['opt']=='fil':
 				if not self.state=='grabbing':
@@ -110,6 +106,7 @@ class Client(Protocol):
 				if not len(self.file.data):
 					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
 					return False
+				
 				_f = open(os.path.join('downloads',self.getting_file),'wb')
 				_f.write(self.file.data)
 				_f.close()
