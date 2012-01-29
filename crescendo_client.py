@@ -229,6 +229,7 @@ class connect(threading.Thread):
 		
 		self.clients.append(self.ClientParent)
 		
+		print self.running
 		#reactor.run(installSignalHandlers=0)
 		if not self.running: self.start()
 
