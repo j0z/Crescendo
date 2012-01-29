@@ -218,7 +218,7 @@ class connect(threading.Thread):
 		
 		print 'Client thread started'
 		
-		#reactor.run(installSignalHandlers=0)
+		reactor.run(installSignalHandlers=0)
 		#except:
 		#	pass
 
