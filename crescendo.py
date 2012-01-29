@@ -152,7 +152,7 @@ class crescendo:
 
 if __name__ == "__main__":
 	_c = crescendo()
-	threading.Timer(10,_c.populdate_node_list,()).start()
+	threading.Timer(10,_c.populate_node_list,()).start()
 	#_c.populate_node_list()
 	
 	if len(sys.argv)==2 and sys.argv[1]=='-server':
