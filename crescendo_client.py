@@ -85,7 +85,7 @@ class Client(Protocol):
 					
 			elif line['opt']=='inf':
 				_nodes=None
-				if self.parent.info:
+				if self.parent.info and self.parent.info.has_key('broadcasting'):
 					_nodes = str(len(self.parent.info['broadcasting']))
 					
 				self.parent.info = json.loads(line['val'])
