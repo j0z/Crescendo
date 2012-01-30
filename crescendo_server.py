@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, sys, hashlib, json, threading
+import os, sys, time, json, hashlib, threading
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
@@ -20,6 +20,7 @@ class Connection(LineReceiver):
 		#self.users = users
 		self.node = node
 		self.state = 'GETHND'
+		self.last_seen = time.time()
 		self.file_pos = 0
 		
 		self.name = ''
@@ -58,6 +59,9 @@ class Connection(LineReceiver):
 			elif line['opt']=='pwd':
 				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
 			
+			elif line['opt']=='png':
+				self.last_seen = time.time()
+			
 			elif line['opt']=='bro':
 				_n = tuple(line['val'].split(':'))
 				
@@ -68,8 +72,13 @@ class Connection(LineReceiver):
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
-				#_n = tuple(line['val'].split(':'))
 				
+				#Start our looping calls now.
+				#Starts pinging clients
+				l = task.LoopingCall(self.ping)
+				l.start(10) #TODO: Make this a variable
+				
+				#Sends a broadcast packet every <x> seconds
 				l = task.LoopingCall(self.broadcast)
 				l.start(self.node.info['broadcast_every'])
 				
@@ -102,6 +111,12 @@ class Connection(LineReceiver):
 		self.sendLine('put::pwd::okay')
 		self.node.add_client((self.host.host,self.name))
 		self.state = "GET"
+	
+	def ping(self):
+		self.sendLine('get::pin::null')
+		
+		if time.time()-self.last_seen > 30:
+			self.transport.loseConnection()
 	
 	def broadcast(self):
 		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))

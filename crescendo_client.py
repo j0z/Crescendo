@@ -3,9 +3,9 @@ from __future__ import with_statement
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
-from twisted.internet.task import LoopingCall
+from twisted.internet import task
 
-import os, json, threading
+import os, time, json, threading
 
 class File:
 	def __init__(self,name,fname):
@@ -22,6 +22,8 @@ class Client(Protocol):
 		self.file = None
 		self.main_parent = self.parent.parent.parent
 		self.main_parent.add_node_callback(self.host,self)
+		
+		self.last_seen = time.time()
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -57,6 +59,11 @@ class Client(Protocol):
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
 			
+			elif line['opt']=='pin':
+				if self.parent.info:
+					self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
+					self.sendLine('put::png::null')
+			
 			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
 			if line['opt']=='bro':
 				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
@@ -66,8 +73,6 @@ class Client(Protocol):
 				if line['val']=='okay':
 					self.parent.log('[client->server] Handshake accepted')
 					
-					#This needs to be done serverside
-					#_passwd = hashlib.sha224('derp').hexdigest()
 					self.sendLine('put::pwd::derp')
 					self.state = 'password'
 				else:
@@ -77,20 +82,29 @@ class Client(Protocol):
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
+					
 					self.sendLine('get::inf::derp')
 					self.state = 'running'
 				else:
 					self.parent.log('[client->server] Password incorrect. Abort.')
 					self.stop()
-					
+			
 			elif line['opt']=='inf':
+				#We grab the total number of nodes being broadcasted and compare
+				#them to the amount that were in the last info packet to the info
+				#packet received a few lines down.
 				_nodes=None
 				if self.parent.info and self.parent.info.has_key('broadcasting'):
 					_nodes = str(len(self.parent.info['broadcasting']))
-					
+				
+				#Get the info packet and run it through json
 				self.parent.info = json.loads(line['val'])
 				self.parent.info['host'] = self.host
 				self.main_parent.add_node_info(self.host,self.parent.info)
+				
+				#We start our loops now
+				l = task.LoopingCall(self.ping)
+				l.start(10)
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
@@ -102,6 +116,9 @@ class Client(Protocol):
 					if self.main_parent.server.info['searchable']:
 						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
 					
+					#I would like to add some kind of message here if the node was added
+					#or not... just so the user can know that they are getting nodes
+					#from a broadcast node.
 					for node in self.parent.info['broadcasting']:
 						if not str(node[0]) == self.main_parent.info['host'][0]:
 							self.main_parent.add_node((str(node[0]),int(node[1])))
@@ -136,6 +153,11 @@ class Client(Protocol):
 			elif line['opt']=='kil':
 				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
 				self.stop()
+		
+	def ping(self):
+		if time.time()-self.last_seen > 30:
+			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
+			self.transport.loseConnection()
 		
 class ClientParent(ClientFactory):
 	def __init__(self,host,parent,name='Unnamed'):

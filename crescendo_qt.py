@@ -1,6 +1,10 @@
 import sys, threading, sys
 from PyQt4 import QtCore, QtGui
-from ui import Ui_MainWindow
+
+if '-metro' in sys.argv:
+	from ui_josh import Ui_MainWindow
+else:
+	from ui import Ui_MainWindow
 
 import crescendo
 
@@ -14,7 +18,7 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.shutdown()
 	
 	def run(self):
-		if len(sys.argv)==2 and sys.argv[1]=='-server':
+		if len(sys.argv)==2 and '-server' in sys.argv:
 			self.client.start_server()
 		
 		self.client.populate_node_list()
@@ -32,13 +36,18 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
-		self.ui.btn_connect.clicked.connect(self.connect_node)
+		#self.ui.btn_connect.clicked.connect(self.connect_node)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
+	
+	def remove_node(self,node):
+		for row in range(self.ui.lst_nodes.count()):
+			if self.ui.lst_nodes.item(row).text() == node:
+				self.ui.lst_nodes.item(row).takeItem()
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})
