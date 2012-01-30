@@ -25,7 +25,7 @@ class crescendo:
 		self.info = json.loads(_temp_info)
 		self.info['host'] = tuple(self.info['host'])
 		
-		self.ip_list = ['10.234.16.10']
+		self.ip_list = ['127.0.0.1','10.234.16.10']
 		
 		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
