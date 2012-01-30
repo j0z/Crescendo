@@ -68,10 +68,6 @@ class Client(Protocol):
 					self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
 					self.last_seen = time.time()
 					self.sendLine('put::png::null')
-			
-			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
-			if line['opt']=='bro':
-				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 					
 		elif line['com']=='put':
 			if line['opt']=='hnd':
@@ -157,9 +153,13 @@ class Client(Protocol):
 			elif line['opt']=='kil':
 				self.main_parent.log('[client->%s] Server is dying. Disconnecting' % self.parent.info['name'])
 				self.stop()
+			
+			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
+			if line['opt']=='bro':
+				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 		
 	def ping(self):
-		if time.time()-self.last_seen >= 10:
+		if time.time()-self.last_seen >= 30:
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
 			self.stop()
 		

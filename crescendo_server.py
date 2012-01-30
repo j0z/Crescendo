@@ -68,7 +68,7 @@ class Connection(LineReceiver):
 				if not _n in self.node.info['broadcasting']:
 					self.node.info['broadcasting'].append(_n)
 					self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
-					self.sendLine('get::bro::okay')
+					self.sendLine('put::bro::okay')
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
