@@ -23,6 +23,8 @@ class Client(Protocol):
 		self.main_parent = self.parent.parent.parent
 		self.main_parent.add_node_callback(self.host,self)
 		
+		self.ping_loop = task.LoopingCall(self.ping)
+		
 		self.last_seen = time.time()
 	
 	def stop(self):
@@ -30,7 +32,7 @@ class Client(Protocol):
 		self.transport.unregisterProducer()
 		self.transport.stopConsuming()
 		self.transport.loseConnection()
-		#self.parent.stop()
+		self.ping_loop.stop()
 	
 	def get_file(self,file):
 		self.getting_file = str(file)
@@ -87,8 +89,7 @@ class Client(Protocol):
 					self.parent.log('[client->server] Password accepted')
 					
 					#We start our loops now
-					l = task.LoopingCall(self.ping)
-					l.start(10)
+					self.ping_loop.start(10)
 					
 					self.sendLine('get::inf::derp')
 					self.state = 'running'

@@ -46,7 +46,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	
 	def remove_node(self,node):
 		for row in range(self.ui.lst_nodes.count()):
-			if self.ui.lst_nodes.item(row).text() == node:
+			print str(self.ui.lst_nodes.item(row).text()),node
+			if str(self.ui.lst_nodes.item(row).text()) == node:
 				self.ui.lst_nodes.item(row).takeItem()
 	
 	def add_node(self,name):

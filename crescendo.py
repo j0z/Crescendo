@@ -110,6 +110,9 @@ class crescendo:
 	def remove_node(self,host):
 		for node in self.node_list:
 			if node['host']==host:
+				if self.callback:
+					self.callback.remove_node(self.get_node_info(host)['name'])
+				
 				self.node_list.remove(node)
 	
 	def add_node_callback(self,host,obj):
@@ -130,6 +133,14 @@ class crescendo:
 				
 				if self.callback:
 					self.callback.update_node(node['host'][0],node['info'])
+	
+	def get_node_info(self,host):
+		for node in self.node_list:
+			print node['host'],host[0]
+			if node['host']==host[0]:
+				return node
+		
+		return False
 	
 	def get_file(self,host,file):
 		self.client.get_file(host,file)
