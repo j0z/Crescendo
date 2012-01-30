@@ -65,7 +65,7 @@ class Client(Protocol):
 			
 			elif line['opt']=='pin':
 				if self.parent.info:
-					self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
+					#self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
 					self.last_seen = time.time()
 					self.sendLine('put::png::null')
 					

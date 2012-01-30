@@ -22,7 +22,6 @@ class Crescendo_Thread(QtCore.QThread):
 			self.client.start_server()
 		
 		self.client.populate_node_list()
-		#threading.Timer(10,self.client.populate_node_list,()).start()
 		self.client.tick(using_thread=True)
 
 class Crescendo_GUI(QtGui.QMainWindow):
@@ -46,8 +45,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	
 	def remove_node(self,node):
 		for row in range(self.ui.lst_nodes.count()):
-			print str(self.ui.lst_nodes.item(row).text()),node
 			if str(self.ui.lst_nodes.item(row).text()) == node:
+				self.info['nodes'].remove(row)
 				self.ui.lst_nodes.takeItem(row)
 	
 	def add_node(self,name):
