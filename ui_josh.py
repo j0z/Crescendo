@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main.ui'
+# Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main_josh.ui'
 #
-# Created: Sun Jan 29 21:13:54 2012
+# Created: Mon Jan 30 15:18:06 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(560, 561))
+        MainWindow.setMinimumSize(QtCore.QSize(800, 600))
         MainWindow.setMaximumSize(QtCore.QSize(800, 600))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
@@ -122,23 +122,25 @@ class Ui_MainWindow(object):
         self.groupBox_2.setFlat(True)
         self.groupBox_2.setCheckable(False)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
-        self.horizontalLayoutWidget_2 = QtGui.QWidget(self.groupBox_2)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(3, 36, 796, 199))
-        self.horizontalLayoutWidget_2.setObjectName(_fromUtf8("horizontalLayoutWidget_2"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.horizontalLayoutWidget_2)
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
-        self.verticalLayout_2.setMargin(0)
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.lab_downloaded_files = QtGui.QLabel(self.horizontalLayoutWidget_2)
+        self.lab_downloaded_files = QtGui.QLabel(self.groupBox_2)
+        self.lab_downloaded_files.setGeometry(QtCore.QRect(489, 208, 206, 21))
         palette = QtGui.QPalette()
         self.lab_downloaded_files.setPalette(palette)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.lab_downloaded_files.setFont(font)
         self.lab_downloaded_files.setObjectName(_fromUtf8("lab_downloaded_files"))
-        self.verticalLayout_2.addWidget(self.lab_downloaded_files)
-        self.lab_connected_nodes = QtGui.QLabel(self.horizontalLayoutWidget_2)
+        self.label_4 = QtGui.QLabel(self.groupBox_2)
+        self.label_4.setGeometry(QtCore.QRect(269, 37, 38, 21))
+        palette = QtGui.QPalette()
+        self.label_4.setPalette(palette)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Segoe UI"))
+        font.setPointSize(12)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.lab_connected_nodes = QtGui.QLabel(self.groupBox_2)
+        self.lab_connected_nodes.setGeometry(QtCore.QRect(272, 209, 252, 21))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -154,17 +156,8 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.lab_connected_nodes.setFont(font)
         self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
-        self.verticalLayout_2.addWidget(self.lab_connected_nodes)
-        self.label_4 = QtGui.QLabel(self.horizontalLayoutWidget_2)
-        palette = QtGui.QPalette()
-        self.label_4.setPalette(palette)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Segoe UI"))
-        font.setPointSize(12)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.verticalLayout_2.addWidget(self.label_4)
-        self.lst_log = QtGui.QListWidget(self.horizontalLayoutWidget_2)
+        self.lst_log = QtGui.QListWidget(self.groupBox_2)
+        self.lst_log.setGeometry(QtCore.QRect(270, 66, 525, 141))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -185,17 +178,86 @@ class Ui_MainWindow(object):
 "\n"
 "QListView::item:selected:active {\n"
 "    background:rgb(176,176,176);\n"
+"    color:rgb(26,26,26);\n"
 "}\n"
 "\n"
 "QListView::item:hover {\n"
 "    background:rgb(220,220,220);\n"
-"    border:rgb(220,200,200);\n"
+"    border:rgb(220,220,220);\n"
+"}\n"
+"\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgba(0,0,0,0);\n"
+"    width: 10px;\n"
+"    margin: 10px 0px 20px 0px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"    background: rgb(121,121,121);\n"
+"    min-height: 10px;\n"
+"}\n"
+"QScrollBar::add-line:vertical {\n"
+"    background: white;\n"
+"    height: 10px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:vertical {\n"
+"    background: white;\n"
+"    height: 20px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
 "}"))
         self.lst_log.setFrameShape(QtGui.QFrame.NoFrame)
         self.lst_log.setFrameShadow(QtGui.QFrame.Plain)
         self.lst_log.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.lst_log.setObjectName(_fromUtf8("lst_log"))
-        self.verticalLayout_2.addWidget(self.lst_log)
+        self.lne_ip = QtGui.QLineEdit(self.groupBox_2)
+        self.lne_ip.setGeometry(QtCore.QRect(5, 124, 256, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lne_ip.setFont(font)
+        self.lne_ip.setStyleSheet(_fromUtf8("QLineEdit{\n"
+"    border: 2px solid rgb(121,121,121);\n"
+"    selection-background-color: rgb(176,176,176);\n"
+"    selection-color: rgb(26,26,26);\n"
+"}"))
+        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
+        self.btn_connect = QtGui.QPushButton(self.groupBox_2)
+        self.btn_connect.setGeometry(QtCore.QRect(172, 142, 89, 29))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
+        self.btn_connect.setPalette(palette)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Segoe UI"))
+        font.setPointSize(12)
+        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        self.btn_connect.setFont(font)
+        self.btn_connect.setStyleSheet(_fromUtf8("QPushButton:pressed {\n"
+"    color: rgb(26,26,26);\n"
+"    background-color:rgb(176,176,176);\n"
+"\n"
+"}"))
+        self.btn_connect.setDefault(True)
+        self.btn_connect.setFlat(True)
+        self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, -3, 101, 41))
         palette = QtGui.QPalette()
@@ -245,29 +307,49 @@ class Ui_MainWindow(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Highlight, brush)
         self.lst_files.setPalette(palette)
-        self.lst_files.setStyleSheet(_fromUtf8("QTreeWidget {\n"
+        self.lst_files.setStyleSheet(_fromUtf8("QListView {\n"
 "    show-decoration-selected: 1;\n"
 "}\n"
 "\n"
-"QTreeWidget::item:selected {\n"
+"QListView::item:selected {\n"
 "    background:rgb(200,200,200);\n"
 "}\n"
 "\n"
-"QTreeWidget:item:selected:!active {\n"
+"QListView:item:selected:!active {\n"
 "    background: rgb(200,200,200);\n"
 "}\n"
 "\n"
-"QTreeWidget::item:selected:active {\n"
+"QListView::item:selected:active {\n"
 "    background:rgb(176,176,176);\n"
+"    color:rgb(26,26,26);\n"
 "}\n"
 "\n"
-"QTreeWidget::item:hover {\n"
+"QListView::item:hover {\n"
 "    background:rgb(220,220,220);\n"
-"    border:rgb(220,200,200);\n"
+"    border:rgb(220,220,220);\n"
 "}\n"
 "\n"
-"QTreeWidget::header {\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgba(0,0,0,0);\n"
+"    width: 10px;\n"
+"    margin: 10px 0px 20px 0px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"    background: rgb(121,121,121);\n"
+"    min-height: 10px;\n"
+"}\n"
+"QScrollBar::add-line:vertical {\n"
 "    background: white;\n"
+"    height: 10px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:vertical {\n"
+"    background: white;\n"
+"    height: 20px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
 "}"))
         self.lst_files.setFrameShape(QtGui.QFrame.NoFrame)
         self.lst_files.setFrameShadow(QtGui.QFrame.Plain)
@@ -310,7 +392,7 @@ class Ui_MainWindow(object):
         self.label_2.setTextFormat(QtCore.Qt.RichText)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.lst_nodes = QtGui.QListWidget(self.centralwidget)
-        self.lst_nodes.setGeometry(QtCore.QRect(0, 38, 116, 294))
+        self.lst_nodes.setGeometry(QtCore.QRect(0, 38, 116, 260))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -341,11 +423,35 @@ class Ui_MainWindow(object):
 "\n"
 "QListView::item:selected:active {\n"
 "    background:rgb(176,176,176);\n"
+"    color:rgb(26,26,26);\n"
 "}\n"
 "\n"
 "QListView::item:hover {\n"
 "    background:rgb(220,220,220);\n"
 "    border:rgb(220,220,220);\n"
+"}\n"
+"\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgba(0,0,0,0);\n"
+"    width: 10px;\n"
+"    margin: 10px 0px 20px 0px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"    background: rgb(121,121,121);\n"
+"    min-height: 10px;\n"
+"}\n"
+"QScrollBar::add-line:vertical {\n"
+"    background: white;\n"
+"    height: 10px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:vertical {\n"
+"    background: white;\n"
+"    height: 20px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
 "}"))
         self.lst_nodes.setFrameShape(QtGui.QFrame.NoFrame)
         self.lst_nodes.setFrameShadow(QtGui.QFrame.Plain)
@@ -379,7 +485,7 @@ class Ui_MainWindow(object):
         font.setStyleStrategy(QtGui.QFont.PreferAntialias)
         self.btn_grab.setFont(font)
         self.btn_grab.setStyleSheet(_fromUtf8("QPushButton:pressed {\n"
-"    color: black;\n"
+"    color: rgb(26,26,26);\n"
 "    background-color:rgb(176,176,176);\n"
 "\n"
 "}"))
@@ -399,8 +505,10 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "CrescendoQt", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "INFORMATION", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded files:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
+        self.lne_ip.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "IP:PORT", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "CONNECT", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "NODES", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "FILE", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "SIZE", None, QtGui.QApplication.UnicodeUTF8))

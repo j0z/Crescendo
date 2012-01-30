@@ -21,8 +21,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>560</width>
-    <height>561</height>
+    <width>800</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -327,126 +327,135 @@
     <property name="checkable">
      <bool>false</bool>
     </property>
-    <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <widget class="QLabel" name="lab_downloaded_files">
      <property name="geometry">
       <rect>
-       <x>3</x>
-       <y>36</y>
-       <width>796</width>
-       <height>199</height>
+       <x>489</x>
+       <y>208</y>
+       <width>206</width>
+       <height>21</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetNoConstraint</enum>
-      </property>
-      <item>
-       <widget class="QLabel" name="lab_downloaded_files">
-        <property name="palette">
-         <palette>
-          <active/>
-          <inactive/>
-          <disabled/>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Downloaded files:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="lab_connected_nodes">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>26</red>
-              <green>26</green>
-              <blue>26</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>26</red>
-              <green>26</green>
-              <blue>26</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>120</red>
-              <green>120</green>
-              <blue>120</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Connected nodes: </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="palette">
-         <palette>
-          <active/>
-          <inactive/>
-          <disabled/>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Log</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="lst_log">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>800</width>
-          <height>600</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QListView {
+     <property name="palette">
+      <palette>
+       <active/>
+       <inactive/>
+       <disabled/>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Downloaded files:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>269</x>
+       <y>37</y>
+       <width>38</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active/>
+       <inactive/>
+       <disabled/>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Log</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lab_connected_nodes">
+     <property name="geometry">
+      <rect>
+       <x>272</x>
+       <y>209</y>
+       <width>252</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Connected nodes: </string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="lst_log">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>66</y>
+       <width>525</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QListView {
 	show-decoration-selected: 1;
 }
 
@@ -460,26 +469,177 @@ QListView:item:selected:!active {
 
 QListView::item:selected:active {
 	background:rgb(176,176,176);
+	color:rgb(26,26,26);
 }
 
 QListView::item:hover {
 	background:rgb(220,220,220);
-	border:rgb(220,200,200);
+	border:rgb(220,220,220);
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:vertical {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:vertical {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAsNeeded</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
     </widget>
+    <widget class="QLineEdit" name="lne_ip">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>124</y>
+       <width>256</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	border: 2px solid rgb(121,121,121);
+	selection-background-color: rgb(176,176,176);
+	selection-color: rgb(26,26,26);
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>IP:PORT</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_connect">
+     <property name="geometry">
+      <rect>
+       <x>172</x>
+       <y>142</y>
+       <width>89</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>26</red>
+           <green>26</green>
+           <blue>26</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
+       <stylestrategy>PreferAntialias</stylestrategy>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:pressed {
+	color: rgb(26,26,26);
+	background-color:rgb(176,176,176);
+
+}</string>
+     </property>
+     <property name="text">
+      <string>CONNECT</string>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <zorder>lab_downloaded_files</zorder>
+    <zorder>label_4</zorder>
+    <zorder>lab_connected_nodes</zorder>
+    <zorder>lst_log</zorder>
+    <zorder>btn_connect</zorder>
+    <zorder>btn_connect</zorder>
+    <zorder>lne_ip</zorder>
+    <zorder>btn_connect</zorder>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -623,29 +783,49 @@ QListView::item:hover {
      </palette>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTreeWidget {
+     <string notr="true">QListView {
 	show-decoration-selected: 1;
 }
 
-QTreeWidget::item:selected {
+QListView::item:selected {
 	background:rgb(200,200,200);
 }
 
-QTreeWidget:item:selected:!active {
+QListView:item:selected:!active {
 	background: rgb(200,200,200);
 }
 
-QTreeWidget::item:selected:active {
+QListView::item:selected:active {
 	background:rgb(176,176,176);
+	color:rgb(26,26,26);
 }
 
-QTreeWidget::item:hover {
+QListView::item:hover {
 	background:rgb(220,220,220);
-	border:rgb(220,200,200);
+	border:rgb(220,220,220);
 }
 
-QTreeWidget::header {
-	background: white;
+QScrollBar:vertical {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:vertical {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:vertical {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
     </property>
     <property name="frameShape">
@@ -786,7 +966,7 @@ QTreeWidget::header {
       <x>0</x>
       <y>38</y>
       <width>116</width>
-      <height>294</height>
+      <height>260</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -847,11 +1027,35 @@ QListView:item:selected:!active {
 
 QListView::item:selected:active {
 	background:rgb(176,176,176);
+	color:rgb(26,26,26);
 }
 
 QListView::item:hover {
 	background:rgb(220,220,220);
 	border:rgb(220,220,220);
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:vertical {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:vertical {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
     </property>
     <property name="frameShape">
@@ -946,7 +1150,7 @@ QListView::item:hover {
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton:pressed {
-	color: black;
+	color: rgb(26,26,26);
 	background-color:rgb(176,176,176);
 
 }</string>
