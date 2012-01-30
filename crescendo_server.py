@@ -72,7 +72,6 @@ class Connection(LineReceiver):
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
-				
 				#Start our looping calls now.
 				#Starts pinging clients
 				l = task.LoopingCall(self.ping)

@@ -27,6 +27,8 @@ class Client(Protocol):
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
+		self.transport.unregisterProducer()
+		self.transport.stopConsuming()
 		self.transport.loseConnection()
 		#self.parent.stop()
 	
@@ -62,6 +64,7 @@ class Client(Protocol):
 			elif line['opt']=='pin':
 				if self.parent.info:
 					self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
+					self.last_seen = time.time()
 					self.sendLine('put::png::null')
 			
 			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
@@ -83,6 +86,10 @@ class Client(Protocol):
 				if line['val']=='okay':
 					self.parent.log('[client->server] Password accepted')
 					
+					#We start our loops now
+					l = task.LoopingCall(self.ping)
+					l.start(10)
+					
 					self.sendLine('get::inf::derp')
 					self.state = 'running'
 				else:
@@ -101,10 +108,6 @@ class Client(Protocol):
 				self.parent.info = json.loads(line['val'])
 				self.parent.info['host'] = self.host
 				self.main_parent.add_node_info(self.host,self.parent.info)
-				
-				#We start our loops now
-				l = task.LoopingCall(self.ping)
-				l.start(10)
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
@@ -155,9 +158,9 @@ class Client(Protocol):
 				self.stop()
 		
 	def ping(self):
-		if time.time()-self.last_seen > 30:
+		if time.time()-self.last_seen >= 10:
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
-			self.transport.loseConnection()
+			self.stop()
 		
 class ClientParent(ClientFactory):
 	def __init__(self,host,parent,name='Unnamed'):

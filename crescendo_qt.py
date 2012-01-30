@@ -36,7 +36,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
-		#self.ui.btn_connect.clicked.connect(self.connect_node)
+		self.ui.btn_connect.clicked.connect(self.connect_node)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
