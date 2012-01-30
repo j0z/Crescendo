@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main_josh.ui'
 #
-# Created: Mon Jan 30 15:18:06 2012
+# Created: Mon Jan 30 17:35:46 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -307,24 +307,24 @@ class Ui_MainWindow(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Highlight, brush)
         self.lst_files.setPalette(palette)
-        self.lst_files.setStyleSheet(_fromUtf8("QListView {\n"
+        self.lst_files.setStyleSheet(_fromUtf8("QTreeWidget {\n"
 "    show-decoration-selected: 1;\n"
 "}\n"
 "\n"
-"QListView::item:selected {\n"
+"QTreeWidget::item:selected {\n"
 "    background:rgb(200,200,200);\n"
 "}\n"
 "\n"
-"QListView:item:selected:!active {\n"
+"QTreeWidget:item:selected:!active {\n"
 "    background: rgb(200,200,200);\n"
 "}\n"
 "\n"
-"QListView::item:selected:active {\n"
+"QTreeWidget::item:selected:active {\n"
 "    background:rgb(176,176,176);\n"
 "    color:rgb(26,26,26);\n"
 "}\n"
 "\n"
-"QListView::item:hover {\n"
+"QTreeWidget::item:hover {\n"
 "    background:rgb(220,220,220);\n"
 "    border:rgb(220,220,220);\n"
 "}\n"

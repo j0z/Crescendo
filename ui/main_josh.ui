@@ -632,14 +632,6 @@ QScrollBar::sub-line:vertical {
       <bool>true</bool>
      </property>
     </widget>
-    <zorder>lab_downloaded_files</zorder>
-    <zorder>label_4</zorder>
-    <zorder>lab_connected_nodes</zorder>
-    <zorder>lst_log</zorder>
-    <zorder>btn_connect</zorder>
-    <zorder>btn_connect</zorder>
-    <zorder>lne_ip</zorder>
-    <zorder>btn_connect</zorder>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -783,24 +775,24 @@ QScrollBar::sub-line:vertical {
      </palette>
     </property>
     <property name="styleSheet">
-     <string notr="true">QListView {
+     <string notr="true">QTreeWidget {
 	show-decoration-selected: 1;
 }
 
-QListView::item:selected {
+QTreeWidget::item:selected {
 	background:rgb(200,200,200);
 }
 
-QListView:item:selected:!active {
+QTreeWidget:item:selected:!active {
 	background: rgb(200,200,200);
 }
 
-QListView::item:selected:active {
+QTreeWidget::item:selected:active {
 	background:rgb(176,176,176);
 	color:rgb(26,26,26);
 }
 
-QListView::item:hover {
+QTreeWidget::item:hover {
 	background:rgb(220,220,220);
 	border:rgb(220,220,220);
 }
