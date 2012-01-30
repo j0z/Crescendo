@@ -48,7 +48,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for row in range(self.ui.lst_nodes.count()):
 			print str(self.ui.lst_nodes.item(row).text()),node
 			if str(self.ui.lst_nodes.item(row).text()) == node:
-				self.ui.lst_nodes.item(row).takeItem()
+				self.ui.lst_nodes.takeItem(row)
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})

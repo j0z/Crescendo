@@ -136,9 +136,8 @@ class crescendo:
 	
 	def get_node_info(self,host):
 		for node in self.node_list:
-			print node['host'],host[0]
-			if node['host']==host[0]:
-				return node
+			if str(node['host'][0])==host[0]:
+				return node['info']
 		
 		return False
 	
