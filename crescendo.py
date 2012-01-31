@@ -12,6 +12,7 @@ class crescendo:
 		
 		self.wanted_files = []
 		self.shared_files = []
+		self.downloaded_files = []
 		
 		self._log = []
 		
@@ -136,6 +137,10 @@ class crescendo:
 	
 	def get_file(self,host,file):
 		self.client.get_file(host,file)
+	
+	def grabbed_file(self,file):
+		if self.callback:
+			self.callback.grabbed_file(file)
 	
 	def shutdown(self):
 		if self.client.running:

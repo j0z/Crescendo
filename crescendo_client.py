@@ -127,6 +127,7 @@ class Client(Protocol):
 				if not self.state=='grabbing':
 					self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
 					self.file = File(self.getting_file,self.getting_file)
+					self.main_parent.wanted_files.append(self.getting_file)
 					
 					self.state = 'grabbing'
 				
@@ -142,8 +143,12 @@ class Client(Protocol):
 				_f.write(self.file.data)
 				_f.close()
 				
+				self.main_parent.downloaded_files.append(self.getting_file)
+				
 				self.main_parent.log('[client->%s] Grabbed file \'%s\'' % (self.parent.info['name'],self.getting_file))
 				
+				self.main_parent.wanted_files.remove(self.getting_file)
+				self.main_parent.grabbed_file(self.getting_file)
 				self.state = 'running'
 			
 			elif line['opt']=='fib':

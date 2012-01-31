@@ -85,9 +85,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_fr = self.ui.lst_files.currentItem().text(0)
 		
 		_h = self.info['nodes'][_nr]['host']
-		_f = _fr#_h['files'][_fr]
+		_f = _fr
 		
 		self.crescendo.client.get_file(_h,_f)
+	
+	def grabbed_file(self,file):
+		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()
