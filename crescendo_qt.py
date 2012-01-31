@@ -45,9 +45,13 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	
 	def remove_node(self,node):
 		for row in range(self.ui.lst_nodes.count()):
-			if str(self.ui.lst_nodes.item(row).text()) == node:
-				self.info['nodes'].remove(row)
-				self.ui.lst_nodes.takeItem(row)
+			try:
+				if str(self.ui.lst_nodes.item(row).text()) == node:
+					self.info['nodes'].remove(row)
+					self.ui.lst_nodes.takeItem(row)
+			except:
+				print 'TODO: Fix this error in crescendo_qt'
+				
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})
