@@ -12,6 +12,7 @@ class crescendo:
 		
 		self.wanted_files = []
 		self.shared_files = []
+		self.downloaded_files = []
 		
 		self._log = []
 		
@@ -60,15 +61,8 @@ class crescendo:
 			self.callback.log(text)
 
 	def populate_node_list(self):
-		#self.log('[search.Engine] Running search.Engine')
-		
-		#try:
 		self.can_search = False
 		self.search.start()
-		#self.log('[search.Engine] Search invoked and starting')
-		#except:
-		#	self.log('[search.Engine] Failed.')
-		#	return False
 	
 	def connect_node_list(self):
 		for node in self.node_list:
@@ -143,6 +137,10 @@ class crescendo:
 	
 	def get_file(self,host,file):
 		self.client.get_file(host,file)
+	
+	def grabbed_file(self,file):
+		if self.callback:
+			self.callback.grabbed_file(file)
 	
 	def shutdown(self):
 		if self.client.running:
