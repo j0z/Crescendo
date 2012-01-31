@@ -228,8 +228,8 @@
      <rect>
       <x>119</x>
       <y>38</y>
-      <width>3</width>
-      <height>294</height>
+      <width>16</width>
+      <height>339</height>
      </rect>
     </property>
     <property name="orientation">
@@ -240,9 +240,9 @@
     <property name="geometry">
      <rect>
       <x>4</x>
-      <y>348</y>
+      <y>443</y>
       <width>804</width>
-      <height>310</height>
+      <height>215</height>
      </rect>
     </property>
     <property name="palette">
@@ -330,8 +330,8 @@
     <widget class="QLabel" name="lab_downloaded_files">
      <property name="geometry">
       <rect>
-       <x>489</x>
-       <y>208</y>
+       <x>291</x>
+       <y>129</y>
        <width>206</width>
        <height>21</height>
       </rect>
@@ -349,14 +349,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Downloaded files:</string>
+      <string>DOWNLOADED FILES:</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>269</x>
-       <y>37</y>
+       <x>3</x>
+       <y>46</y>
        <width>38</width>
        <height>21</height>
       </rect>
@@ -381,8 +381,8 @@
     <widget class="QLabel" name="lab_connected_nodes">
      <property name="geometry">
       <rect>
-       <x>272</x>
-       <y>209</y>
+       <x>4</x>
+       <y>129</y>
        <width>252</width>
        <height>21</height>
       </rect>
@@ -430,16 +430,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Connected nodes: </string>
+      <string>CONNECTED NODES: </string>
      </property>
     </widget>
     <widget class="QListWidget" name="lst_log">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>66</y>
+       <x>2</x>
+       <y>71</y>
        <width>525</width>
-       <height>141</height>
+       <height>56</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -498,6 +498,33 @@ QScrollBar::sub-line:vertical {
     height: 20px;
     subcontrol-position: top;
     subcontrol-origin: margin;
+}
+
+
+
+
+
+QScrollBar:horizontal {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:horizontal {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
      </property>
      <property name="frameShape">
@@ -509,127 +536,8 @@ QScrollBar::sub-line:vertical {
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="lne_ip">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>124</y>
-       <width>256</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit{
-	border: 2px solid rgb(121,121,121);
-	selection-background-color: rgb(176,176,176);
-	selection-color: rgb(26,26,26);
-}</string>
-     </property>
-     <property name="placeholderText">
-      <string>IP:PORT</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_connect">
-     <property name="geometry">
-      <rect>
-       <x>172</x>
-       <y>142</y>
-       <width>89</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>26</red>
-           <green>26</green>
-           <blue>26</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Text">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>26</red>
-           <green>26</green>
-           <blue>26</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>26</red>
-           <green>26</green>
-           <blue>26</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Text">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>26</red>
-           <green>26</green>
-           <blue>26</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>120</red>
-           <green>120</green>
-           <blue>120</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Text">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>120</red>
-           <green>120</green>
-           <blue>120</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>12</pointsize>
-       <stylestrategy>PreferAntialias</stylestrategy>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton:pressed {
-	color: rgb(26,26,26);
-	background-color:rgb(176,176,176);
-
-}</string>
-     </property>
-     <property name="text">
-      <string>CONNECT</string>
-     </property>
-     <property name="default">
-      <bool>true</bool>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
     </widget>
    </widget>
@@ -728,7 +636,7 @@ QScrollBar::sub-line:vertical {
       <x>129</x>
       <y>38</y>
       <width>647</width>
-      <height>294</height>
+      <height>340</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -790,6 +698,7 @@ QTreeWidget:item:selected:!active {
 QTreeWidget::item:selected:active {
 	background:rgb(176,176,176);
 	color:rgb(26,26,26);
+	border: 0px solid rgb(176,176,176);
 }
 
 QTreeWidget::item:hover {
@@ -958,7 +867,7 @@ QScrollBar::sub-line:vertical {
       <x>0</x>
       <y>38</y>
       <width>116</width>
-      <height>260</height>
+      <height>339</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -1063,8 +972,8 @@ QScrollBar::sub-line:vertical {
    <widget class="QPushButton" name="btn_grab">
     <property name="geometry">
      <rect>
-      <x>659</x>
-      <y>338</y>
+      <x>654</x>
+      <y>409</y>
       <width>117</width>
       <height>29</height>
      </rect>
@@ -1157,16 +1066,128 @@ QScrollBar::sub-line:vertical {
      <bool>true</bool>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
+   <widget class="QPushButton" name="btn_connect">
+    <property name="geometry">
+     <rect>
+      <x>257</x>
+      <y>407</y>
+      <width>89</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>26</red>
+          <green>26</green>
+          <blue>26</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>26</red>
+          <green>26</green>
+          <blue>26</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>26</red>
+          <green>26</green>
+          <blue>26</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>26</red>
+          <green>26</green>
+          <blue>26</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>120</red>
+          <green>120</green>
+          <blue>120</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>120</red>
+          <green>120</green>
+          <blue>120</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton:pressed {
+	color: rgb(26,26,26);
+	background-color:rgb(176,176,176);
+
+}</string>
+    </property>
+    <property name="text">
+     <string>CONNECT</string>
+    </property>
+    <property name="default">
+     <bool>true</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lne_ip">
+    <property name="geometry">
+     <rect>
+      <x>2</x>
+      <y>413</y>
+      <width>256</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+	border: 2px solid rgb(121,121,121);
+	selection-background-color: rgb(176,176,176);
+	selection-color: rgb(26,26,26);
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>IP:PORT</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main_josh.ui'
 #
-# Created: Mon Jan 30 17:35:46 2012
+# Created: Mon Jan 30 17:56:39 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -88,12 +88,12 @@ class Ui_MainWindow(object):
         self.centralwidget.setPalette(palette)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.line = QtGui.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(119, 38, 3, 294))
+        self.line.setGeometry(QtCore.QRect(119, 38, 16, 339))
         self.line.setFrameShape(QtGui.QFrame.VLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
         self.groupBox_2 = QtGui.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(4, 348, 804, 310))
+        self.groupBox_2.setGeometry(QtCore.QRect(4, 443, 804, 215))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setCheckable(False)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.lab_downloaded_files = QtGui.QLabel(self.groupBox_2)
-        self.lab_downloaded_files.setGeometry(QtCore.QRect(489, 208, 206, 21))
+        self.lab_downloaded_files.setGeometry(QtCore.QRect(291, 129, 206, 21))
         palette = QtGui.QPalette()
         self.lab_downloaded_files.setPalette(palette)
         font = QtGui.QFont()
@@ -131,7 +131,7 @@ class Ui_MainWindow(object):
         self.lab_downloaded_files.setFont(font)
         self.lab_downloaded_files.setObjectName(_fromUtf8("lab_downloaded_files"))
         self.label_4 = QtGui.QLabel(self.groupBox_2)
-        self.label_4.setGeometry(QtCore.QRect(269, 37, 38, 21))
+        self.label_4.setGeometry(QtCore.QRect(3, 46, 38, 21))
         palette = QtGui.QPalette()
         self.label_4.setPalette(palette)
         font = QtGui.QFont()
@@ -140,7 +140,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.lab_connected_nodes = QtGui.QLabel(self.groupBox_2)
-        self.lab_connected_nodes.setGeometry(QtCore.QRect(272, 209, 252, 21))
+        self.lab_connected_nodes.setGeometry(QtCore.QRect(4, 129, 252, 21))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -157,7 +157,7 @@ class Ui_MainWindow(object):
         self.lab_connected_nodes.setFont(font)
         self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
         self.lst_log = QtGui.QListWidget(self.groupBox_2)
-        self.lst_log.setGeometry(QtCore.QRect(270, 66, 525, 141))
+        self.lst_log.setGeometry(QtCore.QRect(2, 71, 525, 56))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -212,52 +212,6 @@ class Ui_MainWindow(object):
         self.lst_log.setFrameShadow(QtGui.QFrame.Plain)
         self.lst_log.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.lst_log.setObjectName(_fromUtf8("lst_log"))
-        self.lne_ip = QtGui.QLineEdit(self.groupBox_2)
-        self.lne_ip.setGeometry(QtCore.QRect(5, 124, 256, 20))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.lne_ip.setFont(font)
-        self.lne_ip.setStyleSheet(_fromUtf8("QLineEdit{\n"
-"    border: 2px solid rgb(121,121,121);\n"
-"    selection-background-color: rgb(176,176,176);\n"
-"    selection-color: rgb(26,26,26);\n"
-"}"))
-        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
-        self.btn_connect = QtGui.QPushButton(self.groupBox_2)
-        self.btn_connect.setGeometry(QtCore.QRect(172, 142, 89, 29))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        self.btn_connect.setPalette(palette)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Segoe UI"))
-        font.setPointSize(12)
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
-        self.btn_connect.setFont(font)
-        self.btn_connect.setStyleSheet(_fromUtf8("QPushButton:pressed {\n"
-"    color: rgb(26,26,26);\n"
-"    background-color:rgb(176,176,176);\n"
-"\n"
-"}"))
-        self.btn_connect.setDefault(True)
-        self.btn_connect.setFlat(True)
-        self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, -3, 101, 41))
         palette = QtGui.QPalette()
@@ -290,7 +244,7 @@ class Ui_MainWindow(object):
 "}"))
         self.label.setObjectName(_fromUtf8("label"))
         self.lst_files = QtGui.QTreeWidget(self.centralwidget)
-        self.lst_files.setGeometry(QtCore.QRect(129, 38, 647, 294))
+        self.lst_files.setGeometry(QtCore.QRect(129, 38, 647, 340))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -322,6 +276,7 @@ class Ui_MainWindow(object):
 "QTreeWidget::item:selected:active {\n"
 "    background:rgb(176,176,176);\n"
 "    color:rgb(26,26,26);\n"
+"    border: 0px solid rgb(176,176,176);\n"
 "}\n"
 "\n"
 "QTreeWidget::item:hover {\n"
@@ -392,7 +347,7 @@ class Ui_MainWindow(object):
         self.label_2.setTextFormat(QtCore.Qt.RichText)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.lst_nodes = QtGui.QListWidget(self.centralwidget)
-        self.lst_nodes.setGeometry(QtCore.QRect(0, 38, 116, 260))
+        self.lst_nodes.setGeometry(QtCore.QRect(0, 38, 116, 339))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -458,7 +413,7 @@ class Ui_MainWindow(object):
         self.lst_nodes.setLineWidth(0)
         self.lst_nodes.setObjectName(_fromUtf8("lst_nodes"))
         self.btn_grab = QtGui.QPushButton(self.centralwidget)
-        self.btn_grab.setGeometry(QtCore.QRect(659, 338, 117, 29))
+        self.btn_grab.setGeometry(QtCore.QRect(654, 409, 117, 29))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -492,11 +447,53 @@ class Ui_MainWindow(object):
         self.btn_grab.setDefault(True)
         self.btn_grab.setFlat(True)
         self.btn_grab.setObjectName(_fromUtf8("btn_grab"))
+        self.btn_connect = QtGui.QPushButton(self.centralwidget)
+        self.btn_connect.setGeometry(QtCore.QRect(257, 407, 89, 29))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
+        self.btn_connect.setPalette(palette)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Segoe UI"))
+        font.setPointSize(12)
+        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        self.btn_connect.setFont(font)
+        self.btn_connect.setStyleSheet(_fromUtf8("QPushButton:pressed {\n"
+"    color: rgb(26,26,26);\n"
+"    background-color:rgb(176,176,176);\n"
+"\n"
+"}"))
+        self.btn_connect.setDefault(True)
+        self.btn_connect.setFlat(True)
+        self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
+        self.lne_ip = QtGui.QLineEdit(self.centralwidget)
+        self.lne_ip.setGeometry(QtCore.QRect(2, 413, 256, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lne_ip.setFont(font)
+        self.lne_ip.setStyleSheet(_fromUtf8("QLineEdit{\n"
+"    border: 2px solid rgb(121,121,121);\n"
+"    selection-background-color: rgb(176,176,176);\n"
+"    selection-color: rgb(26,26,26);\n"
+"}"))
+        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
-        self.menubar.setObjectName(_fromUtf8("menubar"))
-        MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -504,14 +501,14 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "CrescendoQt", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "INFORMATION", None, QtGui.QApplication.UnicodeUTF8))
-        self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded files:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "DOWNLOADED FILES:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
-        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected nodes: ", None, QtGui.QApplication.UnicodeUTF8))
-        self.lne_ip.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "IP:PORT", None, QtGui.QApplication.UnicodeUTF8))
-        self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "CONNECT", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "CONNECTED NODES: ", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "NODES", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "FILE", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "SIZE", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "FILES", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "DOWNLOAD", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "CONNECT", None, QtGui.QApplication.UnicodeUTF8))
+        self.lne_ip.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "IP:PORT", None, QtGui.QApplication.UnicodeUTF8))
 
