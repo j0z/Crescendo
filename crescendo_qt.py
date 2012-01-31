@@ -53,6 +53,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.info['nodes'].append({'name':name,'files':[]})
 		
 		self.ui.lst_nodes.addItem(name)
+		
+		#Can't believe I'm doing this.
+		for row in range(self.ui.lst_nodes.count()):
+			if self.ui.lst_nodes.item(row).text() == name:
+				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(128,128,128))
+		
 		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
 	
 	def update_node(self,node,info):
@@ -62,6 +68,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				self.info['nodes'][row]['host'] = self.info['nodes'][row]['name']
 				self.info['nodes'][row]['name'] = info['name']
 				self.info['nodes'][row]['files'] = info['files']
+				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(0,0,0))
 				
 				break
 	
