@@ -44,14 +44,15 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_log.insertItem(0,text)
 	
 	def remove_node(self,node):
+		_rlist = []
+		
 		for row in range(self.ui.lst_nodes.count()):
-			try:
-				if str(self.ui.lst_nodes.item(row).text()) == node:
-					self.info['nodes'].remove(row)
-					self.ui.lst_nodes.takeItem(row)
-			except:
-				print 'TODO: Fix this error in crescendo_qt'
-				
+			if str(self.ui.lst_nodes.item(row).text()) == node:
+				self.info['nodes'].pop(row)
+				_rlist.append(row)
+		
+		#PYTHON HAS FEATURES OTHER PROGRAMMING LANGUAGES DON'T HAVE XD
+		[self.ui.lst_nodes.takeItem(row) for row in _rlist]
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})
@@ -59,6 +60,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_nodes.addItem(name)
 		
 		#Can't believe I'm doing this.
+		#TODO: Since we're just adding onto the list, we can just get the
+		#length of the list and set the color of the latest one...
 		for row in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(row).text() == name:
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(128,128,128))
