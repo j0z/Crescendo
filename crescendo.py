@@ -86,10 +86,10 @@ class crescendo:
 					node['callback'].stop()
 				else:
 					self.log('[node-%s:%s] Connection is a zombie. Dying' % node['host'],flush=True)
-	
+		
 	def has_node(self,host):
 		for node in self.node_list:
-			if node['host'][0]==host[0]: return True
+			if node['host'][0]==host[0]: return node
 		
 		return False
 	

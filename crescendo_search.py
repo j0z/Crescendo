@@ -29,7 +29,7 @@ class HostFinder(threading.Thread):
 		
 		self.socket.close()
 		
-		print _out
+		#print _out
 
 		self.engine.active.remove(self)
 

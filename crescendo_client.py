@@ -113,8 +113,16 @@ class Client(Protocol):
 					if not _nodes == str(len(self.parent.info['broadcasting'])):
 						self.main_parent.log('[node.%s] Broadcasting %s nodes' % (self.parent.info['name'],str(len(self.parent.info['broadcasting']))))
 					
-					#If we want to be join the broadcast, we have to add ourselves
-					if self.main_parent.server.info['searchable']:
+					#Here we do some work for the node running on the local machine
+					#However, since we can't talk directly to it to see if it's running,
+					#we have to work in a few hacks. 
+					#Check if we even need to do this first.
+					#TODO: There might be an error here, but I'm not sure.
+					#	Basically we're cheating and reading in the node's config file even though a node
+					#	is not running.
+					#	For now it works because the node config is read when we create self.server
+					#	in crescendo.py. When the config file format changes we'll need to edit this.
+					if self.main_parent.server.info['searchable'] and self.main_parent.has_node(('127.0.0.1',9001)):
 						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
 					
 					#I would like to add some kind of message here if the node was added
