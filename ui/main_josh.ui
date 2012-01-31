@@ -477,25 +477,28 @@ QListView::item:hover {
 	border:rgb(220,220,220);
 }
 
+
+
+
 QScrollBar:vertical {
     border: none;
     background: rgba(0,0,0,0);
     width: 10px;
-    margin: 10px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
 }
 QScrollBar::handle:vertical {
     background: rgb(121,121,121);
-    min-height: 10px;
+    min-height: 20px;
 }
 QScrollBar::add-line:vertical {
     background: white;
-    height: 10px;
+    height: 20px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
 QScrollBar::sub-line:vertical {
     background: white;
-    height: 20px;
+    height: 10px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
@@ -727,6 +730,30 @@ QScrollBar::sub-line:vertical {
     height: 20px;
     subcontrol-position: top;
     subcontrol-origin: margin;
+}
+
+
+QScrollBar:horizontal {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:horizontal {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
     </property>
     <property name="frameShape">
@@ -936,15 +963,16 @@ QListView::item:hover {
 	border:rgb(220,220,220);
 }
 
+
 QScrollBar:vertical {
     border: none;
     background: rgba(0,0,0,0);
     width: 10px;
-    margin: 10px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
 }
 QScrollBar::handle:vertical {
     background: rgb(121,121,121);
-    min-height: 10px;
+    min-height: 20px;
 }
 QScrollBar::add-line:vertical {
     background: white;
@@ -953,6 +981,33 @@ QScrollBar::add-line:vertical {
     subcontrol-origin: margin;
 }
 QScrollBar::sub-line:vertical {
+    background: white;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+
+
+
+
+QScrollBar:horizontal {
+    border: none;
+    background: rgba(0,0,0,0);
+    width: 10px;
+    margin: 10px 0px 20px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: rgb(121,121,121);
+    min-height: 10px;
+}
+QScrollBar::add-line:horizontal {
+    background: white;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
     background: white;
     height: 20px;
     subcontrol-position: top;
