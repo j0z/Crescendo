@@ -18,14 +18,18 @@ class HostFinder(threading.Thread):
 		try:
 			_out = '%s' % self.host[0]
 			self.socket.connect(self.host)
-			self.engine.add_working(self.host)
-			_out += '...found!'
+			
+			if self.socket.recv(32) == 'get::hnd::null\r\n\r\n':
+				self.engine.add_working(self.host)
+				_out += '...found!'
+			else:
+				_out += '...wrong service!'
 		except:
 			_out += '...failed'
 		
 		self.socket.close()
 		
-		#print _out
+		print _out
 
 		self.engine.active.remove(self)
 

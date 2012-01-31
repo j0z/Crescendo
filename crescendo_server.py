@@ -78,6 +78,11 @@ class Connection(LineReceiver):
 				l = task.LoopingCall(self.ping)
 				l.start(10) #TODO: Make this a variable
 				
+				#TODO COMMENT: This might actually be a bad idea
+				#If we did put this in, we'd have to tell the client
+				#that the ping wouldn't be arriving at the expected time
+				#and to hang on a bit longer before bailing out.
+				
 				#Sends a broadcast packet every <x> seconds
 				l = task.LoopingCall(self.broadcast)
 				l.start(self.node.info['broadcast_every'])

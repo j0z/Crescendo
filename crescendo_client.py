@@ -94,6 +94,7 @@ class Client(Protocol):
 					self.stop()
 			
 			elif line['opt']=='inf':
+			
 				#We grab the total number of nodes being broadcasted and compare
 				#them to the amount that were in the last info packet to the info
 				#packet received a few lines down.
