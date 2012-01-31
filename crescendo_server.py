@@ -26,7 +26,7 @@ class Connection(LineReceiver):
 		self.name = ''
 
 	def connectionMade(self):
-		self.sendLine('get::hnd::null\r\n')
+		self.sendLine('get::hnd::null')
 		self.host = self.transport.getHost()
 	
 	def connectionLost(self, reason):
