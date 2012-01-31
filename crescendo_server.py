@@ -72,6 +72,7 @@ class Connection(LineReceiver):
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
+				
 				#Start our looping calls now.
 				#Starts pinging clients
 				l = task.LoopingCall(self.ping)
@@ -115,6 +116,7 @@ class Connection(LineReceiver):
 		self.sendLine('get::pin::null')
 		
 		if time.time()-self.last_seen > 30:
+			self.node.info['broadcasting'].remove(self.host)
 			self.transport.loseConnection()
 	
 	def broadcast(self):

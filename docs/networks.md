@@ -23,4 +23,4 @@ Other security methods
 
 WARN
 ----
-I've thought about a few possible attack scenarios. Most involve disgruntled users who want to break down a network via modified clients. I've developed WARN (*W*hy *AR*e you attacking this *N*ode) to combat a few forms of brute-force attacks. After a client fails to connect to a node a certain number of times, the IP of the attacking client is spread across the network in a `blk` packet. That specific client is then ignored by any node on the network for a certain amount of time.
+I've thought about a few possible attack scenarios. Most involve disgruntled users who want to break down a network via modified clients. I've developed WARN (*W*hy *AR*e you attacking this *N*ode) to combat a few forms of brute-force attacks. After a client fails to connect to a node a certain number of times, the IP of the attacking client is spread across the network in a `blk` packet. That specific client is then ignored by every node on the network for a certain amount of time.
