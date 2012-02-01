@@ -17,7 +17,6 @@ class File:
 
 class Connection(LineReceiver):
 	def __init__(self, node):
-		#self.users = users
 		self.node = node
 		self.state = 'GETHND'
 		self.last_seen = time.time()
@@ -50,14 +49,16 @@ class Connection(LineReceiver):
 			if line['opt']=='hnd':
 				#Shake hands if we haven't already.
 				if self.state=='GETHND':
-					self.sendLine('put::hnd::okay')
+					self.sendLine('put::hnd::%s' % self.node.info['security'])
 					self.name = line['val']
 					self.state='GETPASSWD'
 				else:
 					self.sendLine('put::hnd::Already shook hands!')
 			
 			elif line['opt']=='pwd':
-				if self.state=='GETPASSWD': self.handle_GETPASSWD(line['val'])
+				if self.state=='GETPASSWD':
+					if self.node.info['security']=='password': self.handle_PASSWORD(line['val'])
+					elif self.node.info['security']=='auth': self.handle_AUTH(line['val'].split(':')[0],line['val'].split(':')[1])
 			
 			elif line['opt']=='png':
 				self.last_seen = time.time()
@@ -108,14 +109,20 @@ class Connection(LineReceiver):
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 						_f.fpos = 0
 
-	def handle_GETPASSWD(self, passwd):
+	def handle_PASSWORD(self, passwd):
 		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:
 			self.sendLine('put::pwd::wrong')
 			return
 		
 		self.sendLine('put::pwd::okay')
 		self.node.add_client((self.host.host,self.name))
-		self.state = "GET"
+	
+	def handle_AUTH(self,usr,pas):
+		if self.node.auth_user(usr,pas):
+			self.sendLine('put::pwd::okay')
+			self.node.add_client((self.host.host,self.name))
+		else:
+			self.sendLine('put::pwd::wrong')
 	
 	def ping(self):
 		self.sendLine('get::pin::null')
@@ -157,6 +164,12 @@ class Node(Factory):
 					self.files.append(_f)
 					self.info['files'].append(_f.info)
 					self.log('[Files] Sharing %s' % _fname)
+	
+	def auth_user(self,usr,pas):
+		for user in self.parent.auth_db['users']:
+			if user['usr']==usr and user['pas']==pas: return True
+		
+		return False
 	
 	def get_file(self,name):
 		for file in self.files:
@@ -206,12 +219,21 @@ class start_server(threading.Thread):
 		self.info = json.loads(_temp_info)
 		self.info['files'] = []
 		self.info['broadcast_every'] = int(self.info['broadcast_every'])
+		self.info['security'] = str(self.info['security'])
+		
+		if self.info['security']=='auth':
+			_adb = open(self.info['authdb'],'r')
+			self.auth_db = json.loads(_adb.readline())
+			_adb.close()
 		
 		if self.info['broadcast']:
 			self.info['broadcasting'] = []
 		
 		self.node = None
 		self.running = False
+	
+	def log(self,text):
+		print text
 	
 	def start(self):
 		if self.use_threading:
@@ -220,7 +242,7 @@ class start_server(threading.Thread):
 			self.run()
 	
 	def run(self):
-		_n = Node(self.info,parent=self.parent)
+		_n = Node(self.info,parent=self)
 		reactor.listenTCP(9001, _n)
 		self.reactor = reactor
 		self.node = _n

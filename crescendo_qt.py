@@ -53,6 +53,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		#PYTHON HAS FEATURES OTHER PROGRAMMING LANGUAGES DON'T HAVE XD
 		[self.ui.lst_nodes.takeItem(row) for row in _rlist]
+		
+		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
 	
 	def add_node(self,name):
 		self.info['nodes'].append({'name':name,'files':[]})
@@ -66,6 +68,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			if self.ui.lst_nodes.item(row).text() == name:
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(128,128,128))
 		
+		#TODO: Should this be in update_node?
+		#Maybe a node is dead, but still on the list for whatever reason.
 		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
 	
 	def update_node(self,node,info):

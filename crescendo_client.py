@@ -71,10 +71,15 @@ class Client(Protocol):
 					
 		elif line['com']=='put':
 			if line['opt']=='hnd':
-				if line['val']=='okay':
+				if not line['val']=='error':
 					self.parent.log('[client->server] Handshake accepted')
 					
-					self.sendLine('put::pwd::derp')
+					#Here we identify what login method the node/network uses
+					if line['val']=='auth':
+						#Handle auth by reading from the profile associated with this node
+						self.sendLine('put::pwd::test:test')
+					else:
+						self.sendLine('put::pwd::derp')
 					self.state = 'password'
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')
