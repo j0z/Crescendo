@@ -32,7 +32,10 @@ class Client(Protocol):
 		self.transport.unregisterProducer()
 		self.transport.stopConsuming()
 		self.transport.loseConnection()
-		self.ping_loop.stop()
+		try:
+			self.ping_loop.stop()
+		except:
+			pass
 	
 	def get_file(self,file):
 		self.getting_file = str(file)

@@ -105,8 +105,10 @@ class crescendo:
 		for node in self.node_list:
 			if node['host']==host:
 				if self.callback:
-					self.callback.remove_node(self.get_node_info(host)['name'])
-				
+					_a = self.get_node_info(host)
+					
+					if _a.has_key('name'):
+						self.callback.remove_node(self.get_node_info(host)['name'])
 				self.node_list.remove(node)
 	
 	def add_node_callback(self,host,obj):
@@ -131,7 +133,10 @@ class crescendo:
 	def get_node_info(self,host):
 		for node in self.node_list:
 			if str(node['host'][0])==host[0]:
-				return node['info']
+				if node.has_key('info'):
+					return node['info']
+				else:
+					return node
 		
 		return False
 	
