@@ -5,6 +5,19 @@ from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
 from twisted.internet import task
 
+import subprocess
+
+if os.sep == '\\':
+	__sevenzip__ = 'bin\\7za.exe'
+	print 'windows'
+else:
+	__sevenzip__ = '7z'
+	print 'linux'
+
+def compress(self,fname):
+	global __sevenzip__
+	subprocess.Popen([__sevenzip__,'a','-t7z',fname+'.7z',fname])
+
 class File:
 	def __init__(self,name,fname):
 		self.name = name

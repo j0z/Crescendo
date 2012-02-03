@@ -146,6 +146,10 @@ class crescendo:
 	def grabbed_file(self,file):
 		if self.callback:
 			self.callback.grabbed_file(file)
+		
+	def set_download_progress(self,progress):
+		if self.callback:
+			self.callback.set_download_progress(progress)
 	
 	def shutdown(self):
 		if self.client.running:

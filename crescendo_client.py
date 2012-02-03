@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
 
-import os, zlib, time, json, threading
+import os, time, json, threading
 
 class File:
 	def __init__(self,name,fname):
@@ -13,6 +13,10 @@ class File:
 		self.fname = fname
 		self.fpos = 0
 		self.data = ''
+	
+	def compress(self):
+		pass
+		
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -148,6 +152,7 @@ class Client(Protocol):
 					
 					self.state = 'grabbing'
 				
+				self.main_parent.set_download_progress(len(line['val']))
 				self.file.data+=line['val']
 				self.sendLine('get::fil::%s' % self.getting_file)
 				
@@ -253,7 +258,6 @@ class connect(threading.Thread):
 	
 	def get_client(self,host):
 		for client in self.clients:
-			print client.host[0],host
 			if client.host[0]==host:
 				return client
 		

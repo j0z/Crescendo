@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sun Jan 29 16:39:17 2012
+# Created: Fri Feb 03 01:59:49 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,6 +89,10 @@ class Ui_MainWindow(object):
         self.lne_ip = QtGui.QLineEdit(self.gridLayoutWidget)
         self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
         self.gridLayout.addWidget(self.lne_ip, 3, 5, 1, 1)
+        self.prg_download = QtGui.QProgressBar(self.gridLayoutWidget)
+        self.prg_download.setProperty("value", 24)
+        self.prg_download.setObjectName(_fromUtf8("prg_download"))
+        self.gridLayout.addWidget(self.prg_download, 3, 1, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

@@ -36,6 +36,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.connect_node)
+		self.ui.prg_download.setValue(0)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
@@ -104,6 +105,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_nr = self.ui.lst_nodes.currentRow()
 		_fr = self.ui.lst_files.currentItem().text(0)
 		
+		self.ui.prg_download.setMaximum(int(self.ui.lst_files.currentItem().text(1)))
+		
 		_h = self.info['nodes'][_nr]['host']
 		_f = _fr
 		
@@ -111,6 +114,10 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	
 	def grabbed_file(self,file):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
+	
+	def set_download_progress(self,progress):
+		#self.ui.prg_download.setValue(self.ui.prg_download.value()+progress)
+		pass
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()
