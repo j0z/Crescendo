@@ -5,7 +5,7 @@ from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
 
-import os, time, json, threading
+import os, zlib, time, json, threading
 
 class File:
 	def __init__(self,name,fname):
