@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main_josh.ui'
 #
-# Created: Tue Jan 31 02:25:17 2012
+# Created: Fri Feb 03 11:08:57 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setCheckable(False)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.lab_downloaded_files = QtGui.QLabel(self.groupBox_2)
-        self.lab_downloaded_files.setGeometry(QtCore.QRect(291, 129, 206, 21))
+        self.lab_downloaded_files.setGeometry(QtCore.QRect(541, 93, 251, 21))
         palette = QtGui.QPalette()
         self.lab_downloaded_files.setPalette(palette)
         font = QtGui.QFont()
@@ -140,7 +140,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.lab_connected_nodes = QtGui.QLabel(self.groupBox_2)
-        self.lab_connected_nodes.setGeometry(QtCore.QRect(4, 129, 252, 21))
+        self.lab_connected_nodes.setGeometry(QtCore.QRect(540, 70, 252, 21))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(26, 26, 26))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -243,6 +243,30 @@ class Ui_MainWindow(object):
         self.lst_log.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.lst_log.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.lst_log.setObjectName(_fromUtf8("lst_log"))
+        self.prg_download = QtGui.QProgressBar(self.groupBox_2)
+        self.prg_download.setGeometry(QtCore.QRect(-3, 146, 797, 10))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.prg_download.setFont(font)
+        self.prg_download.setStyleSheet(_fromUtf8(" QProgressBar {\n"
+"     border: 0px solid white;\n"
+"     border-radius: 0px;\n"
+" }\n"
+"\n"
+" QProgressBar::chunk {\n"
+"     background-color: rgb(176,176,176);\n"
+"     width: 5px;\n"
+" }\n"
+"\n"
+" QProgressBar {\n"
+"     border: 0px solid white;\n"
+"     border-radius: 0px;\n"
+"     text-align: center;\n"
+" }"))
+        self.prg_download.setProperty("value", 0)
+        self.prg_download.setInvertedAppearance(False)
+        self.prg_download.setFormat(_fromUtf8(""))
+        self.prg_download.setObjectName(_fromUtf8("prg_download"))
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, -3, 101, 41))
         palette = QtGui.QPalette()
@@ -584,9 +608,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "CrescendoQt", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "INFORMATION", None, QtGui.QApplication.UnicodeUTF8))
-        self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "DOWNLOADED FILES:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_downloaded_files.setText(QtGui.QApplication.translate("MainWindow", "Downloaded Files:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
-        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "CONNECTED NODES: ", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected Nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "NODES", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "FILE", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "SIZE", None, QtGui.QApplication.UnicodeUTF8))
