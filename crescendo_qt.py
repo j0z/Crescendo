@@ -88,6 +88,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		_n = self.ui.lst_nodes.currentRow()
 		
+		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
+		
 		for file in self.info['nodes'][_n]['files']:
 			item=QtGui.QTreeWidgetItem([file['name'],str(file['size']/1024)])
 			self.ui.lst_files.addTopLevelItem(item)
