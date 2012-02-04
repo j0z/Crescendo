@@ -8,19 +8,35 @@ from twisted.internet import task
 import os, time, json, threading
 
 class File:
-	def __init__(self,name,fname):
+	def __init__(self,name,fname,size):
 		self.name = name
 		self.fname = fname
+		self.size = size
+		
 		self.fpos = 0
 		self.data = ''
+		self.done = False
+		
+		self.f = open(os.path.join('downloads',self.name),'ab')
 	
 	def compress(self):
 		pass
 	
+	def get_size(self):
+		return os.path.getsize(os.path.join('downloads',self.name))
+	
+	def is_done(self):
+		if os.path.getsize(os.path.join('downloads',self.name))>=self.size:
+			return True
+		
+		return False
+	
 	def write(self,text):
-		_f = open(os.path.join('downloads',self.name),'ab')
-		_f.write(text)
-		_f.close()
+		self.f.write(text)
+	
+	def close(self):
+		self.f.truncate(self.size)
+		self.f.close()
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -48,6 +64,13 @@ class Client(Protocol):
 	def get_file(self,file):
 		self.getting_file = str(file)
 		self.sendLine('get::fil::%s' % self.getting_file)
+	
+	def get_file_info(self,name,info):
+		for f in self.parent.info['files']:
+			if f['name']==name:
+				return f[info]
+		
+		return False
 
 	def sendLine(self, line):
 		self.transport.write(str(line)+'\r\n')
@@ -163,9 +186,9 @@ class Client(Protocol):
 							self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 			elif line['opt']=='fil':
-				if not self.state=='grabbing':
+				if not self.state=='grabbing' and not self.file:
 					self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-					self.file = File(self.getting_file,self.getting_file)
+					self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
 					self.main_parent.wanted_files.append(self.getting_file)
 					
 					self.time = time.time()
@@ -175,20 +198,30 @@ class Client(Protocol):
 				self.main_parent.set_download_progress(len(line['val']))
 				
 				self.file.write(line['val'])
-				#TODO: Change this
 				
-				self.file.data=line['val']
-				if len(line['val']):
+				#self.file.data=line['val']
+				
+				if not self.file.done:
 					self.sendLine('get::fil::%s' % self.getting_file)
 				
+				if self.file.is_done():
+					self.file.close()
+				
+				#self.file = None
+				
 			elif line['opt']=='fie':
-				if not len(self.file.data):
-					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
-					return False
+				#if not len(self.file.data):
+				#	self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
+				#	return False
 				
 				#_f = open(os.path.join('downloads',self.getting_file),'wb')
 				#_f.write(self.file.data)
 				#_f.close()
+				
+				if self.file.is_done():
+					self.file.close()
+				
+				self.file.done = True
 				
 				self.main_parent.downloaded_files.append(self.getting_file)
 				
@@ -196,6 +229,7 @@ class Client(Protocol):
 				
 				self.main_parent.wanted_files.remove(self.getting_file)
 				self.main_parent.grabbed_file(self.getting_file)
+				
 				self.state = 'running'
 			
 			elif line['opt']=='fib':
