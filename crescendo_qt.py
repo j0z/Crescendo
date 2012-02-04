@@ -14,6 +14,9 @@ class Crescendo_Thread(QtCore.QThread):
 		
 		QtCore.QThread.__init__(self)
 	
+	def set_download_progress(self,progress):
+		self.emit(QtCore.SIGNAL("output(int)"), int(progress))
+	
 	def shutdown(self):
 		self.client.shutdown()
 	
@@ -32,14 +35,15 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.setWindowIcon(QtGui.QIcon('gfx\\icon.ico'))
 		
 		self.info = {'nodes':[]}
+			
+		self.crescendo = Crescendo_Thread(self)
+		self.crescendo.start()
 		
+		self.connect(self.crescendo, QtCore.SIGNAL("output(int)"), self.set_download_progress)
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.connect_node)
 		self.ui.prg_download.setValue(0)
-		
-		self.crescendo = Crescendo_Thread(self)
-		self.crescendo.start()
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
@@ -92,7 +96,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
 		
 		for file in self.info['nodes'][_n]['files']:
-			item=QtGui.QTreeWidgetItem([file['name'],str(file['size']/1024)])
+			item=QtGui.QTreeWidgetItem([file['name'],str(file['size'])])
 			self.ui.lst_files.addTopLevelItem(item)
 	
 	def connect_node(self):
@@ -116,7 +120,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
 	
 	def set_download_progress(self,progress):
-		#self.ui.prg_download.setValue(self.ui.prg_download.value()+progress)
+		self.ui.prg_download.setValue(self.ui.prg_download.value()+int(progress))
 		pass
 	
 	def closeEvent(self, event):

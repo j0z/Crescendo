@@ -108,14 +108,17 @@ class Connection(LineReceiver):
 					self.sendLine('put::fib::error')
 					return
 				
-				if not _f.fpos: self.node.log('[client-%s] Getting file: %s' % (self.name,_f.name))
+				if not _f.fpos:
+					self.node.log('[client-%s] Getting file: %s' % (self.name,_f.name))
 				
 				with open(_f.fname, "rb") as f:
 					f.seek(_f.fpos)
-					byte = f.read(6)
+					
+					byte = f.read(1024)
 					_f.fpos+=len(byte)
 					
 					if byte != b"":
+						byte = byte.replace('\r\r\n','<crlf>')
 						self.sendLine('put::fil::%s' % byte)
 					else:
 						self.sendLine('put::fie::end')

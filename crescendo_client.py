@@ -16,7 +16,6 @@ class File:
 	
 	def compress(self):
 		pass
-		
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -60,12 +59,17 @@ class Client(Protocol):
 	def dataReceived(self, line):
 		#print repr(line)
 		
+		#if line.count('\r\n')>=2 and line.count('\r\r\n'):
+		#	print 'Had multiline, but threw it out: '+repr(line)
+		
 		if line.count('\r\n')>=2:
 			for _l in line.split('\r\n'):
 				self.parse_data(self.parse_line(_l))
 		else: self.parse_data(self.parse_line(line))
 	
 	def parse_data(self,line):
+		line['val'] = line['val'].replace('<crlf>','\r\r\n')
+		
 		if line['com']=='get':
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
@@ -150,6 +154,8 @@ class Client(Protocol):
 					self.file = File(self.getting_file,self.getting_file)
 					self.main_parent.wanted_files.append(self.getting_file)
 					
+					self.time = time.time()
+					
 					self.state = 'grabbing'
 				
 				self.main_parent.set_download_progress(len(line['val']))
@@ -167,7 +173,7 @@ class Client(Protocol):
 				
 				self.main_parent.downloaded_files.append(self.getting_file)
 				
-				self.main_parent.log('[client->%s] Grabbed file \'%s\'' % (self.parent.info['name'],self.getting_file))
+				self.main_parent.log('[client->%s] Grabbed file \'%s\', took %s' % (self.parent.info['name'],self.getting_file,time.time()-self.time))
 				
 				self.main_parent.wanted_files.remove(self.getting_file)
 				self.main_parent.grabbed_file(self.getting_file)
