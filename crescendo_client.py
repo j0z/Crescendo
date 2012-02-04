@@ -63,6 +63,8 @@ class Client(Protocol):
 	
 	def get_file(self,file):
 		self.getting_file = str(file)
+		
+		#TODO: File resuming
 		self.sendLine('get::fil::%s' % self.getting_file)
 	
 	def get_file_info(self,name,info):
@@ -202,7 +204,7 @@ class Client(Protocol):
 				#self.file.data=line['val']
 				
 				if not self.file.done:
-					self.sendLine('get::fil::%s' % self.getting_file)
+					self.sendLine('get::fil::%s' % (self.getting_file))
 				
 				if self.file.is_done():
 					self.file.close()
