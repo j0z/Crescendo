@@ -158,9 +158,12 @@ class Client(Protocol):
 					_nodes = str(len(self.parent.info['broadcasting']))
 				
 				#Get the info packet and run it through json
-				self.parent.info = json.loads(line['val'])
-				self.parent.info['host'] = self.host
-				self.main_parent.add_node_info(self.host,self.parent.info)
+				try:
+					self.parent.info = json.loads(line['val'])
+					self.parent.info['host'] = self.host
+					self.main_parent.add_node_info(self.host,self.parent.info)
+				except:
+					pass
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...

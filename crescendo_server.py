@@ -127,6 +127,8 @@ class Connection(LineReceiver):
 					#	#self.sendLine('put::fie::end')
 					#	#self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 					#	_f.fpos = 0
+		else:
+			print 'Garbage: '+str(line)
 
 	def handle_PASSWORD(self, passwd):
 		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:
