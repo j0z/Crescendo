@@ -123,10 +123,10 @@ class Connection(LineReceiver):
 					if len(byte):
 						#byte = byte.replace('\r\r\n','<crlf>')
 						self.sendLine('put::fil::%s' % byte)
-					else:
-						self.sendLine('put::fie::end')
-						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
-						_f.fpos = 0
+					#else:
+					#	self.sendLine('put::fie::end')
+					#	self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
+					#	_f.fpos = 0
 
 	def handle_PASSWORD(self, passwd):
 		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:
