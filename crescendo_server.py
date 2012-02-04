@@ -117,12 +117,11 @@ class Connection(LineReceiver):
 				with open(_f.fname, "rb") as f:
 					f.seek(_f.fpos)
 					
-					byte = f.read(7000)
+					byte = f.read(8100)
 					_f.fpos+=len(byte)
 					
 					if len(byte):
 						#byte = byte.replace('\r\r\n','<crlf>')
-						print repr(byte)
 						self.sendLine('put::fil::%s' % byte)
 					#else:
 					#	#self.sendLine('put::fie::end')
