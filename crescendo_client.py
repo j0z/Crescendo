@@ -16,6 +16,11 @@ class File:
 	
 	def compress(self):
 		pass
+	
+	def write(self,text):
+		_f = open(os.path.join('downloads',self.name),'ab')
+		_f.write(text)
+		_f.close()
 
 class Client(Protocol):
 	def __init__(self,host,parent):
@@ -52,7 +57,7 @@ class Client(Protocol):
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
-		if line.count('\r\n'): line = line[:len(line)-2]
+		if line.count('\r\n\r\n'): line = line[:len(line)-4]
 		
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
@@ -62,13 +67,22 @@ class Client(Protocol):
 		#if line.count('\r\n')>=2 and line.count('\r\r\n'):
 		#	print 'Had multiline, but threw it out: '+repr(line)
 		
-		if line.count('\r\n')>=2:
-			for _l in line.split('\r\n'):
+		if line.count('\r\n\r\n')>=2:
+			for _l in line.split('\r\n\r\n'):
 				self.parse_data(self.parse_line(_l))
-		else: self.parse_data(self.parse_line(line))
+		else:
+			_l = self.parse_line(line)
+			
+			if not _l['com'] in ['put','get']:
+				_l = {'com':'put','opt':'fil','val':line}
+			#else:
+			#	_l['a']=True
+			
+			self.parse_data(_l)
 	
 	def parse_data(self,line):
-		line['val'] = line['val'].replace('<crlf>','\r\r\n')
+		#line['val'] = line['val'].replace('<crlf>','\r\r\n')
+		self.last_seen = time.time()
 		
 		if line['com']=='get':
 			if line['opt']=='hnd':
@@ -77,7 +91,7 @@ class Client(Protocol):
 			elif line['opt']=='pin':
 				if self.parent.info:
 					#self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
-					self.last_seen = time.time()
+					#self.last_seen = time.time()
 					self.sendLine('put::png::null')
 					
 		elif line['com']=='put':
@@ -85,6 +99,7 @@ class Client(Protocol):
 				if not line['val']=='error':
 					self.parent.log('[client->server] Handshake accepted')
 					
+					print repr(line['val'])
 					#Here we identify what login method the node/network uses
 					if line['val']=='auth':
 						#Handle auth by reading from the profile associated with this node
@@ -159,7 +174,11 @@ class Client(Protocol):
 					self.state = 'grabbing'
 				
 				self.main_parent.set_download_progress(len(line['val']))
-				self.file.data+=line['val']
+				
+				self.file.write(line['val'])
+				#TODO: Change this
+				
+				self.file.data=line['val']
 				self.sendLine('get::fil::%s' % self.getting_file)
 				
 			elif line['opt']=='fie':
@@ -167,9 +186,9 @@ class Client(Protocol):
 					self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
 					return False
 				
-				_f = open(os.path.join('downloads',self.getting_file),'wb')
-				_f.write(self.file.data)
-				_f.close()
+				#_f = open(os.path.join('downloads',self.getting_file),'wb')
+				#_f.write(self.file.data)
+				#_f.close()
 				
 				self.main_parent.downloaded_files.append(self.getting_file)
 				
@@ -190,7 +209,13 @@ class Client(Protocol):
 			#TODO: WE NEED TO CHECK IF WE ARE LOGGED IN.
 			if line['opt']=='bro':
 				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
-		
+		else:
+			pass
+			#if str(line).count('<crlf>'):
+			a = open('debug','ab')
+			a.write(str(line)+'\n')
+			a.close()
+			#print 'Had to throw a line out: %s!!!' % str(line)
 	def ping(self):
 		if time.time()-self.last_seen >= 30:
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])

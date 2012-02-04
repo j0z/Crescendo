@@ -19,7 +19,7 @@ class HostFinder(threading.Thread):
 			_out = '%s' % self.host[0]
 			self.socket.connect(self.host)
 			
-			if self.socket.recv(32) == 'get::hnd::null\r\n':
+			if self.socket.recv(32) == 'get::hnd::null\r\n\r\n':
 				self.engine.add_working(self.host)
 				_out += '...found!'
 			else:

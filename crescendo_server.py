@@ -54,6 +54,9 @@ class Connection(LineReceiver):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
+	def sendLine(self, line):
+		self.transport.write(line+'\r\n\r\n')
+	
 	def lineReceived(self, line):
 		line = self.parse_line(line)
 		#print line
@@ -114,13 +117,14 @@ class Connection(LineReceiver):
 				with open(_f.fname, "rb") as f:
 					f.seek(_f.fpos)
 					
-					byte = f.read(1024)
+					byte = f.read(20000)
 					_f.fpos+=len(byte)
 					
-					if byte != b"":
+					if len(byte):
 						byte = byte.replace('\r\r\n','<crlf>')
 						self.sendLine('put::fil::%s' % byte)
 					else:
+						print 'Byte was '+byte
 						self.sendLine('put::fie::end')
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 						_f.fpos = 0
