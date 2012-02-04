@@ -122,6 +122,7 @@ class Connection(LineReceiver):
 					
 					if len(byte):
 						#byte = byte.replace('\r\r\n','<crlf>')
+						print repr(byte)
 						self.sendLine('put::fil::%s' % byte)
 					#else:
 					#	#self.sendLine('put::fie::end')

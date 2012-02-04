@@ -202,6 +202,7 @@ class Client(Protocol):
 				
 				self.main_parent.set_download_progress(len(line['val']))
 				
+				print repr(line['val'])
 				self.file.write(line['val'])
 				
 				#self.file.data=line['val']
