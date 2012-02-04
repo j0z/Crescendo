@@ -124,7 +124,7 @@ class Connection(LineReceiver):
 						byte = byte.replace('\r\r\n','<crlf>')
 						self.sendLine('put::fil::%s' % byte)
 					else:
-						print 'Byte was '+byte
+						print 'Byte was '+repr(byte)
 						self.sendLine('put::fie::end')
 						self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
 						_f.fpos = 0

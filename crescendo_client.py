@@ -91,7 +91,7 @@ class Client(Protocol):
 			elif line['opt']=='pin':
 				if self.parent.info:
 					#self.main_parent.log('[node.%s] Ping' % (self.parent.info['name']))
-					#self.last_seen = time.time()
+					self.last_seen = time.time()
 					self.sendLine('put::png::null')
 					
 		elif line['com']=='put':
@@ -99,7 +99,6 @@ class Client(Protocol):
 				if not line['val']=='error':
 					self.parent.log('[client->server] Handshake accepted')
 					
-					print repr(line['val'])
 					#Here we identify what login method the node/network uses
 					if line['val']=='auth':
 						#Handle auth by reading from the profile associated with this node
@@ -179,7 +178,8 @@ class Client(Protocol):
 				#TODO: Change this
 				
 				self.file.data=line['val']
-				self.sendLine('get::fil::%s' % self.getting_file)
+				if len(line['val']):
+					self.sendLine('get::fil::%s' % self.getting_file)
 				
 			elif line['opt']=='fie':
 				if not len(self.file.data):
