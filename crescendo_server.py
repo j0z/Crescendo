@@ -120,7 +120,7 @@ class Connection(LineReceiver):
 					byte = f.read(8100)
 					_f.fpos+=len(byte)
 					
-					print repr(bye)
+					print repr(byte)
 					
 					if len(byte):
 						#byte = byte.replace('\r\r\n','<crlf>')
