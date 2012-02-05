@@ -65,7 +65,11 @@ class Client(basic.LineReceiver):
 	
 	def get_file(self,file):
 		self.getting_file = str(file)
-		self.ping_loop.stop()
+		
+		try:
+			self.ping_loop.stop()
+		except:
+			pass
 		
 		#TODO: File resuming
 		self.sendLine('get::fil::%s' % (self.getting_file))
@@ -122,6 +126,7 @@ class Client(basic.LineReceiver):
 			self.sendLine('put::fie::okay')
 			self.ping_loop.start(10)
 			self.file.close()
+			print '[services] Restarted'
 		else:
 			self.sendLine('get::fil::%s' % (self.getting_file))
 			self.setRawMode()
