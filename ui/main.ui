@@ -151,13 +151,6 @@
            <property name="text">
             <string>Size</string>
            </property>
-           <property name="background">
-            <color>
-             <red>120</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </property>
           </column>
          </widget>
         </item>

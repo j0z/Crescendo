@@ -96,7 +96,13 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
 		
 		for file in self.info['nodes'][_n]['files']:
-			item=QtGui.QTreeWidgetItem([file['name'],str(file['size'])])
+			_filesize = int(file['size'])
+			_temp_filesize = int(file['size'])
+			
+			if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
+			else: _filesize ='%s kb' % (_temp_filesize/1024)
+			
+			item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
 			self.ui.lst_files.addTopLevelItem(item)
 	
 	def connect_node(self):
