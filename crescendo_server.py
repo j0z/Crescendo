@@ -133,7 +133,6 @@ class Connection(basic.LineReceiver):
 					if len(byte):
 						self.transport.write(byte)
 					else:
-						print 'resetting'
 						self.download_position = 0
 				
 				self.setLineMode()
@@ -190,7 +189,8 @@ class Node(Factory):
 				_fname = os.path.join(root, infile)
 				file, ext = os.path.splitext(_fname)
 				
-				if ext in self.info['ignore_filetypes']:
+				if ext[1:] in self.info['ignore_filetypes']:
+					print _fname
 					continue
 				
 				if os.path.getsize(_fname):
@@ -256,6 +256,7 @@ class start_server(threading.Thread):
 		self.info['files'] = []
 		self.info['broadcast_every'] = int(self.info['broadcast_every'])
 		self.info['security'] = str(self.info['security'])
+		self.info['ignore_filetypes'] = [s.encode('utf-8') for s in self.info['ignore_filetypes']]
 		
 		if self.info['security']=='auth':
 			_adb = open(self.info['authdb'],'r')
