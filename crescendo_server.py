@@ -190,7 +190,6 @@ class Node(Factory):
 				file, ext = os.path.splitext(_fname)
 				
 				if ext[1:] in self.info['ignore_filetypes']:
-					print _fname
 					continue
 				
 				if os.path.getsize(_fname):
