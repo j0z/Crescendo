@@ -195,7 +195,8 @@ class Node(Factory):
 					
 					self.files.append(_f)
 					self.info['files'].append(_f.info)
-					self.log('[Files] Sharing %s' % _fname)
+		
+		self.log('[Files] Sharing %s files' % len(self.info['files']))
 	
 	def auth_user(self,usr,pas):
 		for user in self.parent.auth_db['users']:
