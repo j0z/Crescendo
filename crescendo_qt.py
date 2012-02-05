@@ -101,6 +101,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			
 			if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
 			else: _filesize ='%s kb' % (_temp_filesize/1024)
+			#_filesize ='%.2f MB' % (_temp_filesize/1000000.0)
 			
 			item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
 			self.ui.lst_files.addTopLevelItem(item)
