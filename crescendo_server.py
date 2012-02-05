@@ -190,6 +190,9 @@ class Node(Factory):
 				_fname = os.path.join(root, infile)
 				file, ext = os.path.splitext(_fname)
 				
+				if ext in self.info['ignore_filetypes']:
+					continue
+				
 				if os.path.getsize(_fname):
 					_f = File(infile,_fname)
 					
