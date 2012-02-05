@@ -115,7 +115,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_nr = self.ui.lst_nodes.currentRow()
 		_fr = self.ui.lst_files.currentItem().text(0)
 		
-		self.ui.prg_download.setMaximum(int(self.ui.lst_files.currentItem().text(1)))
+		_type = str(self.ui.lst_files.currentItem().text(1).split(' ')[1])
+		_temp_filesize = int(self.ui.lst_files.currentItem().text(1).split(' ')[0])
+		if _type == 'kb': _filesize = _temp_filesize*1024
+		elif _type == 'MB': _filesize = _temp_filesize*1000000
+		
+		self.ui.prg_download.setMaximum(_filesize)
 		
 		_h = self.info['nodes'][_nr]['host']
 		_f = _fr
@@ -127,7 +132,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	
 	def set_download_progress(self,progress):
 		self.ui.prg_download.setValue(self.ui.prg_download.value()+int(progress))
-		pass
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()
