@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Fri Feb 03 01:59:49 2012
+# Created: Sun Feb 05 02:52:56 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,6 +60,9 @@ class Ui_MainWindow(object):
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.lne_ip = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
+        self.gridLayout.addWidget(self.lne_ip, 3, 5, 1, 1)
         self.lst_nodes = QtGui.QListWidget(self.gridLayoutWidget)
         self.lst_nodes.setObjectName(_fromUtf8("lst_nodes"))
         self.gridLayout.addWidget(self.lst_nodes, 0, 5, 1, 1)
@@ -75,24 +78,14 @@ class Ui_MainWindow(object):
         self.btn_grab.setObjectName(_fromUtf8("btn_grab"))
         self.horizontalLayout_5.addWidget(self.btn_grab)
         self.gridLayout.addLayout(self.horizontalLayout_5, 2, 1, 1, 1)
-        self.lst_files = QtGui.QTreeWidget(self.gridLayoutWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lst_files.sizePolicy().hasHeightForWidth())
-        self.lst_files.setSizePolicy(sizePolicy)
-        self.lst_files.setIndentation(0)
-        self.lst_files.setRootIsDecorated(False)
-        self.lst_files.setObjectName(_fromUtf8("lst_files"))
-        self.lst_files.headerItem().setBackground(1, QtGui.QColor(120, 0, 0))
-        self.gridLayout.addWidget(self.lst_files, 0, 1, 1, 1)
-        self.lne_ip = QtGui.QLineEdit(self.gridLayoutWidget)
-        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
-        self.gridLayout.addWidget(self.lne_ip, 3, 5, 1, 1)
         self.prg_download = QtGui.QProgressBar(self.gridLayoutWidget)
         self.prg_download.setProperty("value", 24)
         self.prg_download.setObjectName(_fromUtf8("prg_download"))
         self.gridLayout.addWidget(self.prg_download, 3, 1, 1, 1)
+        self.lst_files = QtGui.QTreeWidget(self.gridLayoutWidget)
+        self.lst_files.setIndentation(0)
+        self.lst_files.setObjectName(_fromUtf8("lst_files"))
+        self.gridLayout.addWidget(self.lst_files, 0, 1, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

@@ -8,6 +8,13 @@ else:
 
 import crescendo
 
+class NumberSortModel(QtGui.QSortFilterProxyModel):
+    def lessThan(self, left, right):
+    
+        lvalue = left.data().toDouble()[0]
+        rvalue = right.data().toDouble()[0]
+        return lvalue < rvalue
+
 class Crescendo_Thread(QtCore.QThread):
 	def __init__(self,gui):
 		self.client = crescendo.crescendo(callback=gui)
@@ -89,7 +96,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				break
 	
 	def select_node(self):
-		self.ui.lst_files.clear()
+		#self.ui.lst_files.clear()
 		
 		_n = self.ui.lst_nodes.currentRow()
 		
@@ -104,6 +111,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			#_filesize ='%.2f MB' % (_temp_filesize/1000000.0)
 			
 			item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
+
 			self.ui.lst_files.addTopLevelItem(item)
 	
 	def connect_node(self):

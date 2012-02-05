@@ -100,6 +100,9 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="5">
+         <widget class="QLineEdit" name="lne_ip"/>
+        </item>
         <item row="0" column="5">
          <widget class="QListWidget" name="lst_nodes"/>
         </item>
@@ -128,19 +131,17 @@
           </item>
          </layout>
         </item>
+        <item row="3" column="1">
+         <widget class="QProgressBar" name="prg_download">
+          <property name="value">
+           <number>24</number>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QTreeWidget" name="lst_files">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="indentation">
            <number>0</number>
-          </property>
-          <property name="rootIsDecorated">
-           <bool>false</bool>
           </property>
           <column>
            <property name="text">
@@ -153,9 +154,6 @@
            </property>
           </column>
          </widget>
-        </item>
-        <item row="3" column="5">
-         <widget class="QLineEdit" name="lne_ip"/>
         </item>
        </layout>
       </widget>
