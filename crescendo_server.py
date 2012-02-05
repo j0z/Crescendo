@@ -25,7 +25,7 @@ class File:
 		self.fname = fname
 		self.size = os.path.getsize(self.fname)
 		
-		self.info = {'name':name,'fname':fname,'size':self.size}
+		self.info = {'name':name,'size':self.size}
 
 class Connection(basic.LineReceiver):
 	def __init__(self, node):
