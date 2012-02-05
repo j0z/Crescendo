@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, sys, time, json, hashlib, threading
+import os, sys, time, copy, json, hashlib, threading
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
@@ -26,25 +26,13 @@ class File:
 		self.size = os.path.getsize(self.fname)
 		
 		self.info = {'name':name,'fname':fname,'size':self.size}
-		
-		self.fpos = 0
-	
-	def read_chunks(self):
-		with open(self.fname, 'rb') as file:
-			while True:
-				chunk = file.read(8100)
-				
-				if chunk:
-					yield chunk
-				else:
-					break
 
 class Connection(basic.LineReceiver):
 	def __init__(self, node):
 		self.node = node
 		self.state = 'GETHND'
 		self.last_seen = time.time()
-		self.file_pos = 0
+		self.download_position = 0
 		
 		self.name = ''	
 	
@@ -88,6 +76,12 @@ class Connection(basic.LineReceiver):
 					if self.node.info['security']=='password': self.handle_PASSWORD(line['val'])
 					elif self.node.info['security']=='auth': self.handle_AUTH(line['val'].split(':')[0],line['val'].split(':')[1])
 			
+			elif line['opt']=='fie':
+				self.download_position = 0
+				self.ping_loop.start(10)
+				self.broadcast_loop.start(self.node.info['broadcast_every'])
+				print '[services] Restarted'
+			
 			elif line['opt']=='png':
 				self.last_seen = time.time()
 			
@@ -117,7 +111,7 @@ class Connection(basic.LineReceiver):
 				self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil':
-				_f = self.node.get_file(line['val'].split(':')[0])
+				_f = self.node.get_file(line['val'])
 				#print 'Seeking '+line['val'].split(':')[1]
 				
 				try:
@@ -127,34 +121,23 @@ class Connection(basic.LineReceiver):
 					pass
 				
 				self.setRawMode()
-								
+				
 				with open(_f.fname, "rb") as f:
-					f.seek(_f.fpos)
+					f.seek(self.download_position)
 					
 					byte = f.read(8100)
-					_f.fpos+=len(byte)
+					#print len(byte)
 					
-					#print repr(byte)
+					self.download_position+=len(byte)
 					
 					if len(byte):
-						#byte = byte.replace('\r\r\n','<crlf>')
 						self.transport.write(byte)
-						del byte
-						#self.sendLine('put::fil::%s' % byte)
 					else:
-						#self.sendLine('put::fie::end')
-						#self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
-						_f.fpos = 0
-						#break
+						print 'resetting'
+						self.download_position = 0
 				
 				self.setLineMode()
 				
-				#if not _f:
-				#	self.sendLine('put::fib::error')
-				#	return
-				#
-				#if not _f.fpos:
-				#	self.node.log('[client-%s] Getting file: %s' % (self.name,_f.name))
 		else:
 			print 'Garbage: '+str(line)
 

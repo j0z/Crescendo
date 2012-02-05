@@ -9,16 +9,17 @@ from twisted.protocols import basic
 import os, time, json, threading
 
 class File:
-	def __init__(self,name,fname,size):
+	def __init__(self,name,fname,total_size):
 		self.name = name
 		self.fname = fname
-		self.size = size
+		self.size = 0
+		self.total_size = total_size
 		
 		self.fpos = 0
 		self.data = ''
 		self.done = False
 		
-		self.f = open(os.path.join('downloads',self.name),'ab')
+		self.f = open(os.path.join('downloads',self.name),'wb')
 	
 	def compress(self):
 		pass
@@ -27,16 +28,16 @@ class File:
 		return os.path.getsize(os.path.join('downloads',self.name))
 	
 	def is_done(self):
-		if os.path.getsize(os.path.join('downloads',self.name))>=self.size:
+		if self.size>=self.total_size:
 			return True
 		
 		return False
 	
 	def write(self,text):
+		self.size+=len(text)
 		self.f.write(text)
 	
 	def close(self):
-		#self.f.truncate(self.size)
 		self.f.close()
 
 class Client(basic.LineReceiver):
@@ -65,6 +66,7 @@ class Client(basic.LineReceiver):
 	def get_file(self,file):
 		self.getting_file = str(file)
 		self.ping_loop.stop()
+		
 		#TODO: File resuming
 		self.sendLine('get::fil::%s' % (self.getting_file))
 		
@@ -96,9 +98,6 @@ class Client(basic.LineReceiver):
 	def lineReceived(self, line):
 		#print repr(line)
 		
-		#if line.count('\r\n')>=2 and line.count('\r\r\n'):
-		#	print 'Had multiline, but threw it out: '+repr(line)
-		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
 				self.parse_data(self.parse_line(_l))
@@ -107,34 +106,28 @@ class Client(basic.LineReceiver):
 			
 			if not _l['com'] in ['put','get']:
 				_l = {'com':'put','opt':'fil','val':line}
-			#else:
-			#	_l['a']=True
 			
 			self.parse_data(_l)
 	
 	def rawDataReceived(self, data):
-		#pass
-		#print 'RAW: '+data
 		self.last_seen = time.time()
 		
 		self.file.write(data)
 		
-		print len(data)
-		
+		self.main_parent.set_download_progress(len(data))
 		self.setLineMode()
 		
 		if self.file.is_done():
-			print 'closed!'
+			self.main_parent.log('[client->%s] Grabbed file %s' % (self.parent.info['name'],self.getting_file))
+			self.sendLine('put::fie::okay')
+			self.ping_loop.start(10)
 			self.file.close()
 		else:
-			#print 'NOT FUCKING DONE YET'
 			self.sendLine('get::fil::%s' % (self.getting_file))
 			self.setRawMode()
 	
 	def parse_data(self,line):
-		#line['val'] = line['val'].replace('<crlf>','\r\r\n')
 		self.last_seen = time.time()
-		#print repr(line)
 		
 		if line['com']=='get':
 			if line['opt']=='hnd':
@@ -216,48 +209,6 @@ class Client(basic.LineReceiver):
 					for node in self.parent.info['broadcasting']:
 						if not str(node[0]) == self.main_parent.info['host'][0]:
 							self.main_parent.add_node((str(node[0]),int(node[1])))
-				
-			elif line['opt']=='fil':
-				pass
-				#if not self.state=='grabbing' and not self.file:
-				#	self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-				#	#self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
-				#	self.main_parent.wanted_files.append(self.getting_file)
-				#	
-				#	self.time = time.time()
-				#	
-				#	self.state = 'grabbing'
-				#
-				#self.main_parent.set_download_progress(len(line['val']))
-				#
-				#
-				#if self.file.is_done():
-				#	self.file.close()
-				#
-				#self.file = None
-				
-			elif line['opt']=='fie':
-				#if not len(self.file.data):
-				#	self.main_parent.log('[client->%s] File \'%s\' was empty.' % (self.parent.info['name'],self.getting_file))
-				#	return False
-				
-				#_f = open(os.path.join('downloads',self.getting_file),'wb')
-				#_f.write(self.file.data)
-				#_f.close()
-				
-				if self.file.is_done():
-					self.file.close()
-				
-				self.file.done = True
-				
-				self.main_parent.downloaded_files.append(self.getting_file)
-				
-				self.main_parent.log('[client->%s] Grabbed file \'%s\', took %s' % (self.parent.info['name'],self.getting_file,time.time()-self.time))
-				
-				self.main_parent.wanted_files.remove(self.getting_file)
-				self.main_parent.grabbed_file(self.getting_file)
-				
-				self.state = 'running'
 			
 			elif line['opt']=='fib':
 				self.main_parent.log('[client->%s] Failed grabbing file \'%s\'' % (self.parent.info['name'],self.getting_file))
