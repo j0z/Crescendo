@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Users\ir8llama\crescendo\Crescendo\ui\main_josh.ui'
 #
-# Created: Fri Feb 03 11:08:57 2012
+# Created: Sun Feb 05 01:47:16 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -339,6 +339,28 @@ class Ui_MainWindow(object):
 "    border:rgb(220,220,220);\n"
 "}\n"
 "\n"
+"\n"
+"\n"
+"\n"
+"QHeaderView {\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QHeaderView::section {\n"
+"    background-color: white;\n"
+"    border: 0px solid white;\n"
+"    padding-left: 4px;\n"
+"\n"
+"    }\n"
+"QHeaderView::down-arrow {\n"
+"     image: url(down-arrow.png);\n"
+" }\n"
+" QHeaderView::up-arrow {\n"
+"     image: url(up-arrow.png);\n"
+" }\n"
+"\n"
+"\n"
+"\n"
 "QScrollBar:vertical {\n"
 "    border: none;\n"
 "    background: rgba(0,0,0,0);\n"
@@ -390,11 +412,12 @@ class Ui_MainWindow(object):
         self.lst_files.setLineWidth(0)
         self.lst_files.setIndentation(0)
         self.lst_files.setRootIsDecorated(False)
+        self.lst_files.setHeaderHidden(False)
         self.lst_files.setObjectName(_fromUtf8("lst_files"))
         self.lst_files.headerItem().setBackground(1, QtGui.QColor(120, 0, 0))
-        self.lst_files.header().setVisible(False)
+        self.lst_files.header().setVisible(True)
         self.lst_files.header().setDefaultSectionSize(200)
-        self.lst_files.header().setSortIndicatorShown(False)
+        self.lst_files.header().setSortIndicatorShown(True)
         self.lst_files.header().setStretchLastSection(False)
         self.label_2 = QtGui.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(130, -2, 81, 41))
@@ -612,8 +635,9 @@ class Ui_MainWindow(object):
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected Nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "NODES", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "FILE", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "SIZE", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.setSortingEnabled(True)
+        self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "| FILE", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "| SIZE", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "FILES", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "DOWNLOAD", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "CONNECT", None, QtGui.QApplication.UnicodeUTF8))

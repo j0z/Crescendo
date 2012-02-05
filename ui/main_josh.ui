@@ -750,6 +750,28 @@ QTreeWidget::item:hover {
 	border:rgb(220,220,220);
 }
 
+
+
+
+QHeaderView {
+	background: white;
+}
+
+QHeaderView::section {
+	background-color: white;
+	border: 0px solid white;
+	padding-left: 4px;
+
+	}
+QHeaderView::down-arrow {
+     image: url(down-arrow.png);
+ }
+ QHeaderView::up-arrow {
+     image: url(up-arrow.png);
+ }
+
+
+
 QScrollBar:vertical {
     border: none;
     background: rgba(0,0,0,0);
@@ -812,26 +834,32 @@ QScrollBar::sub-line:horizontal {
     <property name="rootIsDecorated">
      <bool>false</bool>
     </property>
-    <attribute name="headerVisible">
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="headerHidden">
      <bool>false</bool>
+    </property>
+    <attribute name="headerVisible">
+     <bool>true</bool>
     </attribute>
     <attribute name="headerDefaultSectionSize">
      <number>200</number>
     </attribute>
     <attribute name="headerShowSortIndicator" stdset="0">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="headerStretchLastSection">
      <bool>false</bool>
     </attribute>
     <column>
      <property name="text">
-      <string>FILE</string>
+      <string>| FILE</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>SIZE</string>
+      <string>| SIZE</string>
      </property>
      <property name="background">
       <color>
