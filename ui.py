@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sun Feb 05 02:52:56 2012
+# Created: Sun Feb 05 03:18:45 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         self.prg_download.setObjectName(_fromUtf8("prg_download"))
         self.gridLayout.addWidget(self.prg_download, 3, 1, 1, 1)
         self.lst_files = QtGui.QTreeWidget(self.gridLayoutWidget)
-        self.lst_files.setIndentation(0)
+        self.lst_files.setIndentation(10)
         self.lst_files.setObjectName(_fromUtf8("lst_files"))
         self.gridLayout.addWidget(self.lst_files, 0, 1, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)

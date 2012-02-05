@@ -141,7 +141,7 @@
         <item row="0" column="1">
          <widget class="QTreeWidget" name="lst_files">
           <property name="indentation">
-           <number>0</number>
+           <number>10</number>
           </property>
           <column>
            <property name="text">

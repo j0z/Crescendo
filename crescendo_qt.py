@@ -8,13 +8,6 @@ else:
 
 import crescendo
 
-class NumberSortModel(QtGui.QSortFilterProxyModel):
-    def lessThan(self, left, right):
-    
-        lvalue = left.data().toDouble()[0]
-        rvalue = right.data().toDouble()[0]
-        return lvalue < rvalue
-
 class Crescendo_Thread(QtCore.QThread):
 	def __init__(self,gui):
 		self.client = crescendo.crescendo(callback=gui)
@@ -110,7 +103,14 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			else: _filesize ='%s kb' % (_temp_filesize/1024)
 			#_filesize ='%.2f MB' % (_temp_filesize/1000000.0)
 			
-			item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
+			print file
+			if file['root']:
+				item=QtGui.QTreeWidgetItem([file['root'],str(_filesize)])
+				QtGui.QTreeWidgetItem(item,[file['name'],str(_filesize)])
+			else:
+				item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
+			
+			#self.ui.lst_files.expandItem(item)
 
 			self.ui.lst_files.addTopLevelItem(item)
 	

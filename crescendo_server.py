@@ -20,12 +20,12 @@ def compress(self,fname):
 	subprocess.Popen([__sevenzip__,'a','-t7z',fname+'.7z',fname])
 
 class File:
-	def __init__(self,name,fname):
+	def __init__(self,name,fname,root):
 		self.name = name
 		self.fname = fname
 		self.size = os.path.getsize(self.fname)
 		
-		self.info = {'name':name,'size':self.size}
+		self.info = {'name':name,'root':root,'size':self.size}
 
 class Connection(basic.LineReceiver):
 	def __init__(self, node):
@@ -193,7 +193,8 @@ class Node(Factory):
 					continue
 				
 				if os.path.getsize(_fname):
-					_f = File(infile,_fname)
+					print root
+					_f = File(infile,_fname,root.replace(self.info['share_dir'],''))
 					
 					self.files.append(_f)
 					self.info['files'].append(_f.info)
