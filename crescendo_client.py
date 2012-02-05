@@ -4,6 +4,7 @@ from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
+from twisted.protocols import basic
 
 import os, time, json, threading
 
@@ -35,10 +36,10 @@ class File:
 		self.f.write(text)
 	
 	def close(self):
-		self.f.truncate(self.size)
+		#self.f.truncate(self.size)
 		self.f.close()
 
-class Client(Protocol):
+class Client(basic.LineReceiver):
 	def __init__(self,host,parent):
 		self.state = 'handshake'
 		self.host = host
@@ -63,9 +64,15 @@ class Client(Protocol):
 	
 	def get_file(self,file):
 		self.getting_file = str(file)
-		
+		self.ping_loop.stop()
 		#TODO: File resuming
-		self.sendLine('get::fil::%s' % self.getting_file)
+		self.sendLine('get::fil::%s' % (self.getting_file))
+		
+		self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
+		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
+		self.main_parent.wanted_files.append(self.getting_file)
+						
+		self.setRawMode()
 	
 	def get_file_info(self,name,info):
 		for f in self.parent.info['files']:
@@ -86,7 +93,7 @@ class Client(Protocol):
 		
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
-	def dataReceived(self, line):
+	def lineReceived(self, line):
 		#print repr(line)
 		
 		#if line.count('\r\n')>=2 and line.count('\r\r\n'):
@@ -105,9 +112,29 @@ class Client(Protocol):
 			
 			self.parse_data(_l)
 	
+	def rawDataReceived(self, data):
+		#pass
+		#print 'RAW: '+data
+		self.last_seen = time.time()
+		
+		self.file.write(data)
+		
+		print len(data)
+		
+		self.setLineMode()
+		
+		if self.file.is_done():
+			print 'closed!'
+			self.file.close()
+		else:
+			#print 'NOT FUCKING DONE YET'
+			self.sendLine('get::fil::%s' % (self.getting_file))
+			self.setRawMode()
+	
 	def parse_data(self,line):
 		#line['val'] = line['val'].replace('<crlf>','\r\r\n')
 		self.last_seen = time.time()
+		#print repr(line)
 		
 		if line['com']=='get':
 			if line['opt']=='hnd':
@@ -191,27 +218,22 @@ class Client(Protocol):
 							self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 			elif line['opt']=='fil':
-				if not self.state=='grabbing' and not self.file:
-					self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-					self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
-					self.main_parent.wanted_files.append(self.getting_file)
-					
-					self.time = time.time()
-					
-					self.state = 'grabbing'
-				
-				self.main_parent.set_download_progress(len(line['val']))
-				
-				self.file.write(line['val'])
-				
-				#self.file.data=line['val']
-				
-				if not self.file.done:
-					self.sendLine('get::fil::%s' % (self.getting_file))
-				
-				if self.file.is_done():
-					self.file.close()
-				
+				pass
+				#if not self.state=='grabbing' and not self.file:
+				#	self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
+				#	#self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
+				#	self.main_parent.wanted_files.append(self.getting_file)
+				#	
+				#	self.time = time.time()
+				#	
+				#	self.state = 'grabbing'
+				#
+				#self.main_parent.set_download_progress(len(line['val']))
+				#
+				#
+				#if self.file.is_done():
+				#	self.file.close()
+				#
 				#self.file = None
 				
 			elif line['opt']=='fie':
@@ -251,9 +273,9 @@ class Client(Protocol):
 		else:
 			pass
 			#if str(line).count('<crlf>'):
-			a = open('debug','ab')
-			a.write(str(line)+'\n')
-			a.close()
+			#a = open('debug','ab')
+			#a.write(str(line)+'\n')
+			#a.close()
 			#print 'Had to throw a line out: %s!!!' % str(line)
 	def ping(self):
 		if time.time()-self.last_seen >= 30:

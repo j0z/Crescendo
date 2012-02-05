@@ -4,6 +4,7 @@ from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
 from twisted.internet import task
+from twisted.protocols import basic
 
 import subprocess
 
@@ -27,16 +28,26 @@ class File:
 		self.info = {'name':name,'fname':fname,'size':self.size}
 		
 		self.fpos = 0
+	
+	def read_chunks(self):
+		with open(self.fname, 'rb') as file:
+			while True:
+				chunk = file.read(8100)
+				
+				if chunk:
+					yield chunk
+				else:
+					break
 
-class Connection(LineReceiver):
+class Connection(basic.LineReceiver):
 	def __init__(self, node):
 		self.node = node
 		self.state = 'GETHND'
 		self.last_seen = time.time()
 		self.file_pos = 0
 		
-		self.name = ''
-
+		self.name = ''	
+	
 	def connectionMade(self):
 		self.sendLine('get::hnd::null')
 		self.host = self.transport.getHost()
@@ -59,6 +70,7 @@ class Connection(LineReceiver):
 	
 	def lineReceived(self, line):
 		line = self.parse_line(line)
+		self.last_seen = time.time()
 		#print line
 
 		if line['com']=='put':
@@ -92,8 +104,8 @@ class Connection(LineReceiver):
 				
 				#Start our looping calls now.
 				#Starts pinging clients
-				l = task.LoopingCall(self.ping)
-				l.start(10) #TODO: Make this a variable
+				self.ping_loop = task.LoopingCall(self.ping)
+				self.ping_loop.start(10) #TODO: Make this a variable
 				
 				#TODO COMMENT: This might actually be a bad idea
 				#If we did put this in, we'd have to tell the client
@@ -101,34 +113,48 @@ class Connection(LineReceiver):
 				#and to hang on a bit longer before bailing out.
 				
 				#Sends a broadcast packet every <x> seconds
-				l = task.LoopingCall(self.broadcast)
-				l.start(self.node.info['broadcast_every'])
+				self.broadcast_loop = task.LoopingCall(self.broadcast)
+				self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil':
-				_f = self.node.get_file(line['val'])
+				_f = self.node.get_file(line['val'].split(':')[0])
+				#print 'Seeking '+line['val'].split(':')[1]
 				
-				if not _f:
-					self.sendLine('put::fib::error')
-					return
+				try:
+					self.ping_loop.stop()
+					self.broadcast_loop.stop()
+				except:
+					pass
 				
-				if not _f.fpos:
-					self.node.log('[client-%s] Getting file: %s' % (self.name,_f.name))
-				
+				self.setRawMode()
+								
 				with open(_f.fname, "rb") as f:
 					f.seek(_f.fpos)
 					
 					byte = f.read(8100)
 					_f.fpos+=len(byte)
 					
-					print repr(byte)
+					#print repr(byte)
 					
 					if len(byte):
 						#byte = byte.replace('\r\r\n','<crlf>')
-						self.sendLine('put::fil::%s' % byte)
-					#else:
-					#	#self.sendLine('put::fie::end')
-					#	#self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
-					#	_f.fpos = 0
+						self.transport.write(byte)
+						del byte
+						#self.sendLine('put::fil::%s' % byte)
+					else:
+						#self.sendLine('put::fie::end')
+						#self.node.log('[client-%s] Got file: %s' % (self.name,_f.name))
+						_f.fpos = 0
+						#break
+				
+				self.setLineMode()
+				
+				#if not _f:
+				#	self.sendLine('put::fib::error')
+				#	return
+				#
+				#if not _f.fpos:
+				#	self.node.log('[client-%s] Getting file: %s' % (self.name,_f.name))
 		else:
 			print 'Garbage: '+str(line)
 
