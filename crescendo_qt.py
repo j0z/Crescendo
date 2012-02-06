@@ -27,45 +27,6 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.populate_node_list()
 		self.client.tick(using_thread=True)
 
-class files:
-	def __init__(self):
-		self.files = []
-		self.parents = []
-		self.roots = []
-	
-	def has_parent(self,name):
-		for parent in self.parents:
-			if parent == name: return True
-		
-		return False
-	
-	def make_parent(self,name):
-		if not self.has_parent(name):
-			print 'Added parent: '+name
-			self.parents.append(name)
-			
-	def has_root(self,name):
-		for root in self.roots:
-			if root == name: return True
-		
-		return False
-	
-	def make_root(self,name):
-		if not self.has_root(name):
-			#print 'Added root: '+name
-			self.roots.append(name)
-	
-	def has_file(self,name):
-		for file in self.files:
-			if file == name: return True
-		
-		return False
-	
-	def make_file(self,name):
-		if not self.has_file(name):
-			#print 'Added file: '+name
-			self.files.append(name)
-
 class Crescendo_GUI(QtGui.QMainWindow):
 	def __init__(self, parent=None):
 		QtGui.QWidget.__init__(self, parent)
@@ -74,8 +35,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.setWindowIcon(QtGui.QIcon(os.path.join('gfx','icon.ico')))
 		
 		self.info = {'nodes':[]}
-		
-		self.files = files()
 			
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
@@ -84,7 +43,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.connect_node)
-		self.ui.prg_download.setValue(0)
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
@@ -156,6 +114,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def grab_file(self):
 		_nr = self.ui.lst_nodes.currentRow()
 		_fr = self.ui.lst_files.currentItem().text(0)
+		_size = self.ui.lst_files.currentItem().text(1)
 		
 		_type = str(self.ui.lst_files.currentItem().text(1).split(' ')[1])
 		_temp_filesize = int(self.ui.lst_files.currentItem().text(1).split(' ')[0])
@@ -163,6 +122,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		elif _type == 'MB': _filesize = _temp_filesize*1000000
 		
 		self.ui.prg_download.setMaximum(_filesize)
+		
+		i=QtGui.QTreeWidgetItem([_fr,str(0),_size,_path])
+		self.ui.lst_queue.addTopLevelItem(i)
 		
 		_h = self.info['nodes'][_nr]['host']
 		_f = _fr

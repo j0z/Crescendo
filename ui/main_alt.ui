@@ -23,9 +23,13 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="btn_grab">
+         <widget class="QToolButton" name="btn_grab">
           <property name="text">
-           <string>Download</string>
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../gfx/icons.qrc">
+            <normaloff>:/download.png</normaloff>:/download.png</iconset>
           </property>
          </widget>
         </item>
@@ -39,7 +43,7 @@
         <item>
          <widget class="QProgressBar" name="prg_download">
           <property name="value">
-           <number>24</number>
+           <number>0</number>
           </property>
          </widget>
         </item>
@@ -68,7 +72,7 @@
       <item row="3" column="0">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -170,7 +174,7 @@
      <x>0</x>
      <y>0</y>
      <width>779</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -201,6 +205,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../gfx/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/main_alt.ui'
+# Form implementation generated from reading ui file 'ui\main_alt.ui'
 #
-# Created: Mon Feb  6 11:45:58 2012
+# Created: Mon Feb 06 12:30:54 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,14 +29,17 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.btn_grab = QtGui.QPushButton(self.centralwidget)
+        self.btn_grab = QtGui.QToolButton(self.centralwidget)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_grab.setIcon(icon)
         self.btn_grab.setObjectName(_fromUtf8("btn_grab"))
         self.horizontalLayout_2.addWidget(self.btn_grab)
         self.btn_connect = QtGui.QPushButton(self.centralwidget)
         self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.horizontalLayout_2.addWidget(self.btn_connect)
         self.prg_download = QtGui.QProgressBar(self.centralwidget)
-        self.prg_download.setProperty("value", 24)
+        self.prg_download.setProperty("value", 0)
         self.prg_download.setObjectName(_fromUtf8("prg_download"))
         self.horizontalLayout_2.addWidget(self.prg_download)
         self.lab_connected_nodes = QtGui.QLabel(self.centralwidget)
@@ -89,7 +92,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.gridLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 779, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 779, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -110,12 +113,12 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Crescendo", None, QtGui.QApplication.UnicodeUTF8))
-        self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "Download", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "Connect", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected Nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Nodes", None, QtGui.QApplication.UnicodeUTF8))
@@ -133,3 +136,4 @@ class Ui_MainWindow(object):
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
 
+import icons_rc
