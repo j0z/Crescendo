@@ -146,16 +146,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			
 			i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root']])
 			self.ui.lst_files.addTopLevelItem(i)
-			#for _f in file['files']:
-			#	print _f
-			#	_sf = _f.split('/')
-			#	
-			#	if len(_sf)==1:
-			#		_sf = _f.split('\\')
-			#	
-			#	print _sf[len(_sf)-1]
-			#	i=QtGui.QTreeWidgetItem([_sf[len(_sf)-1],str(0),_f])
-			#	self.ui.lst_files.addTopLevelItem(i)
 	
 	def connect_node(self):
 		if self.ui.lne_ip.text().count(':'):	
