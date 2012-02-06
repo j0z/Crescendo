@@ -14,8 +14,8 @@ class Crescendo_Thread(QtCore.QThread):
 		
 		QtCore.QThread.__init__(self)
 	
-	def set_download_progress(self,progress):
-		self.emit(QtCore.SIGNAL("output(int)"), int(progress))
+	def set_download_progress(self,progress,file):
+		self.emit(QtCore.SIGNAL("output(int,QString)"), int(progress),file)
 	
 	def shutdown(self):
 		self.client.shutdown()
@@ -39,7 +39,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
 		
-		self.connect(self.crescendo, QtCore.SIGNAL("output(int)"), self.set_download_progress)
+		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
 		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.connect_node)
@@ -134,8 +134,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def grabbed_file(self,file):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
 	
-	def set_download_progress(self,progress):
+	def set_download_progress(self,progress,file):
 		self.ui.prg_download.setValue(self.ui.prg_download.value()+int(progress))
+		
+		for row in range(self.ui.lst_files.topLevelItemCount()):
+			if self.ui.lst_files.itemAt(QtCore.QPoint(0,row)).text(0) == file:
+				self.ui.lst_queue.itemAt(QtCore.QPoint(0,row)).setText(1,str(self.ui.prg_download.value()+int(progress)))
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

@@ -72,7 +72,7 @@
       <item row="3" column="0">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -147,6 +147,12 @@
       </item>
       <item row="2" column="0">
        <widget class="QTreeWidget" name="lst_files">
+        <property name="indentation">
+         <number>0</number>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
         <column>
          <property name="text">
           <string>File</string>

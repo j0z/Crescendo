@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main_alt.ui'
 #
-# Created: Mon Feb 06 12:30:54 2012
+# Created: Mon Feb 06 14:06:09 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -87,6 +87,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         self.gridLayout.addWidget(self.tabWidget, 3, 0, 1, 1)
         self.lst_files = QtGui.QTreeWidget(self.centralwidget)
+        self.lst_files.setIndentation(0)
         self.lst_files.setObjectName(_fromUtf8("lst_files"))
         self.gridLayout.addWidget(self.lst_files, 2, 0, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout)
@@ -113,7 +114,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -128,6 +129,7 @@ class Ui_MainWindow(object):
         self.lst_queue.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Path", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "Queue", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.setSortingEnabled(True)
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Path", None, QtGui.QApplication.UnicodeUTF8))

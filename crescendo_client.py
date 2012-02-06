@@ -118,7 +118,7 @@ class Client(basic.LineReceiver):
 		
 		self.file.write(data)
 		
-		self.main_parent.set_download_progress(len(data))
+		self.main_parent.set_download_progress(len(data),self.file.name)
 		self.setLineMode()
 		
 		if self.file.is_done():
