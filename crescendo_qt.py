@@ -1,4 +1,4 @@
-import sys, threading, sys
+import os, sys, threading, sys
 from PyQt4 import QtCore, QtGui
 
 if '-metro' in sys.argv:
@@ -27,6 +27,45 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.populate_node_list()
 		self.client.tick(using_thread=True)
 
+class files:
+	def __init__(self):
+		self.files = []
+		self.parents = []
+		self.roots = []
+	
+	def has_parent(self,name):
+		for parent in self.parents:
+			if parent == name: return True
+		
+		return False
+	
+	def make_parent(self,name):
+		if not self.has_parent(name):
+			print 'Added parent: '+name
+			self.parents.append(name)
+			
+	def has_root(self,name):
+		for root in self.roots:
+			if root == name: return True
+		
+		return False
+	
+	def make_root(self,name):
+		if not self.has_root(name):
+			print 'Added root: '+name
+			self.roots.append(name)
+	
+	def has_file(self,name):
+		for file in self.files:
+			if file == name: return True
+		
+		return False
+	
+	def make_file(self,name):
+		if not self.has_file(name):
+			print 'Added file: '+name
+			self.files.append(name)
+
 class Crescendo_GUI(QtGui.QMainWindow):
 	def __init__(self, parent=None):
 		QtGui.QWidget.__init__(self, parent)
@@ -35,6 +74,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.setWindowIcon(QtGui.QIcon('gfx\\icon.ico'))
 		
 		self.info = {'nodes':[]}
+		
+		self.files = files()
 			
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
@@ -89,37 +130,59 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				break
 	
 	def select_node(self):
-		#self.ui.lst_files.clear()
+		self.ui.lst_files.clear()
 		
 		_n = self.ui.lst_nodes.currentRow()
 		
+		#Clear list
+		#takeTopLevelItem
+		
 		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
 		
+		self.rlist = []
+		
 		for file in self.info['nodes'][_n]['files']:
-			_filesize = int(file['size'])
-			_temp_filesize = int(file['size'])
+			for parent in file['parents']:
+				if len(parent):
+					self.files.make_parent(parent)
+				else:
+					root_item=QtGui.QTreeWidgetItem(['root',str(0)])
+					self.ui.lst_files.addTopLevelItem(root_item)
 			
-			if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
-			else: _filesize ='%s kb' % (_temp_filesize/1024)
-			#_filesize ='%.2f MB' % (_temp_filesize/1000000.0)
+			#for root in file['root']:
+			#if len(parent):
+			self.files.make_root(file['root'])
 			
-			print file
-			if file['root']:
-				item=QtGui.QTreeWidgetItem([file['root'],str(_filesize)])
-				QtGui.QTreeWidgetItem(item,[file['name'],str(_filesize)])
-			else:
-				item=QtGui.QTreeWidgetItem([file['name'],str(_filesize)])
+			for _f in file['files']:
+				self.files.make_file(_f)
+		
+		for parent in self.files.parents:
+			t=QtGui.QTreeWidgetItem([parent,str(0)])
+			root_item.addChild(t)
+			root_item=t
+		
+		for file in self.files.files:
+		
+			#hahahah this is the worst code I've ever written
+			_sf = file.split('/')
+			if len(_sf) == 1:
+				_sf = file.split('\\')
+			#print _sf[len(_sf)-1]
 			
-			#self.ui.lst_files.expandItem(item)
+			f = self.ui.lst_files.findItems(QtCore.QString(_sf[len(_sf)-2]),QtCore.Qt.MatchFlags(QtCore.Qt.MatchRecursive))
+			try:
+				print repr(f[0])
+				QtGui.QTreeWidgetItem(f[0],[_sf[len(_sf)-1],str(0)])
+			except:
+				print 'Let\'s be honest: I\'ve been doing this all week. This failing is the only issue I have right now, so everyone can deal with it.'
 
-			self.ui.lst_files.addTopLevelItem(item)
 	
 	def connect_node(self):
 		if self.ui.lne_ip.text().count(':'):	
 			_h,_p = self.ui.lne_ip.text().split(':')
 			self.crescendo.client.add_node((_h,int(_p)))
 			self.ui.lne_ip.setText('')
-	
+			
 	def grab_file(self):
 		_nr = self.ui.lst_nodes.currentRow()
 		_fr = self.ui.lst_files.currentItem().text(0)

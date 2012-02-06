@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sun Feb 05 03:18:45 2012
+# Created: Sun Feb 05 19:02:34 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -111,4 +111,5 @@ class Ui_MainWindow(object):
         self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "Grab", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Path", None, QtGui.QApplication.UnicodeUTF8))
 
