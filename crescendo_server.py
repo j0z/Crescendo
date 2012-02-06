@@ -19,37 +19,6 @@ def compress(self,fname):
 	global __sevenzip__
 	subprocess.Popen([__sevenzip__,'a','-t7z',fname+'.7z',fname])
 
-def find_root(list,what):
-	for entry in list:
-		if entry == what:
-			return list.index(entry)
-	
-	return -1
-
-def tier(rlist,flist):
-	_temp = []
-	_last = ''
-	for root in rlist:
-		_parents = []
-		
-		#TODO: Is this multiplat?
-		for _parent in _last.split(os.sep):
-			_parents.append(_parent)
-		
-		#_root = root.replace(_last,'')
-		
-		root.replace(_last,'')
-		_temp.append({'parents':_parents,'root':root,'files':flist[rlist.index(root)]})
-		_last = root
-	
-	#
-	for entry in _temp:
-		print '%s' % ('\t'*(len(entry['parents'])-1))+entry['root']
-		for f in entry['files']:
-			print '\t'*(len(entry['parents'])-1)+f
-	
-	return _temp
-
 class File:
 	def __init__(self,name,fname,root):
 		self.name = name
@@ -230,14 +199,12 @@ class Node(Factory):
 					_f = File(infile,_fname,root.replace(self.info['share_dir'],''))
 					
 					self.files.append(_f)
-					#self.info['files'].append(_f.info)
+					self.info['files'].append(_f.info)
 					
-					_fr = find_root(self.rlist,root)
+					#_fr = find_root(self.rlist,root)
 					
-					if _fr>=0: self.flist[_fr].append(_fname)
-					elif _fr == -1: self.rlist.append(root);self.flist.append([_fname])
-		
-		self.info['files'] = tier(self.rlist,self.flist)
+					#if _fr>=0: self.flist[_fr].append(_fname)
+					#elif _fr == -1: self.rlist.append(root);self.flist.append([_fname])
 		
 		self.log('[Files] Sharing %s files' % len(self.info['files']))
 	

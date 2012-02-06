@@ -52,7 +52,7 @@ class files:
 	
 	def make_root(self,name):
 		if not self.has_root(name):
-			print 'Added root: '+name
+			#print 'Added root: '+name
 			self.roots.append(name)
 	
 	def has_file(self,name):
@@ -63,7 +63,7 @@ class files:
 	
 	def make_file(self,name):
 		if not self.has_file(name):
-			print 'Added file: '+name
+			#print 'Added file: '+name
 			self.files.append(name)
 
 class Crescendo_GUI(QtGui.QMainWindow):
@@ -71,7 +71,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		QtGui.QWidget.__init__(self, parent)
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
-		self.setWindowIcon(QtGui.QIcon('gfx\\icon.ico'))
+		self.setWindowIcon(QtGui.QIcon(os.path.join('gfx','icon.ico')))
 		
 		self.info = {'nodes':[]}
 		
@@ -134,48 +134,28 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		_n = self.ui.lst_nodes.currentRow()
 		
-		#Clear list
-		#takeTopLevelItem
-		
 		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
 		
-		self.rlist = []
-		
 		for file in self.info['nodes'][_n]['files']:
-			for parent in file['parents']:
-				if len(parent):
-					self.files.make_parent(parent)
-				else:
-					root_item=QtGui.QTreeWidgetItem(['root',str(0)])
-					self.ui.lst_files.addTopLevelItem(root_item)
-			
-			#for root in file['root']:
-			#if len(parent):
-			self.files.make_root(file['root'])
-			
-			for _f in file['files']:
-				self.files.make_file(_f)
-		
-		for parent in self.files.parents:
-			t=QtGui.QTreeWidgetItem([parent,str(0)])
-			root_item.addChild(t)
-			root_item=t
-		
-		for file in self.files.files:
-		
-			#hahahah this is the worst code I've ever written
-			_sf = file.split('/')
-			if len(_sf) == 1:
-				_sf = file.split('\\')
-			#print _sf[len(_sf)-1]
-			
-			f = self.ui.lst_files.findItems(QtCore.QString(_sf[len(_sf)-2]),QtCore.Qt.MatchFlags(QtCore.Qt.MatchRecursive))
-			try:
-				print repr(f[0])
-				QtGui.QTreeWidgetItem(f[0],[_sf[len(_sf)-1],str(0)])
-			except:
-				print 'Let\'s be honest: I\'ve been doing this all week. This failing is the only issue I have right now, so everyone can deal with it.'
+			_filesize = int(file['size'])
+			_temp_filesize = int(file['size'])
 
+			if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
+			else: _filesize ='%s kb' % (_temp_filesize/1024)
+			
+			
+			i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root']])
+			self.ui.lst_files.addTopLevelItem(i)
+			#for _f in file['files']:
+			#	print _f
+			#	_sf = _f.split('/')
+			#	
+			#	if len(_sf)==1:
+			#		_sf = _f.split('\\')
+			#	
+			#	print _sf[len(_sf)-1]
+			#	i=QtGui.QTreeWidgetItem([_sf[len(_sf)-1],str(0),_f])
+			#	self.ui.lst_files.addTopLevelItem(i)
 	
 	def connect_node(self):
 		if self.ui.lne_ip.text().count(':'):	
