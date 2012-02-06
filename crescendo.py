@@ -149,7 +149,7 @@ class crescendo:
 		
 	def set_download_progress(self,progress,file):
 		if self.callback:
-			self.callback.crescendo.set_download_progress(progress,file)
+			self.callback.crescendo.set_download_progress(progress,json.dumps(file))
 	
 	def shutdown(self):
 		if self.client.running:

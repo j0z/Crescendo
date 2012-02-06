@@ -1,4 +1,4 @@
-import os, sys, threading, sys
+import os, sys, json, threading, sys
 from PyQt4 import QtCore, QtGui
 
 if '-metro' in sys.argv:
@@ -40,9 +40,10 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.crescendo.start()
 		
 		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
-		self.ui.lst_nodes.currentItemChanged.connect(self.select_node)
+		self.ui.lst_nodes.itemClicked.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.connect_node)
+		self.ui.btn_clear_downloads.clicked.connect(self.clear_downloads)
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
@@ -90,21 +91,23 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def select_node(self):
 		self.ui.lst_files.clear()
 		
-		_n = self.ui.lst_nodes.currentRow()
+		_nselected = self.ui.lst_nodes.selectedItems()
 		
-		if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
-		
-		for file in self.info['nodes'][_n]['files']:
-			_filesize = int(file['size'])
-			_temp_filesize = int(file['size'])
+		for selected in _nselected:
+			_n = self.ui.lst_nodes.row(selected)
+			
+			if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
+			
+			for file in self.info['nodes'][_n]['files']:
+				_filesize = int(file['size'])
+				_temp_filesize = int(file['size'])
 
-			if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
-			else: _filesize ='%s kb' % (_temp_filesize/1024)
-			
-			
-			i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root']])
-			self.ui.lst_files.addTopLevelItem(i)
-	
+				if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
+				else: _filesize ='%s kb' % (_temp_filesize/1024)
+				
+				i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root'],selected.text()])
+				self.ui.lst_files.addTopLevelItem(i)
+		
 	def connect_node(self):
 		if self.ui.lne_ip.text().count(':'):	
 			_h,_p = self.ui.lne_ip.text().split(':')
@@ -112,7 +115,17 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			self.ui.lne_ip.setText('')
 			
 	def grab_file(self):
-		_nr = self.ui.lst_nodes.currentRow()
+		_nr = -1
+		
+		for _n in self.ui.lst_nodes.selectedItems():
+			if _n.text()==self.ui.lst_files.currentItem().text(3):
+				_nr = self.ui.lst_nodes.row(_n)
+				break
+		
+		if _nr==-1:
+			print 'Pick a file first.'
+			return
+		
 		_name= self.ui.lst_files.currentItem().text(0)
 		_size = self.ui.lst_files.currentItem().text(1)
 		_path = self.ui.lst_files.currentItem().text(2)
@@ -131,15 +144,30 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.crescendo.client.get_file(_h,_name)
 	
+	def clear_downloads(self):
+		self.ui.lst_queue.clear()
+	
 	def grabbed_file(self,file):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
 	
 	def set_download_progress(self,progress,file):
-		self.ui.prg_download.setValue(self.ui.prg_download.value()+int(progress))
+		file = json.loads(str(file))
 		
-		for row in range(self.ui.lst_files.topLevelItemCount()):
-			if self.ui.lst_files.itemAt(QtCore.QPoint(0,row)).text(0) == file:
-				self.ui.lst_queue.itemAt(QtCore.QPoint(0,row)).setText(1,str(self.ui.prg_download.value()+int(progress)))
+		_temp_filesize = int(progress)
+		
+		if _temp_filesize>=self.ui.prg_download.value():
+			self.ui.prg_download.setValue(_temp_filesize)
+		
+		if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
+		else: _filesize ='%s kb' % (_temp_filesize/1024)
+		
+		if _temp_filesize>=file['size']:
+			self.ui.prg_download.setValue(0)
+		
+		#TODO: Send over file path and double check it.
+		_search = self.ui.lst_queue.findItems(file['name'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchRecursive))[0]
+		
+		_search.setText(1,_filesize+' (%.2f%%)' % ((progress/float(self.ui.prg_download.maximum()))*100))
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

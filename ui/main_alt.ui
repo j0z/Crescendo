@@ -24,6 +24,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QToolButton" name="btn_grab">
+          <property name="toolTip">
+           <string extracomment="Download"/>
+          </property>
           <property name="text">
            <string>...</string>
           </property>
@@ -34,9 +37,13 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_connect">
+         <widget class="QToolButton" name="btn_connect">
           <property name="text">
-           <string>Connect</string>
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../gfx/icons.qrc">
+            <normaloff>:/add.png</normaloff>:/add.png</iconset>
           </property>
          </widget>
         </item>
@@ -88,7 +95,11 @@
              <number>0</number>
             </property>
             <item row="0" column="0">
-             <widget class="QListWidget" name="lst_nodes"/>
+             <widget class="QListWidget" name="lst_nodes">
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ExtendedSelection</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -103,6 +114,9 @@
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0">
              <widget class="QTreeWidget" name="lst_queue">
+              <property name="indentation">
+               <number>0</number>
+              </property>
               <column>
                <property name="text">
                 <string>File</string>
@@ -124,6 +138,33 @@
                </property>
               </column>
              </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_clear_downloads">
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -166,6 +207,11 @@
         <column>
          <property name="text">
           <string>Path</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Node</string>
          </property>
         </column>
        </widget>

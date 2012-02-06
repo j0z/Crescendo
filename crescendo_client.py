@@ -19,6 +19,8 @@ class File:
 		self.data = ''
 		self.done = False
 		
+		self.info = {'name':name,'fname':fname,'size':self.total_size}
+		
 		self.f = open(os.path.join('downloads',self.name),'wb')
 	
 	def compress(self):
@@ -118,7 +120,7 @@ class Client(basic.LineReceiver):
 		
 		self.file.write(data)
 		
-		self.main_parent.set_download_progress(len(data),self.file.name)
+		self.main_parent.set_download_progress(self.file.get_size(),self.file.info)
 		self.setLineMode()
 		
 		if self.file.is_done():
@@ -126,6 +128,7 @@ class Client(basic.LineReceiver):
 			self.sendLine('put::fie::okay')
 			self.ping_loop.start(10)
 			self.file.close()
+			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
 			print '[services] Restarted'
 		else:
 			self.sendLine('get::fil::%s' % (self.getting_file))
