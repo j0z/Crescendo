@@ -113,8 +113,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 			
 	def grab_file(self):
 		_nr = self.ui.lst_nodes.currentRow()
-		_fr = self.ui.lst_files.currentItem().text(0)
+		_name= self.ui.lst_files.currentItem().text(0)
 		_size = self.ui.lst_files.currentItem().text(1)
+		_path = self.ui.lst_files.currentItem().text(2)
 		
 		_type = str(self.ui.lst_files.currentItem().text(1).split(' ')[1])
 		_temp_filesize = int(self.ui.lst_files.currentItem().text(1).split(' ')[0])
@@ -123,13 +124,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.ui.prg_download.setMaximum(_filesize)
 		
-		i=QtGui.QTreeWidgetItem([_fr,str(0),_size,_path])
+		i=QtGui.QTreeWidgetItem([_name,str(0),_size,_path])
 		self.ui.lst_queue.addTopLevelItem(i)
 		
 		_h = self.info['nodes'][_nr]['host']
-		_f = _fr
 		
-		self.crescendo.client.get_file(_h,_f)
+		self.crescendo.client.get_file(_h,_name)
 	
 	def grabbed_file(self,file):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
