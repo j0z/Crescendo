@@ -110,7 +110,6 @@ class Connection(basic.LineReceiver):
 				self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil':
-				print '[%s] Got file request for %s' % (self.name,line['val'])
 				_f = self.node.get_file(line['val'])
 				
 				try:

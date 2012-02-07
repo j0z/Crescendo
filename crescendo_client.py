@@ -347,7 +347,6 @@ class connect(threading.Thread):
 	
 	def get_client(self,host):
 		for client in self.clients:
-			print client.host[0],host
 			if client.host[0]==host:
 				return client
 		
