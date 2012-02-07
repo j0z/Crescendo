@@ -1,5 +1,5 @@
 #/usr/bin/python
-import subprocess, json, socket, threading, sys
+import subprocess, json, threading, sys
 import crescendo_server as server
 import crescendo_search as search
 import crescendo_client as client
@@ -31,8 +31,6 @@ class crescendo:
 		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
 		self.search = search.Engine(self,ip_list=self.ip_list)
-		
-		self.ip = socket.gethostbyname(socket.gethostname())
 		
 		self.can_search = False
 		self.running = True

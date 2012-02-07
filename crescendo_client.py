@@ -226,7 +226,7 @@ class Client(basic.LineReceiver):
 					#	For now it works because the node config is read when we create self.server
 					#	in crescendo.py. When the config file format changes we'll need to edit this.
 					if self.main_parent.server.info['searchable'] and self.main_parent.has_node(('127.0.0.1',9001)):
-						self.sendLine('put::bro::%s:%s' % (self.main_parent.ip,9001))
+						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
 					
 					#I would like to add some kind of message here if the node was added
 					#or not... just so the user can know that they are getting nodes
