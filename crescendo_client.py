@@ -53,6 +53,9 @@ class Download(basic.LineReceiver):
 	def __init__(self):
 		print 'its running'
 	
+	def connectionLost(self, reason):
+		print 'Download is done...'
+	
 	def connectionMade(self):
 		print 'Downloader is running!'
 		self.main_parent = self.factory.parent.main_parent
@@ -114,6 +117,8 @@ class Download(basic.LineReceiver):
 			self.file.close()
 			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
 			print '[services] Restarted'
+			self.transport.loseConnection()
+			return
 		else:
 			self.sendLine('get::fil::%s' % (self.factory.file))
 			#self.setRawMode()
