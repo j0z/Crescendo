@@ -59,7 +59,6 @@ class Connection(basic.LineReceiver):
 	def lineReceived(self, line):
 		line = self.parse_line(line)
 		self.last_seen = time.time()
-		#print line
 
 		if line['com']=='put':
 			if line['opt']=='hnd':
@@ -126,7 +125,6 @@ class Connection(basic.LineReceiver):
 					f.seek(self.download_position)
 					
 					byte = f.read(8100)
-					#print len(byte)
 					
 					self.download_position+=len(byte)
 					
@@ -162,6 +160,7 @@ class Connection(basic.LineReceiver):
 			self.transport.loseConnection()
 	
 	def broadcast(self):
+		print len(json.dumps(self.node.info))
 		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
 
 class Node(Factory):
@@ -200,11 +199,6 @@ class Node(Factory):
 					
 					self.files.append(_f)
 					self.info['files'].append(_f.info)
-					
-					#_fr = find_root(self.rlist,root)
-					
-					#if _fr>=0: self.flist[_fr].append(_fname)
-					#elif _fr == -1: self.rlist.append(root);self.flist.append([_fname])
 		
 		self.log('[Files] Sharing %s files' % len(self.info['files']))
 	

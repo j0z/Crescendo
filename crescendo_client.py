@@ -22,19 +22,13 @@ class File:
 		
 		self.info = {'name':name,'fname':fname,'size':self.total_size}
 		
-		#if not self.save_dir:
-		#try:
 		try:
 			os.mkdir(self.save_dir)
 			print '[crescendo] Created folder'
 		except:
-			pass			
-			#print '[crescendo.fatal] Could not create download folder'
+			pass
 	
 		self.f = open(os.path.join(self.save_dir,self.name),'wb')
-		#except:
-		#else:
-		#	self.f = open(os.path.join(self.save_dir,self.name),'wb')
 	
 	def compress(self):
 		pass
@@ -127,6 +121,7 @@ class Client(basic.LineReceiver):
 				_l = {'com':'put','opt':'fil','val':line}
 			
 			self.parse_data(_l)
+			print _l
 	
 	def rawDataReceived(self, data):
 		self.last_seen = time.time()
