@@ -33,6 +33,7 @@ class Connection(basic.LineReceiver):
 		self.state = 'GETHND'
 		self.last_seen = time.time()
 		self.download_position = 0
+		self.is_downloader = False
 		
 		self.name = ''	
 	
@@ -77,9 +78,9 @@ class Connection(basic.LineReceiver):
 			
 			elif line['opt']=='fie':
 				self.download_position = 0
-				self.ping_loop.start(10)
-				self.broadcast_loop.start(self.node.info['broadcast_every'])
-				print '[services] Restarted'
+				#self.ping_loop.start(10)
+				#self.broadcast_loop.start(self.node.info['broadcast_every'])
+				#print '[services] Restarted'
 			
 			elif line['opt']=='png':
 				self.last_seen = time.time()
@@ -91,6 +92,12 @@ class Connection(basic.LineReceiver):
 					self.node.info['broadcasting'].append(_n)
 					self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
 					self.sendLine('put::bro::okay')
+			
+			#TODO: Document!
+			elif line['opt']=='dwn':
+				self.is_downloader=True
+				
+				self.sendLine('put::dwn::okay')
 		
 		elif line['com']=='get':
 			if line['opt']=='inf':
@@ -109,7 +116,7 @@ class Connection(basic.LineReceiver):
 				self.broadcast_loop = task.LoopingCall(self.broadcast)
 				self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
-			elif line['opt']=='fil':
+			elif line['opt']=='fil' and self.is_downloader:
 				_f = self.node.get_file(line['val'])
 				
 				try:
