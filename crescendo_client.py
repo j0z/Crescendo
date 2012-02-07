@@ -61,6 +61,8 @@ class Client(basic.LineReceiver):
 		self.ping_loop = task.LoopingCall(self.ping)
 		
 		self.last_seen = time.time()
+		
+		self.file_list_temp = []
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -109,7 +111,7 @@ class Client(basic.LineReceiver):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def lineReceived(self, line):
-		print repr(line)
+		#print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -193,12 +195,13 @@ class Client(basic.LineReceiver):
 					_nodes = str(len(self.parent.info['broadcasting']))
 				
 				#Get the info packet and run it through json
-				try:
-					self.parent.info = json.loads(line['val'])
-					self.parent.info['host'] = self.host
-					self.main_parent.add_node_info(self.host,self.parent.info)
-				except:
-					pass
+				#try:
+				self.parent.info = json.loads(line['val'])
+				self.parent.info['host'] = self.host
+				self.parent.info['files'] = self.file_list_temp
+				self.main_parent.add_node_info(self.host,self.parent.info)
+				#except:
+				#	pass
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
@@ -224,6 +227,25 @@ class Client(basic.LineReceiver):
 					for node in self.parent.info['broadcasting']:
 						if not str(node[0]) == self.main_parent.info['host'][0]:
 							self.main_parent.add_node((str(node[0]),int(node[1])))
+				
+				#Finally, we let the node know that we need its file listing
+				if not len(self.file_list_temp):
+					self.sendLine('get::fli::0')
+			
+			elif line['opt']=='fli':
+				if line['val']=='okay':
+					self.parent.info['files'] = self.file_list_temp[:]
+					#print self.parent.info['files']
+					#print 'We good!'
+					#self.file_list_temp = []
+				else:
+					#print 'Still not done?'
+					_tlist = json.loads(line['val'])
+					for entry in _tlist:
+						self.file_list_temp.append(entry)
+						print 'added file '+entry['name']
+					
+					self.sendLine('get::fli::%s' % len(self.file_list_temp))
 			
 			elif line['opt']=='fib':
 				self.main_parent.log('[client->%s] Failed grabbing file \'%s\'' % (self.parent.info['name'],self.getting_file))
