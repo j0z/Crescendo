@@ -256,6 +256,7 @@ class Client(basic.LineReceiver):
 			if line['opt']=='bro':
 				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 		else:
+			print line
 			pass
 			#if str(line).count('<crlf>'):
 			#a = open('debug','ab')
@@ -273,7 +274,6 @@ class ClientParent(ReconnectingClientFactory):
 		self.parent = parent
 		self.name = name
 		self.connections = []
-		
 		self.info = None
 		
 		self.debug = True
@@ -299,7 +299,7 @@ class ClientParent(ReconnectingClientFactory):
 		#self.log('[client->server] Connecting...')
 		pass
 
-	def buildProtocol(self, addr):	
+	def buildProtocol(self, addr):
 		#self.log('[client->server] Connected')
 		_c = Client(self.host,self)
 		self.connections.append(_c)
