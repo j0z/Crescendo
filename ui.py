@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main_alt.ui'
 #
-# Created: Mon Feb 06 17:40:00 2012
+# Created: Mon Feb 06 21:50:05 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,10 +42,6 @@ class Ui_MainWindow(object):
         self.btn_connect.setIcon(icon1)
         self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.horizontalLayout_2.addWidget(self.btn_connect)
-        self.prg_download = QtGui.QProgressBar(self.centralwidget)
-        self.prg_download.setProperty("value", 0)
-        self.prg_download.setObjectName(_fromUtf8("prg_download"))
-        self.horizontalLayout_2.addWidget(self.prg_download)
         self.lab_connected_nodes = QtGui.QLabel(self.centralwidget)
         self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
         self.horizontalLayout_2.addWidget(self.lab_connected_nodes)
@@ -106,6 +102,16 @@ class Ui_MainWindow(object):
         self.lst_files.setObjectName(_fromUtf8("lst_files"))
         self.gridLayout.addWidget(self.lst_files, 2, 0, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout)
+        self.horizontalLayout_8 = QtGui.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
+        self.lab_download = QtGui.QLabel(self.centralwidget)
+        self.lab_download.setObjectName(_fromUtf8("lab_download"))
+        self.horizontalLayout_8.addWidget(self.lab_download)
+        self.prg_download = QtGui.QProgressBar(self.centralwidget)
+        self.prg_download.setProperty("value", 0)
+        self.prg_download.setObjectName(_fromUtf8("prg_download"))
+        self.horizontalLayout_8.addWidget(self.prg_download)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 779, 21))
@@ -150,6 +156,7 @@ class Ui_MainWindow(object):
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Path", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Node", None, QtGui.QApplication.UnicodeUTF8))
+        self.lab_download.setText(QtGui.QApplication.translate("MainWindow", "Download: ", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))

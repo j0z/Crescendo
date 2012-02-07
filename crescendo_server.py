@@ -59,7 +59,6 @@ class Connection(basic.LineReceiver):
 	def lineReceived(self, line):
 		line = self.parse_line(line)
 		self.last_seen = time.time()
-		#print line
 
 		if line['com']=='put':
 			if line['opt']=='hnd':
@@ -126,7 +125,6 @@ class Connection(basic.LineReceiver):
 					f.seek(self.download_position)
 					
 					byte = f.read(8100)
-					#print len(byte)
 					
 					self.download_position+=len(byte)
 					
@@ -136,6 +134,31 @@ class Connection(basic.LineReceiver):
 						self.download_position = 0
 				
 				self.setLineMode()
+			
+			elif line['opt']=='fli':
+				#Send our list of files down the pipe, in chunks of 32
+				_cur = int(line['val'])
+				_max = _cur+32
+				_done = False
+				
+				if _max>=len(self.node.file_list):
+					_max=(len(self.node.file_list)-_cur)
+					_done = True
+				
+				if _cur==len(self.node.file_list):
+					self.sendLine('put::fli::okay')
+					return
+				#print self.node.file_list
+				
+				#print _max,len(self.node.file_list)
+				_packet = []
+				for f in range(_cur,_max):
+					#print f,self.node.file_list[f]
+					_packet.append(self.node.file_list[f])
+				
+				self.sendLine('put::fli::%s' % (json.dumps(_packet)))
+				
+				if _done: self.sendLine('put::fli::okay')
 				
 		else:
 			print 'Garbage: '+str(line)
@@ -184,8 +207,7 @@ class Node(Factory):
 		pass
 	
 	def populate_file_list(self):
-		self.rlist = []
-		self.flist = []
+		self.file_list = []
 		
 		for root, dirs, files in os.walk(self.info['share_dir']):
 			for infile in files:
@@ -199,14 +221,10 @@ class Node(Factory):
 					_f = File(infile,_fname,root.replace(self.info['share_dir'],''))
 					
 					self.files.append(_f)
-					self.info['files'].append(_f.info)
-					
-					#_fr = find_root(self.rlist,root)
-					
-					#if _fr>=0: self.flist[_fr].append(_fname)
-					#elif _fr == -1: self.rlist.append(root);self.flist.append([_fname])
+					self.file_list.append(_f.info)
+					#self.info['files'].append(_f.info)
 		
-		self.log('[Files] Sharing %s files' % len(self.info['files']))
+		self.log('[Files] Sharing %s files' % len(self.file_list))
 	
 	def auth_user(self,usr,pas):
 		for user in self.parent.auth_db['users']:

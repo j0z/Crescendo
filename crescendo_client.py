@@ -9,11 +9,12 @@ from twisted.protocols import basic
 import os, time, json, threading
 
 class File:
-	def __init__(self,name,fname,total_size):
+	def __init__(self,name,fname,total_size,save_dir='downloads'):
 		self.name = name
 		self.fname = fname
 		self.size = 0
 		self.total_size = total_size
+		self.save_dir = save_dir
 		
 		self.fpos = 0
 		self.data = ''
@@ -21,13 +22,19 @@ class File:
 		
 		self.info = {'name':name,'fname':fname,'size':self.total_size}
 		
-		self.f = open(os.path.join('downloads',self.name),'wb')
+		try:
+			os.mkdir(self.save_dir)
+			print '[crescendo] Created folder'
+		except:
+			pass
+	
+		self.f = open(os.path.join(self.save_dir,self.name),'wb')
 	
 	def compress(self):
 		pass
 	
 	def get_size(self):
-		return os.path.getsize(os.path.join('downloads',self.name))
+		return os.path.getsize(os.path.join(self.save_dir,self.name))
 	
 	def is_done(self):
 		if self.size>=self.total_size:
@@ -54,6 +61,8 @@ class Client(basic.LineReceiver):
 		self.ping_loop = task.LoopingCall(self.ping)
 		
 		self.last_seen = time.time()
+		
+		self.file_list_temp = []
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -77,7 +86,7 @@ class Client(basic.LineReceiver):
 		self.sendLine('get::fil::%s' % (self.getting_file))
 		
 		self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
+		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'),save_dir=self.main_parent.info['save_dir'])
 		self.main_parent.wanted_files.append(self.getting_file)
 						
 		self.setRawMode()
@@ -186,12 +195,13 @@ class Client(basic.LineReceiver):
 					_nodes = str(len(self.parent.info['broadcasting']))
 				
 				#Get the info packet and run it through json
-				try:
-					self.parent.info = json.loads(line['val'])
-					self.parent.info['host'] = self.host
-					self.main_parent.add_node_info(self.host,self.parent.info)
-				except:
-					pass
+				#try:
+				self.parent.info = json.loads(line['val'])
+				self.parent.info['host'] = self.host
+				self.parent.info['files'] = self.file_list_temp
+				self.main_parent.add_node_info(self.host,self.parent.info)
+				#except:
+				#	pass
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
@@ -217,6 +227,21 @@ class Client(basic.LineReceiver):
 					for node in self.parent.info['broadcasting']:
 						if not str(node[0]) == self.main_parent.info['host'][0]:
 							self.main_parent.add_node((str(node[0]),int(node[1])))
+				
+				#Finally, we let the node know that we need its file listing
+				#TODO: Check to see if the size of our list is the size of the node's list
+				if not len(self.file_list_temp):
+					self.sendLine('get::fli::0')
+			
+			elif line['opt']=='fli':
+				if line['val']=='okay':
+					self.parent.info['files'] = self.file_list_temp[:]
+				else:
+					_tlist = json.loads(line['val'])
+					for entry in _tlist:
+						self.file_list_temp.append(entry)
+					
+					self.sendLine('get::fli::%s' % len(self.file_list_temp))
 			
 			elif line['opt']=='fib':
 				self.main_parent.log('[client->%s] Failed grabbing file \'%s\'' % (self.parent.info['name'],self.getting_file))
