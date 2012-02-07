@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import os, sys, time, copy, json, hashlib, threading
-from twisted.internet.protocol import Factory
+from twisted.internet.protocol import ServerFactory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
 from twisted.internet import task
@@ -189,7 +189,9 @@ class Connection(basic.LineReceiver):
 	def broadcast(self):
 		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
 
-class Node(Factory):
+class Node(ServerFactory):
+	protocol = Connection
+
 	def __init__(self,info,parent=None):
 		self.info = info
 		

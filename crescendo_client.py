@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from __future__ import with_statement
-from twisted.internet import reactor
+from twisted.internet import reactor, defer
 from twisted.internet.protocol import Protocol, ClientFactory, ReconnectingClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
@@ -100,6 +100,9 @@ class Client(basic.LineReceiver):
 
 	def sendLine(self, line):
 		self.transport.write(str(line)+'\r\n')
+	
+	def connectionMade(self): 
+		print 'CONNECTION MADE'
 	
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
@@ -268,7 +271,9 @@ class Client(basic.LineReceiver):
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
 			self.stop()
 		
-class ClientParent(ReconnectingClientFactory):
+class ClientParent(ClientFactory):
+	protocol = Client
+
 	def __init__(self,host,parent,name='Unnamed'):
 		self.host = host
 		self.parent = parent
