@@ -25,6 +25,9 @@
         <item>
          <widget class="QToolButton" name="btn_grab">
           <property name="toolTip">
+           <string/>
+          </property>
+          <property name="statusTip">
            <string extracomment="Download"/>
           </property>
           <property name="text">
@@ -38,19 +41,15 @@
         </item>
         <item>
          <widget class="QToolButton" name="btn_connect">
+          <property name="statusTip">
+           <string extracomment="Download"/>
+          </property>
           <property name="text">
            <string>...</string>
           </property>
           <property name="icon">
            <iconset resource="../gfx/icons.qrc">
             <normaloff>:/add.png</normaloff>:/add.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QProgressBar" name="prg_download">
-          <property name="value">
-           <number>0</number>
           </property>
          </widget>
         </item>
@@ -214,6 +213,24 @@
           <string>Node</string>
          </property>
         </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLabel" name="lab_download">
+        <property name="text">
+         <string>Download: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="prg_download">
+        <property name="value">
+         <number>0</number>
+        </property>
        </widget>
       </item>
      </layout>
