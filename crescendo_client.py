@@ -49,6 +49,75 @@ class File:
 	def close(self):
 		self.f.close()
 
+class Download(basic.LineReceiver):
+	def __init__(self):
+		print 'its running'
+	
+	def connectionMade(self):
+		print 'Downloader is running!'
+		self.main_parent = self.factory.parent.main_parent
+		
+		#print self.factory.file
+		self.file = File(self.factory.file,self.factory.file,self.factory.parent.get_file_info(self.factory.file,'size'),save_dir=self.main_parent.info['save_dir'])
+	
+	def parse_line(self, line):
+		#Server expects a line similar to: GET/PUT::OPT::VAL
+		if line.count('\r\n\r\n'): line = line[:len(line)-4]
+		
+		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
+	
+	def lineReceived(self, line):
+		self.last_seen = time.time()
+		#print repr(line)
+		
+		if line.count('\r\n\r\n')>=2:
+			for _l in line.split('\r\n\r\n'):
+				self.parse_data(self.parse_line(_l))
+		else:
+			_l = self.parse_line(line)
+			
+			if not _l['com'] in ['put','get']:
+				_l = {'com':'put','opt':'fil','val':line}
+			
+			self.parse_data(_l)
+
+	def parse_data(self,line):
+		print line
+		if line['com']=='put':
+			if line['opt']=='dwn' and line['val']=='okay':
+				self.sendLine('put::fil::%s' % self.factory.file)
+				self.setRawMode()
+		elif line['com']=='get':
+			if line['opt']=='hnd':
+				self.sendLine('put::dwn::%s' % self.factory.file)
+	
+	def rawDataReceived(self, data):
+		self.last_seen = time.time()
+		
+		#We keep getting odd newlines in some transfers
+		#Cut off the first few bytes and check.
+		if self.file.get_size()==0:
+			if data[0:2].count('\r\n'):
+				data=data[2:]
+		
+		self.main_parent.set_download_progress(self.file.get_size(),self.file.info)
+		
+		try:
+			self.file.write(data)
+		except:
+			pass
+		
+		if self.file.is_done():
+			self.main_parent.log('[client->%s] Grabbed file %s' % (self.factory.parent.parent.info['name'],self.factory.file))
+			self.sendLine('put::fie::okay')
+			#self.ping_loop.start(10)
+			self.file.close()
+			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
+			print '[services] Restarted'
+		else:
+			self.sendLine('get::fil::%s' % (self.factory.file))
+			#self.setRawMode()
+
 class Client(basic.LineReceiver):
 	def __init__(self,host,parent):
 		self.state = 'handshake'
@@ -77,19 +146,21 @@ class Client(basic.LineReceiver):
 	def get_file(self,file):
 		self.getting_file = str(file)
 		
-		try:
-			self.ping_loop.stop()
-		except:
-			pass
+		#try:
+		#	self.ping_loop.stop()
+		#except:
+		#	pass
 		
 		#TODO: File resuming
-		self.sendLine('get::fil::%s' % (self.getting_file))
+		#self.sendLine('get::fil::%s' % (self.getting_file))
 		
 		self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'),save_dir=self.main_parent.info['save_dir'])
+		#self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'),save_dir=self.main_parent.info['save_dir'])
 		self.main_parent.wanted_files.append(self.getting_file)
-						
-		self.setRawMode()
+		
+		self.factory = DownloadParent(self.getting_file,self)
+		self.connection = reactor.connectTCP(self.host[0], self.host[1], self.factory)
+		#self.setRawMode()
 	
 	def get_file_info(self,name,info):
 		for f in self.parent.info['files']:
@@ -132,25 +203,6 @@ class Client(basic.LineReceiver):
 				_l = {'com':'put','opt':'fil','val':line}
 			
 			self.parse_data(_l)
-	
-	def rawDataReceived(self, data):
-		self.last_seen = time.time()
-		
-		self.file.write(data)
-		
-		self.main_parent.set_download_progress(self.file.get_size(),self.file.info)
-		self.setLineMode()
-		
-		if self.file.is_done():
-			self.main_parent.log('[client->%s] Grabbed file %s' % (self.parent.info['name'],self.getting_file))
-			self.sendLine('put::fie::okay')
-			self.ping_loop.start(10)
-			self.file.close()
-			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
-			print '[services] Restarted'
-		else:
-			self.sendLine('get::fil::%s' % (self.getting_file))
-			self.setRawMode()
 	
 	def parse_data(self,line):
 		if line['com']=='get':
@@ -273,7 +325,14 @@ class Client(basic.LineReceiver):
 		if time.time()-self.last_seen >= 30:
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
 			self.stop()
-		
+
+class DownloadParent(ClientFactory):
+	protocol = Download
+	
+	def __init__(self,file,parent):
+		self.file = file
+		self.parent = parent
+
 class ClientParent(ClientFactory):
 	protocol = Client
 
