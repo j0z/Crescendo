@@ -112,7 +112,6 @@ class Connection(basic.LineReceiver):
 			elif line['opt']=='fil':
 				print '[%s] Got file request for %s' % (self.name,line['val'])
 				_f = self.node.get_file(line['val'])
-				#print 'Seeking '+line['val'].split(':')[1]
 				
 				try:
 					self.ping_loop.stop()
@@ -149,9 +148,7 @@ class Connection(basic.LineReceiver):
 				if _cur==len(self.node.file_list):
 					self.sendLine('put::fli::okay')
 					return
-				#print self.node.file_list
 				
-				#print _max,len(self.node.file_list)
 				_packet = []
 				for f in range(_cur,_max):
 					#print f,self.node.file_list[f]
