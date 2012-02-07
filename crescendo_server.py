@@ -156,7 +156,8 @@ class Connection(basic.LineReceiver):
 					#print f,self.node.file_list[f]
 					_packet.append(self.node.file_list[f])
 				
-				self.sendLine('put::fli::%s' % (json.dumps(_packet)))
+				if len(_packet):
+					self.sendLine('put::fli::%s' % (json.dumps(_packet)))
 				
 				if _done: self.sendLine('put::fli::okay')
 				

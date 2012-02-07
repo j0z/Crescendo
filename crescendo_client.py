@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from __future__ import with_statement
 from twisted.internet import reactor
-from twisted.internet.protocol import Protocol, ClientFactory
+from twisted.internet.protocol import Protocol, ClientFactory, ReconnectingClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
 from twisted.protocols import basic
@@ -102,7 +102,8 @@ class Client(basic.LineReceiver):
 		self.transport.write(str(line)+'\r\n')
 	
 	def connectionLost(self, reason):
-		pass
+		print '[Failure] Client is shutting down for some reason'
+		print reason
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -111,7 +112,8 @@ class Client(basic.LineReceiver):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def lineReceived(self, line):
-		#print repr(line)
+		self.last_seen = time.time()
+		print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -138,14 +140,13 @@ class Client(basic.LineReceiver):
 			self.ping_loop.start(10)
 			self.file.close()
 			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
+			self.sendLine('put::png::null')
 			print '[services] Restarted'
 		else:
 			self.sendLine('get::fil::%s' % (self.getting_file))
 			self.setRawMode()
 	
 	def parse_data(self,line):
-		self.last_seen = time.time()
-		
 		if line['com']=='get':
 			if line['opt']=='hnd':
 				self.sendLine('put::hnd::%s' % self.parent.name)
@@ -266,7 +267,7 @@ class Client(basic.LineReceiver):
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
 			self.stop()
 		
-class ClientParent(ClientFactory):
+class ClientParent(ReconnectingClientFactory):
 	def __init__(self,host,parent,name='Unnamed'):
 		self.host = host
 		self.parent = parent
@@ -307,6 +308,7 @@ class ClientParent(ClientFactory):
 
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason
+		ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
 
 	def clientConnectionFailed(self, connector, reason):
 		print 'Connection failed. Reason:', reason
