@@ -121,17 +121,21 @@ class Connection(basic.LineReceiver):
 				
 				self.setRawMode()
 				
-				with open(_f.fname, "rb") as f:
-					f.seek(self.download_position)
+				if self.download_position == 0:
+					self.current_file = open(_f.fname,'rb')
+				
+				#with open(_f.fname, "rb") as f:
+				self.current_file.seek(self.download_position)
 					
-					byte = f.read(8100)
-					
-					self.download_position+=len(byte)
-					
-					if len(byte):
-						self.transport.write(byte)
-					else:
-						self.download_position = 0
+				byte = self.current_file.read(8100)
+				
+				self.download_position+=len(byte)
+				
+				if len(byte):
+					self.transport.write(byte)
+				else:
+					self.download_position = 0
+					self.current_file.close()
 				
 				self.setLineMode()
 			
