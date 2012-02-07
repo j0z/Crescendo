@@ -101,12 +101,15 @@ class Client(basic.LineReceiver):
 	def sendLine(self, line):
 		self.transport.write(str(line)+'\r\n')
 	
-	def connectionMade(self): 
-		print 'CONNECTION MADE'
+	def connectionMade(self):
+		pass
+		#print 'CONNECTION MADE'
+		#self.factory = ClientParent()
+		#self.connection = reactor.connectTCP(self.host[0], self.host[1], self.factory)
 	
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
-		print reason
+		#print reason
 		#self.parent.restart()
 	
 	def parse_line(self, line):
@@ -282,6 +285,8 @@ class ClientParent(ClientFactory):
 		self.info = None
 		
 		self.debug = True
+		
+		#self.deferred = defer.Deferred()
 	
 	def log(self, text):
 		if self.debug: self.parent.parent.log(text)
@@ -312,8 +317,9 @@ class ClientParent(ClientFactory):
 		return _c
 	
 	def clientConnectionLost(self, connector, reason):
-		print 'Lost connection.  Reason:', reason
-		ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
+		pass
+		#print 'Lost connection.  Reason:', reason
+		#ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
 
 	def clientConnectionFailed(self, connector, reason):
 		print 'Connection failed. Reason:', reason
@@ -341,6 +347,7 @@ class connect(threading.Thread):
 	
 	def get_client(self,host):
 		for client in self.clients:
+			print client.host[0],host
 			if client.host[0]==host:
 				return client
 		
@@ -352,17 +359,23 @@ class connect(threading.Thread):
 		self.running = True
 		self.reactor = reactor
 		
-		try:
-			reactor.run(installSignalHandlers=0)
-		except:
-			pass
+		#try:
+		#reactor.run(installSignalHandlers=0)
+		#print 'reactor running'
+		#except:
+		#	pass
 
-	def add_client(self,host):	
-		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
-		self.ClientParent = ClientParent(host,self)
-		self.point.connect(self.ClientParent)
+	def add_client(self,host):
+		#Client(host[0],host[1])
+		#self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
+		#self.ClientParent = ClientParent(host,self)
+		#self.point.connect(self.ClientParent)
 		
-		self.clients.append(self.ClientParent)
+		#self.clients.append(self.ClientParent)
+		#Client(host,self)
+		factory = ClientParent(host,self)
+		self.clients.append(factory)
+		reactor.connectTCP(host[0], host[1], factory)
 
 		if not self.running: self.start()
 
