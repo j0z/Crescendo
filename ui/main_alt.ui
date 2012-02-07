@@ -54,6 +54,9 @@
          </widget>
         </item>
         <item>
+         <widget class="QLineEdit" name="lne_ip"/>
+        </item>
+        <item>
          <widget class="QLabel" name="lab_connected_nodes">
           <property name="text">
            <string>Connected Nodes: </string>

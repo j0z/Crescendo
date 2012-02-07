@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import os, sys, time, copy, json, hashlib, threading
-from twisted.internet.protocol import Factory
+from twisted.internet.protocol import ServerFactory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
 from twisted.internet import task
@@ -111,7 +111,6 @@ class Connection(basic.LineReceiver):
 				
 			elif line['opt']=='fil':
 				_f = self.node.get_file(line['val'])
-				#print 'Seeking '+line['val'].split(':')[1]
 				
 				try:
 					self.ping_loop.stop()
@@ -121,17 +120,21 @@ class Connection(basic.LineReceiver):
 				
 				self.setRawMode()
 				
-				with open(_f.fname, "rb") as f:
-					f.seek(self.download_position)
+				if self.download_position == 0:
+					self.current_file = open(_f.fname,'rb')
+				
+				#with open(_f.fname, "rb") as f:
+				self.current_file.seek(self.download_position)
 					
-					byte = f.read(8100)
-					
-					self.download_position+=len(byte)
-					
-					if len(byte):
-						self.transport.write(byte)
-					else:
-						self.download_position = 0
+				byte = self.current_file.read(8100)
+				
+				self.download_position+=len(byte)
+				
+				if len(byte):
+					self.transport.write(byte)
+				else:
+					self.download_position = 0
+					self.current_file.close()
 				
 				self.setLineMode()
 			
@@ -148,9 +151,7 @@ class Connection(basic.LineReceiver):
 				if _cur==len(self.node.file_list):
 					self.sendLine('put::fli::okay')
 					return
-				#print self.node.file_list
 				
-				#print _max,len(self.node.file_list)
 				_packet = []
 				for f in range(_cur,_max):
 					#print f,self.node.file_list[f]
@@ -188,7 +189,9 @@ class Connection(basic.LineReceiver):
 	def broadcast(self):
 		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
 
-class Node(Factory):
+class Node(ServerFactory):
+	protocol = Connection
+
 	def __init__(self,info,parent=None):
 		self.info = info
 		

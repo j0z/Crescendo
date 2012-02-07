@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main_alt.ui'
 #
-# Created: Mon Feb 06 21:50:05 2012
+# Created: Tue Feb 07 16:32:54 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,17 +31,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.btn_grab = QtGui.QToolButton(self.centralwidget)
         self.btn_grab.setToolTip(_fromUtf8(""))
+        self.btn_grab.setStatusTip(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_grab.setIcon(icon)
         self.btn_grab.setObjectName(_fromUtf8("btn_grab"))
         self.horizontalLayout_2.addWidget(self.btn_grab)
         self.btn_connect = QtGui.QToolButton(self.centralwidget)
+        self.btn_connect.setStatusTip(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_connect.setIcon(icon1)
         self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.horizontalLayout_2.addWidget(self.btn_connect)
+        self.lne_ip = QtGui.QLineEdit(self.centralwidget)
+        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
+        self.horizontalLayout_2.addWidget(self.lne_ip)
         self.lab_connected_nodes = QtGui.QLabel(self.centralwidget)
         self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
         self.horizontalLayout_2.addWidget(self.lab_connected_nodes)

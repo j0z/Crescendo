@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from __future__ import with_statement
-from twisted.internet import reactor
+from twisted.internet import reactor, defer
 from twisted.internet.protocol import Protocol, ClientFactory, ReconnectingClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.internet import task
@@ -101,9 +101,16 @@ class Client(basic.LineReceiver):
 	def sendLine(self, line):
 		self.transport.write(str(line)+'\r\n')
 	
+	def connectionMade(self):
+		pass
+		#print 'CONNECTION MADE'
+		#self.factory = ClientParent()
+		#self.connection = reactor.connectTCP(self.host[0], self.host[1], self.factory)
+	
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
-		print reason
+		#print reason
+		#self.parent.restart()
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -113,7 +120,7 @@ class Client(basic.LineReceiver):
 	
 	def lineReceived(self, line):
 		self.last_seen = time.time()
-		print repr(line)
+		#print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -140,7 +147,6 @@ class Client(basic.LineReceiver):
 			self.ping_loop.start(10)
 			self.file.close()
 			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
-			self.sendLine('put::png::null')
 			print '[services] Restarted'
 		else:
 			self.sendLine('get::fil::%s' % (self.getting_file))
@@ -256,6 +262,7 @@ class Client(basic.LineReceiver):
 			if line['opt']=='bro':
 				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 		else:
+			print line
 			pass
 			#if str(line).count('<crlf>'):
 			#a = open('debug','ab')
@@ -267,16 +274,19 @@ class Client(basic.LineReceiver):
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
 			self.stop()
 		
-class ClientParent(ReconnectingClientFactory):
+class ClientParent(ClientFactory):
+	protocol = Client
+
 	def __init__(self,host,parent,name='Unnamed'):
 		self.host = host
 		self.parent = parent
 		self.name = name
 		self.connections = []
-		
 		self.info = None
 		
 		self.debug = True
+		
+		#self.deferred = defer.Deferred()
 	
 	def log(self, text):
 		if self.debug: self.parent.parent.log(text)
@@ -299,19 +309,20 @@ class ClientParent(ReconnectingClientFactory):
 		#self.log('[client->server] Connecting...')
 		pass
 
-	def buildProtocol(self, addr):	
+	def buildProtocol(self, addr):
 		#self.log('[client->server] Connected')
 		_c = Client(self.host,self)
 		self.connections.append(_c)
 		self.client = _c
 		return _c
-
+	
 	def clientConnectionLost(self, connector, reason):
-		print 'Lost connection.  Reason:', reason
-		ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
+		pass
+		#print 'Lost connection.  Reason:', reason
+		#ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
 
 	def clientConnectionFailed(self, connector, reason):
-		print 'Connection failed. Reason:', reason
+		print 'Connection to %s failed. Reason: %s' % (self.host[0],reason)
 	
 class connect(threading.Thread):
 	def __init__(self,parent):
@@ -347,17 +358,23 @@ class connect(threading.Thread):
 		self.running = True
 		self.reactor = reactor
 		
-		try:
-			reactor.run(installSignalHandlers=0)
-		except:
-			pass
+		#try:
+		#reactor.run(installSignalHandlers=0)
+		#print 'reactor running'
+		#except:
+		#	pass
 
-	def add_client(self,host):	
-		self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
-		self.ClientParent = ClientParent(host,self)
-		self.point.connect(self.ClientParent)
+	def add_client(self,host):
+		#Client(host[0],host[1])
+		#self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
+		#self.ClientParent = ClientParent(host,self)
+		#self.point.connect(self.ClientParent)
 		
-		self.clients.append(self.ClientParent)
+		#self.clients.append(self.ClientParent)
+		#Client(host,self)
+		factory = ClientParent(host,self)
+		self.clients.append(factory)
+		reactor.connectTCP(host[0], host[1], factory)
 
 		if not self.running: self.start()
 
