@@ -104,6 +104,7 @@ class Client(basic.LineReceiver):
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
 		print reason
+		#self.parent.restart()
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -113,7 +114,7 @@ class Client(basic.LineReceiver):
 	
 	def lineReceived(self, line):
 		self.last_seen = time.time()
-		print repr(line)
+		#print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -140,7 +141,6 @@ class Client(basic.LineReceiver):
 			self.ping_loop.start(10)
 			self.file.close()
 			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
-			self.sendLine('put::png::null')
 			print '[services] Restarted'
 		else:
 			self.sendLine('get::fil::%s' % (self.getting_file))
@@ -305,7 +305,7 @@ class ClientParent(ReconnectingClientFactory):
 		self.connections.append(_c)
 		self.client = _c
 		return _c
-
+	
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason
 		ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
