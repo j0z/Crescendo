@@ -229,21 +229,17 @@ class Client(basic.LineReceiver):
 							self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 				#Finally, we let the node know that we need its file listing
+				#TODO: Check to see if the size of our list is the size of the node's list
 				if not len(self.file_list_temp):
 					self.sendLine('get::fli::0')
 			
 			elif line['opt']=='fli':
 				if line['val']=='okay':
 					self.parent.info['files'] = self.file_list_temp[:]
-					#print self.parent.info['files']
-					#print 'We good!'
-					#self.file_list_temp = []
 				else:
-					#print 'Still not done?'
 					_tlist = json.loads(line['val'])
 					for entry in _tlist:
 						self.file_list_temp.append(entry)
-						print 'added file '+entry['name']
 					
 					self.sendLine('get::fli::%s' % len(self.file_list_temp))
 			
