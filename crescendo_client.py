@@ -9,11 +9,12 @@ from twisted.protocols import basic
 import os, time, json, threading
 
 class File:
-	def __init__(self,name,fname,total_size):
+	def __init__(self,name,fname,total_size,save_dir='downloads'):
 		self.name = name
 		self.fname = fname
 		self.size = 0
 		self.total_size = total_size
+		self.save_dir = save_dir
 		
 		self.fpos = 0
 		self.data = ''
@@ -21,13 +22,25 @@ class File:
 		
 		self.info = {'name':name,'fname':fname,'size':self.total_size}
 		
-		self.f = open(os.path.join('downloads',self.name),'wb')
+		#if not self.save_dir:
+		#try:
+		try:
+			os.mkdir(self.save_dir)
+			print '[crescendo] Created folder'
+		except:
+			pass			
+			#print '[crescendo.fatal] Could not create download folder'
+	
+		self.f = open(os.path.join(self.save_dir,self.name),'wb')
+		#except:
+		#else:
+		#	self.f = open(os.path.join(self.save_dir,self.name),'wb')
 	
 	def compress(self):
 		pass
 	
 	def get_size(self):
-		return os.path.getsize(os.path.join('downloads',self.name))
+		return os.path.getsize(os.path.join(self.save_dir,self.name))
 	
 	def is_done(self):
 		if self.size>=self.total_size:
@@ -77,7 +90,7 @@ class Client(basic.LineReceiver):
 		self.sendLine('get::fil::%s' % (self.getting_file))
 		
 		self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'))
+		self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'),save_dir=self.main_parent.info['save_dir'])
 		self.main_parent.wanted_files.append(self.getting_file)
 						
 		self.setRawMode()
