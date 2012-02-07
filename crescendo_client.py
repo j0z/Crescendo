@@ -109,7 +109,7 @@ class Client(basic.LineReceiver):
 		return {'com':line[:3],'opt':line[5:8],'val':line[10:]}
 	
 	def lineReceived(self, line):
-		#print repr(line)
+		print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -121,7 +121,6 @@ class Client(basic.LineReceiver):
 				_l = {'com':'put','opt':'fil','val':line}
 			
 			self.parse_data(_l)
-			print _l
 	
 	def rawDataReceived(self, data):
 		self.last_seen = time.time()
