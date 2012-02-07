@@ -117,9 +117,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def grab_file(self):
 		_nr = -1
 		
-		for _n in self.ui.lst_nodes.selectedItems():
-			if _n.text()==self.ui.lst_files.currentItem().text(3):
-				_nr = self.ui.lst_nodes.row(_n)
+		for _n in range(self.ui.lst_nodes.count()):
+			if self.ui.lst_nodes.item(_n).text()==self.ui.lst_files.currentItem().text(3):
+				_nr = _n#self.ui.lst_nodes.row(_n)
 				break
 		
 		if _nr==-1:
