@@ -6,6 +6,8 @@ if '-metro' in sys.argv:
 else:
 	from ui import Ui_MainWindow
 
+from ui_profile import Ui_Dialog
+
 import crescendo
 
 class Crescendo_Thread(QtCore.QThread):
@@ -27,6 +29,14 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.populate_node_list()
 		self.client.tick(using_thread=True)
 
+class profile_GUI(QtGui.QDialog):
+	def __init__(self,parent):
+		QtGui.QWidget.__init__(self, parent)
+		
+		self.ui = Ui_Dialog()
+		self.ui.setupUi(self)
+		#self.ui.show()
+
 class Crescendo_GUI(QtGui.QMainWindow):
 	def __init__(self, parent=None):
 		QtGui.QWidget.__init__(self, parent)
@@ -35,7 +45,10 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.setWindowIcon(QtGui.QIcon(os.path.join('gfx','icon.ico')))
 		
 		self.info = {'nodes':[]}
-			
+		
+		profilegui = profile_GUI(self)
+		profilegui.show()
+		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
 		
