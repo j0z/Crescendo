@@ -110,24 +110,18 @@ class Connection(basic.LineReceiver):
 				#and to hang on a bit longer before bailing out.
 				
 				#Sends a broadcast packet every <x> seconds
-				self.broadcast_loop = task.LoopingCall(self.broadcast)
-				self.broadcast_loop.start(self.node.info['broadcast_every'])
+				if self.node.info['broadcast']:
+					self.broadcast_loop = task.LoopingCall(self.broadcast)
+					self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil' and self.is_downloader:
 				_f = self.node.get_file(line['val'])
-				
-				#try:
-				#self.ping_loop.stop()
-				#self.broadcast_loop.stop()
-				#except:
-				#	pass
-				
+
 				self.setRawMode()
 				
 				if self.download_position == 0:
 					self.current_file = open(_f.fname,'rb')
 				
-				#with open(_f.fname, "rb") as f:
 				self.current_file.seek(self.download_position)
 					
 				byte = self.current_file.read(8100)
