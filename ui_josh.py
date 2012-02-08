@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main_josh.ui'
 #
-# Created: Mon Feb 06 23:32:33 2012
+# Created: Tue Feb 07 22:50:28 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -174,7 +174,7 @@ class Ui_MainWindow(object):
 "QHeaderView::section {\n"
 "    background-color: white;\n"
 "    border: 0px solid white;\n"
-"    padding-left: 4px;\n"
+"    padding-left: 0px;\n"
 "\n"
 "    }\n"
 "\n"
@@ -667,7 +667,7 @@ class Ui_MainWindow(object):
         self.lst_queue.setGeometry(QtCore.QRect(-1, -1, 797, 100))
         self.lst_queue.setStyleSheet(_fromUtf8("QTreeWidget {\n"
 "    show-decoration-selected: 1;\n"
-"    border: 0px solid white;\n"
+"    border: 4px solid white;\n"
 "}\n"
 "\n"
 "QTreeWidget::item:selected {\n"
@@ -699,7 +699,7 @@ class Ui_MainWindow(object):
 "QHeaderView::section {\n"
 "    background-color: white;\n"
 "    border: 0px solid white;\n"
-"    padding-left: 4px;\n"
+"    padding-left: 0px;\n"
 "\n"
 "    }\n"
 "QHeaderView::down-arrow {\n"
@@ -830,6 +830,8 @@ class Ui_MainWindow(object):
         self.lst_files.setSortingEnabled(True)
         self.lst_files.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "| FILE", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_files.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "| SIZE", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "| PATH", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_files.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "| NODE", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "FILES", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_grab.setText(QtGui.QApplication.translate("MainWindow", "DOWNLOAD", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "CONNECT", None, QtGui.QApplication.UnicodeUTF8))
@@ -838,10 +840,10 @@ class Ui_MainWindow(object):
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected Nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "INFO", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_queue.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "FILE", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_queue.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "PROGRESS", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_queue.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "SIZE", None, QtGui.QApplication.UnicodeUTF8))
-        self.lst_queue.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "PATH", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_queue.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "| FILE", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_queue.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "| PROGRESS", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_queue.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "| SIZE", None, QtGui.QApplication.UnicodeUTF8))
+        self.lst_queue.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "| PATH", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_clear_downloads.setText(QtGui.QApplication.translate("MainWindow", "CLEAR DOWNLOADS", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "QUEUE", None, QtGui.QApplication.UnicodeUTF8))
 
