@@ -21,7 +21,7 @@ class Crescendo_Thread(QtCore.QThread):
 		self.client.shutdown()
 	
 	def run(self):
-		if '-server' in sys.argv:
+		if not '-noserver' in sys.argv:
 			self.client.start_server()
 		
 		self.client.populate_node_list()
