@@ -9,13 +9,13 @@ class crescendo:
 		self.callback = callback
 		
 		self.node_list = []
-		
 		self.wanted_files = []
 		self.shared_files = []
 		self.downloaded_files = []
-		
 		self._log = []
+		self.ip_list = ['127.0.0.1']
 		
+		#Load config.conf
 		_temp_info = ''
 		
 		_f = open('config.conf','r')
@@ -26,7 +26,17 @@ class crescendo:
 		self.info = json.loads(_temp_info)
 		self.info['host'] = tuple(self.info['host'])
 		
-		self.ip_list = ['127.0.0.1','10.234.16.10']
+		#Load profiles.conf
+		_temp_info = ''
+		_f = open('profiles.conf','r')
+		for line in _f.readlines():
+			_temp_info += line.replace('\n','')
+		_f.close()
+		
+		self.profiles = json.loads(_temp_info)['profiles']
+		
+		#Parse profiles, best done outside inside this class
+		self.parse_profiles()
 		
 		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
@@ -34,6 +44,44 @@ class crescendo:
 		
 		self.can_search = False
 		self.running = True
+	
+	def parse_profiles(self):
+		for profile in self.profiles:
+			if profile['auto_connect']:
+				self.ip_list.append(profile['host'])
+			
+			#Now we tack on some extra keys to help keep track of things...
+			profile['connection_fails']=0
+	
+	def has_profile(self,host=None,port=None,name=None):
+		#Sometimes we don't know everything about a node, but this
+		#function attempts to return a profile given whatever information
+		#is available.
+		#Store everything we find in an array.
+		_results = []
+		
+		for profile in self.profiles:
+			_matches = 0
+			
+			if host and str(profile['host'])==host:
+				_matches+=1
+			
+			if port and profile['port']==port:
+				_matches+=1
+			
+			if name and profile['name']==name:
+				_matches+=1
+			
+			_results.append({'profile':profile,'matches':_matches})
+		
+		_highest = None
+		for match in _results:
+			if _highest == None and match['matches']: _highest = match
+			elif _highest and match['matches']>_highest['matches']:
+				_highest = match
+		
+		if _highest: return _highest
+		else: return False
 	
 	def start_server(self):
 		self.log('[server] Starting server...')
@@ -68,7 +116,11 @@ class crescendo:
 		for node in self.node_list:
 			if not node['connected']:
 				#print node['host']
-				self.client.add_client(node['host'])
+				if self.has_profile(host=node['host'][0]):
+					self.client.add_client(node['host'])
+					print 'Yes, we have a profile for '+node['host'][0]
+				else:
+					print 'No, we dont have a profile for '+node['host'][0]
 
 				node['connected']=True
 				
@@ -86,7 +138,7 @@ class crescendo:
 					node['callback'].stop()
 				else:
 					self.log('[node-%s:%s] Connection is a zombie. Dying' % node['host'],flush=True)
-		
+	
 	def has_node(self,host):
 		for node in self.node_list:
 			if node['host'][0]==host[0]: return node
