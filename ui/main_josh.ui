@@ -411,7 +411,7 @@ QHeaderView {
 QHeaderView::section {
 	background-color: white;
 	border: 0px solid white;
-	padding-left: 4px;
+	padding-left: 0px;
 
 	}
 
@@ -1369,7 +1369,7 @@ QScrollBar::sub-line:horizontal {
       <property name="styleSheet">
        <string notr="true">QTreeWidget {
 	show-decoration-selected: 1;
-	border: 0px solid white;
+	border: 4px solid white;
 }
 
 QTreeWidget::item:selected {
@@ -1401,7 +1401,7 @@ QHeaderView {
 QHeaderView::section {
 	background-color: white;
 	border: 0px solid white;
-	padding-left: 4px;
+	padding-left: 0px;
 
 	}
 QHeaderView::down-arrow {
@@ -1479,7 +1479,7 @@ QScrollBar::sub-line:horizontal {
       </attribute>
       <column>
        <property name="text">
-        <string>FILE</string>
+        <string>| FILE</string>
        </property>
        <property name="font">
         <font>
@@ -1489,7 +1489,7 @@ QScrollBar::sub-line:horizontal {
       </column>
       <column>
        <property name="text">
-        <string>PROGRESS</string>
+        <string>| PROGRESS</string>
        </property>
        <property name="font">
         <font>
@@ -1499,7 +1499,7 @@ QScrollBar::sub-line:horizontal {
       </column>
       <column>
        <property name="text">
-        <string>SIZE</string>
+        <string>| SIZE</string>
        </property>
        <property name="font">
         <font>
@@ -1509,7 +1509,7 @@ QScrollBar::sub-line:horizontal {
       </column>
       <column>
        <property name="text">
-        <string>PATH</string>
+        <string>| PATH</string>
        </property>
        <property name="font">
         <font>
