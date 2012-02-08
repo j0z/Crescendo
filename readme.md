@@ -1,6 +1,6 @@
 Crescendo v0.1
 ==============
-Crescendo is a unique peer-to-peer file sharing program written in Python. It was developed by me, [flags,](http://jetstarforever.com/site/) in about two weeks. First as a proof-of-concept, things quickly got out of hand and it ended up as a serious project. Several revisions later, it's now ready to be tested.
+Crescendo is a unique peer-to-peer file sharing program written in Python. It was developed by me, [flags](http://jetstarforever.com/site/), in about two weeks. First as a proof-of-concept, things quickly got out of hand and it ended up as a serious project. Several revisions later, it's now ready to be tested.
 
 Warning
 -------
