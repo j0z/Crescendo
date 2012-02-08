@@ -530,6 +530,16 @@ QScrollBar::sub-line:horizontal {
       </color>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string>| PATH</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>| NODE</string>
+     </property>
+    </column>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
