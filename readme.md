@@ -30,17 +30,25 @@ This is read by the client, and sets up a few things:
 This is read by the server (node.)
 
 `name`: The name of your node. Other clients will see this.
+
 `searchable`: `true` if you want to be broadcasted by broadcast nodes.
+
 `broadcast`: `true` if you want to help distribute clients on the network.
+
 `broadcast_every`: Frequency at which broadcast packets are sent (in seconds.) Only if `broadcast` is set to `true`.
+
 `security`: `auth` or `pass`. Explained below.
+
 `authdb`: If `security` is set to `auth`, this value is read. Should point to a file that looks like this:
 
 `{"users":[{"usr":"test","pas":"test"}]}`
 
 `passwd`: If `security` is set to `pass`, this value is read. Should be a sha224 hash.
+
 `share_dir`: The directory you want to share.
+
 `ignore_filename`: Files with names similar to the ones in this list are ignored.
+
 `ignore_filetypes`: Files with this extension are ignored.
 
 ##Example
