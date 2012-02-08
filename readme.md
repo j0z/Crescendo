@@ -18,7 +18,9 @@ By default, Crescendo contains no configuration files and will NOT run out-of-bo
 This is read by the client, and sets up a few things:
 
 `node_name`: This isn't used at the moment. You'll still need it, though.
+
 `host`: Your local IP:port. Port should be 9001.
+
 `save_dir`: Where Crescendo will store downloaded items.
 
 ##Example: 
