@@ -14,7 +14,7 @@ Installation
 ------------
 By default, Crescendo contains no configuration files and will NOT run out-of-box. You'll need to do two things:
 
-**Create `config.conf`**
+#Create config.conf
 This is read by the client, and sets up a few things:
 
 `node_name`: This isn't used at the moment. You'll still need it, though.
@@ -26,7 +26,7 @@ This is read by the client, and sets up a few things:
     "host":["10.234.16.131",9001],
     "save_dir":"downloads"}
 
-**Create `node.conf`**
+#Create node.conf
 This is read by the server (node.)
 
 `name`: The name of your node. Other clients will see this.
