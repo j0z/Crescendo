@@ -2,167 +2,241 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>561</height>
+    <width>779</width>
+    <height>614</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>560</width>
-    <height>561</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>560</width>
-    <height>561</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>CrescendoQt</string>
+   <string>Crescendo</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="maximumSize">
-    <size>
-     <width>560</width>
-     <height>520</height>
-    </size>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="title">
-       <string>Info</string>
-      </property>
-      <widget class="QWidget" name="horizontalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>521</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout"/>
+      </item>
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QToolButton" name="btn_grab">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="statusTip">
+           <string extracomment="Download"/>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../gfx/icons.qrc">
+            <normaloff>:/download.png</normaloff>:/download.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="btn_connect">
+          <property name="statusTip">
+           <string extracomment="Download"/>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../gfx/icons.qrc">
+            <normaloff>:/add.png</normaloff>:/add.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lne_ip"/>
+        </item>
         <item>
          <widget class="QLabel" name="lab_connected_nodes">
           <property name="text">
-           <string>Connected nodes: </string>
+           <string>Connected Nodes: </string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="lab_downloaded_files">
-          <property name="text">
-           <string>Downloaded files:</string>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Log</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="lst_log"/>
+         </spacer>
         </item>
        </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>Files/Nodes</string>
-      </property>
-      <widget class="QWidget" name="gridLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>521</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="3" column="5">
-         <widget class="QLineEdit" name="lne_ip"/>
-        </item>
-        <item row="0" column="5">
-         <widget class="QListWidget" name="lst_nodes"/>
-        </item>
-        <item row="2" column="5">
-         <widget class="QPushButton" name="btn_connect">
-          <property name="text">
-           <string>Connect</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QPushButton" name="btn_info_client">
-            <property name="text">
-             <string>Info</string>
+      </item>
+      <item row="3" column="0">
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Nodes</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btn_grab">
-            <property name="text">
-             <string>Grab</string>
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-           </widget>
+            <item row="0" column="0">
+             <widget class="QListWidget" name="lst_nodes">
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ExtendedSelection</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item row="3" column="1">
-         <widget class="QProgressBar" name="prg_download">
-          <property name="value">
-           <number>24</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QTreeWidget" name="lst_files">
-          <property name="indentation">
-           <number>10</number>
-          </property>
-          <column>
-           <property name="text">
-            <string>File</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Size</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Path</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Queue</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QTreeWidget" name="lst_queue">
+              <property name="indentation">
+               <number>0</number>
+              </property>
+              <column>
+               <property name="text">
+                <string>File</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Progress</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Size</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Path</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_clear_downloads">
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Log</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="lst_log"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTreeWidget" name="lst_files">
+        <property name="indentation">
+         <number>0</number>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>File</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Size</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Path</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Node</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLabel" name="lab_download">
+        <property name="text">
+         <string>Download: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="prg_download">
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -171,13 +245,40 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>560</width>
+     <width>779</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../gfx/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
