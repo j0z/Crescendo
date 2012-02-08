@@ -88,5 +88,7 @@ David Letterman is on.
 Special Thanks
 --------------
 The members of #xenn.org
+
 Whoever makes [twisted](http://twistedmatrix.com/trac/)
+
 Various [Stack Overflow](http://stackoverflow.com/) threads
