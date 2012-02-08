@@ -81,10 +81,6 @@ Credits
 
 `j0z`: Metro UI, design, tester.
 
-Quote from the author
----------------------
-David Letterman is on.
-
 Special Thanks
 --------------
 The members of #xenn.org
@@ -92,6 +88,10 @@ The members of #xenn.org
 Whoever makes [twisted](http://twistedmatrix.com/trac/)
 
 Various [Stack Overflow](http://stackoverflow.com/) threads
+
+Quote from the author
+---------------------
+David Letterman is on.
 
 Final words (seriously)
 -----------------------
