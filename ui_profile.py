@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\profile.ui'
 #
-# Created: Wed Feb 08 12:32:14 2012
+# Created: Wed Feb 08 17:57:52 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,22 +31,23 @@ class Ui_Dialog(object):
         self.gridLayout_3.addWidget(self.lne_name, 0, 1, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_3)
         self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout.setVerticalSpacing(6)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.label = QtGui.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.gridLayout.addWidget(self.label_2, 0, 3, 1, 1)
         spacerItem = QtGui.QSpacerItem(170, 0, QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 2, 2, 1, 1)
+        self.lne_port = QtGui.QLineEdit(Dialog)
+        self.lne_port.setObjectName(_fromUtf8("lne_port"))
+        self.gridLayout.addWidget(self.lne_port, 0, 4, 1, 1)
         self.lne_ip = QtGui.QLineEdit(Dialog)
         self.lne_ip.setMaxLength(15)
         self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
         self.gridLayout.addWidget(self.lne_ip, 0, 2, 1, 1)
-        self.lne_port = QtGui.QLineEdit(Dialog)
-        self.lne_port.setObjectName(_fromUtf8("lne_port"))
-        self.gridLayout.addWidget(self.lne_port, 0, 4, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.gridLayout.addWidget(self.label_2, 0, 3, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout)
         self.gridLayout_2 = QtGui.QGridLayout()
         self.gridLayout_2.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
@@ -90,12 +91,12 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Edit Profile", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("Dialog", "Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Dialog", "IP", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Dialog", ":", None, QtGui.QApplication.UnicodeUTF8))
         self.label_5.setText(QtGui.QApplication.translate("Dialog", "User:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmb_security.setItemText(0, QtGui.QApplication.translate("Dialog", "pass", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmb_security.setItemText(0, QtGui.QApplication.translate("Dialog", "password", None, QtGui.QApplication.UnicodeUTF8))
         self.cmb_security.setItemText(1, QtGui.QApplication.translate("Dialog", "auth", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Security:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("Dialog", "Pass:", None, QtGui.QApplication.UnicodeUTF8))

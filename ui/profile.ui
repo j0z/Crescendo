@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Edit Profile</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -100,7 +100,7 @@
       <widget class="QComboBox" name="cmb_security">
        <item>
         <property name="text">
-         <string>pass</string>
+         <string>password</string>
         </property>
        </item>
        <item>

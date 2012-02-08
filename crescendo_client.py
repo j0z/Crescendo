@@ -120,7 +120,15 @@ class Client(basic.LineReceiver):
 		self.state = 'handshake'
 		self.host = host
 		self.parent = parent
-		self.file = None
+		
+		if self.parent.profile:
+			self.profile = self.parent.profile
+		else:
+			self.profile = None
+		
+		#print self.profile
+		
+		#self.file = None
 		self.main_parent = self.parent.parent.parent
 		self.main_parent.add_node_callback(self.host,self)
 		
@@ -143,21 +151,11 @@ class Client(basic.LineReceiver):
 	def get_file(self,file):
 		self.getting_file = str(file)
 		
-		#try:
-		#	self.ping_loop.stop()
-		#except:
-		#	pass
-		
-		#TODO: File resuming
-		#self.sendLine('get::fil::%s' % (self.getting_file))
-		
 		self.main_parent.log('[client->%s] Grabbing file %s' % (self.parent.info['name'],self.getting_file))
-		#self.file = File(self.getting_file,self.getting_file,self.get_file_info(self.getting_file,'size'),save_dir=self.main_parent.info['save_dir'])
 		self.main_parent.wanted_files.append(self.getting_file)
 		
 		self.factory = DownloadParent(self.getting_file,self)
 		self.connection = reactor.connectTCP(self.host[0], self.host[1], self.factory)
-		#self.setRawMode()
 	
 	def get_file_info(self,name,info):
 		for f in self.parent.info['files']:
@@ -171,9 +169,6 @@ class Client(basic.LineReceiver):
 	
 	def connectionMade(self):
 		pass
-		#print 'CONNECTION MADE'
-		#self.factory = ClientParent()
-		#self.connection = reactor.connectTCP(self.host[0], self.host[1], self.factory)
 	
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
@@ -219,10 +214,16 @@ class Client(basic.LineReceiver):
 					
 					#Here we identify what login method the node/network uses
 					if line['val']=='auth':
-						#Handle auth by reading from the profile associated with this node
-						self.sendLine('put::pwd::test:test')
-					else:
-						self.sendLine('put::pwd::derp')
+						if self.profile.has_key('username') and self.profile.has_key('password'):
+							#print 'HAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAME!'
+							#Handle auth by reading from the profile associated with this node
+							self.sendLine('put::pwd::%s:%s' % (self.profile['username'],self.profile['password']))
+					elif line['val']=='password':
+						if self.profile.has_key('password'):
+							print 'Has password'
+							self.sendLine('put::pwd::%s' % self.profile['password'])
+						else:
+							print 'Has no password...'
 					self.state = 'password'
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')
@@ -311,13 +312,8 @@ class Client(basic.LineReceiver):
 			if line['opt']=='bro':
 				self.main_parent.log('[node.%s->node.%s] Added ourself to broadcast' % (self.main_parent.server.info['name'],self.parent.info['name']))
 		else:
-			print line
 			pass
-			#if str(line).count('<crlf>'):
-			#a = open('debug','ab')
-			#a.write(str(line)+'\n')
-			#a.close()
-			#print 'Had to throw a line out: %s!!!' % str(line)
+	
 	def ping(self):
 		if time.time()-self.last_seen >= 30:
 			self.main_parent.log('[client->%s] Connection lost' % self.parent.info['name'])
@@ -333,9 +329,10 @@ class DownloadParent(ClientFactory):
 class ClientParent(ClientFactory):
 	protocol = Client
 
-	def __init__(self,host,parent,name='Unnamed'):
+	def __init__(self,host,parent,profile,name='Unnamed'):
 		self.host = host
 		self.parent = parent
+		self.profile = profile
 		self.name = name
 		self.connections = []
 		self.info = None
@@ -420,7 +417,7 @@ class connect(threading.Thread):
 		#except:
 		#	pass
 
-	def add_client(self,host):
+	def add_client(self,host,profile=None):
 		#Client(host[0],host[1])
 		#self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
 		#self.ClientParent = ClientParent(host,self)
@@ -428,7 +425,7 @@ class connect(threading.Thread):
 		
 		#self.clients.append(self.ClientParent)
 		#Client(host,self)
-		factory = ClientParent(host,self)
+		factory = ClientParent(host,self,profile)
 		self.clients.append(factory)
 		reactor.connectTCP(host[0], host[1], factory)
 

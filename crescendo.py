@@ -13,7 +13,7 @@ class crescendo:
 		self.shared_files = []
 		self.downloaded_files = []
 		self._log = []
-		self.ip_list = ['127.0.0.1']
+		self.ip_list = []
 		
 		#Load config.conf
 		_temp_info = ''
@@ -33,7 +33,18 @@ class crescendo:
 			_temp_info += line.replace('\n','')
 		_f.close()
 		
-		self.profiles = json.loads(_temp_info)['profiles']
+		self.profiles = []
+		_profiles_temp = json.loads(_temp_info)['profiles']
+		
+		for profile in _profiles_temp:
+			_temp_profile = {}
+			for key in profile.iterkeys():
+				if isinstance(profile[key],int) or isinstance(profile[key],bool):
+					_temp_profile[str(key)] = profile[key]
+				else:
+					_temp_profile[str(key)] = str(profile[key])
+			
+			self.profiles.append(_temp_profile)
 		
 		#Parse profiles, best done outside inside this class
 		self.parse_profiles()
@@ -53,6 +64,13 @@ class crescendo:
 			#Now we tack on some extra keys to help keep track of things...
 			profile['connection_fails']=0
 	
+	def save_profiles(self):
+		_temp_info = {'profiles':self.profiles}
+	
+		_f = open('profiles.conf','w')
+		_f.write(json.dumps(_temp_info).replace(',',',\n'))
+		_f.close()
+	
 	def has_profile(self,host=None,port=None,name=None):
 		#Sometimes we don't know everything about a node, but this
 		#function attempts to return a profile given whatever information
@@ -63,11 +81,11 @@ class crescendo:
 		for profile in self.profiles:
 			_matches = 0
 			
-			if host and str(profile['host'])==host:
+			if host and profile['host']==host:
 				_matches+=1
 			
-			if port and profile['port']==port:
-				_matches+=1
+				if port and profile['port']==int(port):
+					_matches+=1
 			
 			if name and profile['name']==name:
 				_matches+=1
@@ -80,8 +98,15 @@ class crescendo:
 			elif _highest and match['matches']>_highest['matches']:
 				_highest = match
 		
-		if _highest: return _highest
+		if _highest: return _highest['profile']
 		else: return False
+	
+	def add_profile_from_node(self,node):
+		_temp_info = {'host':node['host'][0],'port':node['host'][1]}
+		_temp_info['auto_connect'] = False
+		_temp_info['name'] = 'Unknown'
+		
+		self.profiles.append(_temp_info)
 	
 	def start_server(self):
 		self.log('[server] Starting server...')
@@ -115,14 +140,15 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
-				#print node['host']
-				if self.has_profile(host=node['host'][0]):
-					self.client.add_client(node['host'])
+				_profile = self.has_profile(host=node['host'][0],port=node['host'][1])
+				
+				if _profile:# or node['host'][0]=='127.0.0.1':
+					self.client.add_client(node['host'],profile=_profile)
 					print 'Yes, we have a profile for '+node['host'][0]
+					node['connected']=True
 				else:
+					self.add_profile_from_node(node)
 					print 'No, we dont have a profile for '+node['host'][0]
-
-				node['connected']=True
 				
 				self.log('[node] Connecting to %s:%s' % node['host'])
 	
@@ -218,6 +244,9 @@ class crescendo:
 			self.log('[crescendo] Killing node connections',flush=True)
 			self.disconnect_node_list()
 		else: self.log('[crescendo] No node connections to kill',flush=True)
+		
+		self.log('[crescendo] Saving profiles',flush=True)
+		self.save_profiles()
 		
 		self.running = False
 	

@@ -35,7 +35,26 @@ class profile_GUI(QtGui.QDialog):
 		
 		self.ui = Ui_Dialog()
 		self.ui.setupUi(self)
-		#self.ui.show()
+		
+	def load_profile(self,profile):
+		self.ui.lne_name.setText(profile['name'])
+		self.ui.lne_ip.setText(profile['host'])
+		self.ui.lne_port.setText(str(profile['port']))
+		
+		_find = self.ui.cmb_security.findText(profile['security'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
+		
+		if _find:
+			self.ui.cmb_security.setCurrentIndex(_find)
+		
+		if profile.has_key('username'):
+			self.ui.lne_username.setText(profile['username'])
+		else:
+			self.ui.lne_username.clear()
+		
+		if profile.has_key('password'):
+			self.ui.lne_password.setText(profile['password'])
+		else:
+			self.ui.lne_password.clear()
 
 class Crescendo_GUI(QtGui.QMainWindow):
 	def __init__(self, parent=None):
@@ -53,6 +72,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
 		self.ui.lst_nodes.itemClicked.connect(self.select_node)
+		self.ui.lst_nodes.itemDoubleClicked.connect(self.show_dialog)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.show_dialog)
 		self.ui.btn_clear_downloads.clicked.connect(self.clear_downloads)
@@ -61,6 +81,11 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_log.insertItem(0,text)
 	
 	def show_dialog(self):
+		_current = str(self.ui.lst_nodes.currentItem().text())
+		_profile = self.crescendo.client.has_profile(host=_current,name=_current)
+		
+		self.profilegui.load_profile(_profile)
+		
 		self.profilegui.show()
 	
 	def remove_node(self,node):
