@@ -92,3 +92,9 @@ The members of #xenn.org
 Whoever makes [twisted](http://twistedmatrix.com/trac/)
 
 Various [Stack Overflow](http://stackoverflow.com/) threads
+
+Final words (seriously)
+-----------------------
+![Room](http://i.imgur.com/zEacX.jpg)
+
+This terrible photo was taken after an all-day coding session on February 4th-5th, 2012. Around ten hours of work were probably done that day, and this was taken the moment I got back from walking my girlfriend home. I then realized how much time I'd really spent making this project a reality, which had been around two weeks with 18 hours just over the previous two days. While this might come as a surprise to some, if you program all day, your dreams are going to be about building interfaces in PyQt4 and trying to figure out dropped connections in Twisted. And I'm not even getting paid to do this.
