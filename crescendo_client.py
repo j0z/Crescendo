@@ -51,16 +51,13 @@ class File:
 
 class Download(basic.LineReceiver):
 	def __init__(self):
-		print 'its running'
+		pass
 	
 	def connectionLost(self, reason):
-		print 'Download is done...'
+		pass
 	
 	def connectionMade(self):
-		print 'Downloader is running!'
 		self.main_parent = self.factory.parent.main_parent
-		
-		#print self.factory.file
 		self.file = File(self.factory.file,self.factory.file,self.factory.parent.get_file_info(self.factory.file,'size'),save_dir=self.main_parent.info['save_dir'])
 	
 	def parse_line(self, line):
@@ -71,7 +68,6 @@ class Download(basic.LineReceiver):
 	
 	def lineReceived(self, line):
 		self.last_seen = time.time()
-		#print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -85,7 +81,6 @@ class Download(basic.LineReceiver):
 			self.parse_data(_l)
 
 	def parse_data(self,line):
-		print line
 		if line['com']=='put':
 			if line['opt']=='dwn' and line['val']=='okay':
 				self.sendLine('put::fil::%s' % self.factory.file)
@@ -113,15 +108,12 @@ class Download(basic.LineReceiver):
 		if self.file.is_done():
 			self.main_parent.log('[client->%s] Grabbed file %s' % (self.factory.parent.parent.info['name'],self.factory.file))
 			self.sendLine('put::fie::okay')
-			#self.ping_loop.start(10)
 			self.file.close()
 			self.main_parent.set_download_progress(self.file.info['size'],self.file.info)
-			print '[services] Restarted'
 			self.transport.loseConnection()
 			return
 		else:
 			self.sendLine('get::fil::%s' % (self.factory.file))
-			#self.setRawMode()
 
 class Client(basic.LineReceiver):
 	def __init__(self,host,parent):

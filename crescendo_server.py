@@ -78,9 +78,6 @@ class Connection(basic.LineReceiver):
 			
 			elif line['opt']=='fie':
 				self.download_position = 0
-				#self.ping_loop.start(10)
-				#self.broadcast_loop.start(self.node.info['broadcast_every'])
-				#print '[services] Restarted'
 			
 			elif line['opt']=='png':
 				self.last_seen = time.time()
@@ -119,11 +116,11 @@ class Connection(basic.LineReceiver):
 			elif line['opt']=='fil' and self.is_downloader:
 				_f = self.node.get_file(line['val'])
 				
-				try:
-					self.ping_loop.stop()
-					self.broadcast_loop.stop()
-				except:
-					pass
+				#try:
+				#self.ping_loop.stop()
+				#self.broadcast_loop.stop()
+				#except:
+				#	pass
 				
 				self.setRawMode()
 				
@@ -227,6 +224,12 @@ class Node(ServerFactory):
 				
 				if ext[1:] in self.info['ignore_filetypes']:
 					continue
+				
+				_ignore = False
+				for entry in self.info['ignore_filename']:
+					if file.count(entry): _ignore = True
+				
+				if _ignore: continue
 				
 				if os.path.getsize(_fname):
 					_f = File(infile,_fname,root.replace(self.info['share_dir'],''))
