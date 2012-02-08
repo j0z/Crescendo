@@ -46,8 +46,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.info = {'nodes':[]}
 		
-		profilegui = profile_GUI(self)
-		profilegui.show()
+		self.profilegui = profile_GUI(self)
 		
 		self.crescendo = Crescendo_Thread(self)
 		self.crescendo.start()
@@ -55,11 +54,14 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
 		self.ui.lst_nodes.itemClicked.connect(self.select_node)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
-		self.ui.btn_connect.clicked.connect(self.connect_node)
+		self.ui.btn_connect.clicked.connect(self.show_dialog)
 		self.ui.btn_clear_downloads.clicked.connect(self.clear_downloads)
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
+	
+	def show_dialog(self):
+		self.profilegui.show()
 	
 	def remove_node(self,node):
 		_rlist = []
