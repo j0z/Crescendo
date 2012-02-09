@@ -28,26 +28,36 @@ class crescendo:
 		
 		#Load profiles.conf
 		_temp_info = ''
-		_f = open('profiles.conf','r')
+		try:
+			_f = open('profiles.conf','r')
+		except:
+			_f = open('profiles.conf','w')
+			_f.close()
+			_f = open('profiles.conf','r')
+		
 		for line in _f.readlines():
 			_temp_info += line.replace('\n','')
 		_f.close()
 		
 		self.profiles = []
-		_profiles_temp = json.loads(_temp_info)['profiles']
 		
-		for profile in _profiles_temp:
-			_temp_profile = {}
-			for key in profile.iterkeys():
-				if isinstance(profile[key],int) or isinstance(profile[key],bool):
-					_temp_profile[str(key)] = profile[key]
-				else:
-					_temp_profile[str(key)] = str(profile[key])
+		try:
+			_profiles_temp = json.loads(_temp_info)['profiles']
 			
-			self.profiles.append(_temp_profile)
-		
-		#Parse profiles, best done outside inside this class
-		self.parse_profiles()
+			for profile in _profiles_temp:
+				_temp_profile = {}
+				for key in profile.iterkeys():
+					if isinstance(profile[key],int) or isinstance(profile[key],bool):
+						_temp_profile[str(key)] = profile[key]
+					else:
+						_temp_profile[str(key)] = str(profile[key])
+				
+				self.profiles.append(_temp_profile)
+			
+			#Parse profiles, best done outside inside this class
+			self.parse_profiles()
+		except:
+			pass
 		
 		self.client = client.connect(self)
 		self.server = server.start_server(parent=self)
@@ -70,6 +80,13 @@ class crescendo:
 		_f = open('profiles.conf','w')
 		_f.write(json.dumps(_temp_info).replace(',',',\n'))
 		_f.close()
+	
+	def new_profile(self):
+		_temp_info = {}
+		
+		self.profiles.append(_temp_info)
+		
+		return _temp_info
 	
 	def has_profile(self,host=None,port=None,name=None):
 		#Sometimes we don't know everything about a node, but this

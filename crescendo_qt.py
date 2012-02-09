@@ -35,8 +35,33 @@ class profile_GUI(QtGui.QDialog):
 		
 		self.ui = Ui_Dialog()
 		self.ui.setupUi(self)
+	
+	def accept(self):
+		self.save_profile()
+		self.close()
+	
+	def closeEvent(self, event): 
+		pass
+	
+	def new_profile(self,profile):
+		self.profile = profile
 		
+		#self.ui.lne_name.setText(profile['name'])
+	
+	def save_profile(self):
+		self.profile['name'] = str(self.ui.lne_name.text())
+		self.profile['host'] = str(self.ui.lne_ip.text())
+		self.profile['port'] = int(self.ui.lne_port.text())
+		self.profile['username'] = str(self.ui.lne_username.text())
+		self.profile['password'] = str(self.ui.lne_password.text())
+		self.profile['security'] = str(self.ui.cmb_security.currentText())
+		self.profile['auto_connect'] = True
+		
+		print 'Profile updated'
+	
 	def load_profile(self,profile):
+		self.profile = profile
+		
 		self.ui.lne_name.setText(profile['name'])
 		self.ui.lne_ip.setText(profile['host'])
 		self.ui.lne_port.setText(str(profile['port']))
@@ -74,7 +99,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lst_nodes.itemClicked.connect(self.select_node)
 		self.ui.lst_nodes.itemDoubleClicked.connect(self.show_dialog)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
-		self.ui.btn_connect.clicked.connect(self.show_dialog)
+		self.ui.btn_connect.clicked.connect(self.show_dialog_new)
 		self.ui.btn_clear_downloads.clicked.connect(self.clear_downloads)
 	
 	def log(self,text):
@@ -86,6 +111,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		self.profilegui.load_profile(_profile)
 		
+		self.profilegui.show()
+	
+	def show_dialog_new(self):
+		_profile = self.crescendo.client.new_profile()
+	
+		self.profilegui.new_profile(_profile)
 		self.profilegui.show()
 	
 	def remove_node(self,node):
