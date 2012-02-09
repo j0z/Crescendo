@@ -220,10 +220,7 @@ class Client(basic.LineReceiver):
 							self.sendLine('put::pwd::%s:%s' % (self.profile['username'],self.profile['password']))
 					elif line['val']=='password':
 						if self.profile.has_key('password'):
-							print 'Has password'
 							self.sendLine('put::pwd::%s' % self.profile['password'])
-						else:
-							print 'Has no password...'
 					self.state = 'password'
 				else:
 					self.parent.log('[client->server] Server didn\'t like us. Abort.')

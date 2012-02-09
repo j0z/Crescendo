@@ -85,10 +85,11 @@ class Connection(basic.LineReceiver):
 			elif line['opt']=='bro':
 				_n = tuple(line['val'].split(':'))
 				
-				if not _n in self.node.info['broadcasting']:
-					self.node.info['broadcasting'].append(_n)
-					self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
-					self.sendLine('put::bro::okay')
+				if self.node.info['broadcast']:
+					if not _n in self.node.info['broadcasting']:
+						self.node.info['broadcasting'].append(_n)
+						self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
+						self.sendLine('put::bro::okay')
 			
 			#TODO: Document!
 			elif line['opt']=='dwn':
@@ -110,9 +111,9 @@ class Connection(basic.LineReceiver):
 				#and to hang on a bit longer before bailing out.
 				
 				#Sends a broadcast packet every <x> seconds
-				if self.node.info['broadcast']:
-					self.broadcast_loop = task.LoopingCall(self.broadcast)
-					self.broadcast_loop.start(self.node.info['broadcast_every'])
+				#if self.node.info['broadcast']:
+				self.broadcast_loop = task.LoopingCall(self.broadcast)
+				self.broadcast_loop.start(self.node.info['broadcast_every'])
 				
 			elif line['opt']=='fil' and self.is_downloader:
 				_f = self.node.get_file(line['val'])

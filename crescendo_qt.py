@@ -122,7 +122,7 @@ class profile_GUI(QtGui.QDialog):
 		self.profiles = profiles
 		
 		for entry in profiles:
-			if entry['name']=='Unknown':
+			if entry.has_key('name') and entry['name']=='Unknown':
 				self.ui.cmb_profiles.addItem(entry['host'])
 			else:
 				self.ui.cmb_profiles.addItem(entry['name'])
