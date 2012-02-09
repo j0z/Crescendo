@@ -43,7 +43,7 @@ class profile_GUI(QtGui.QDialog):
 		
 		_find = self.ui.cmb_security.findText(profile['security'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
 		
-		if _find:
+		if not _find==None:
 			self.ui.cmb_security.setCurrentIndex(_find)
 		
 		if profile.has_key('username'):
