@@ -38,6 +38,7 @@ class profile_GUI(QtGui.QDialog):
 		self.ui.setupUi(self)
 		
 		self.ui.cmb_profiles.currentIndexChanged.connect(self.select_profile)
+		self.profile = None
 	
 	def accept(self):
 		self.save_profile()
@@ -47,6 +48,8 @@ class profile_GUI(QtGui.QDialog):
 		pass
 	
 	def select_profile(self):
+		if not self.profile: return
+		
 		for _profile in self.profiles:
 			_current = str(self.ui.cmb_profiles.itemText(self.ui.cmb_profiles.currentIndex()))
 			
@@ -180,9 +183,13 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
 	
 	def add_node(self,name):
-		self.info['nodes'].append({'name':name,'files':[]})
+		#Check to see if the host/name/whatever is already on the list
+		for row in range(self.ui.lst_nodes.count()):
+			if self.ui.lst_nodes.item(row).text() == name:
+				return
 		
 		self.ui.lst_nodes.addItem(name)
+		self.info['nodes'].append({'name':name,'files':[]})
 		
 		#Can't believe I'm doing this.
 		#TODO: Since we're just adding onto the list, we can just get the
