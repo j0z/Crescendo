@@ -33,8 +33,11 @@ class profile_GUI(QtGui.QDialog):
 	def __init__(self,parent):
 		QtGui.QWidget.__init__(self, parent)
 		
+		self.parent = parent
 		self.ui = Ui_Dialog()
 		self.ui.setupUi(self)
+		
+		self.ui.cmb_profiles.currentIndexChanged.connect(self.select_profile)
 	
 	def accept(self):
 		self.save_profile()
@@ -43,10 +46,20 @@ class profile_GUI(QtGui.QDialog):
 	def closeEvent(self, event): 
 		pass
 	
-	def new_profile(self,profile):
-		self.profile = profile
+	def select_profile(self):
+		for _profile in self.profiles:
+			_current = str(self.ui.cmb_profiles.itemText(self.ui.cmb_profiles.currentIndex()))
+			
+			if _current in [_profile['name'],_profile['host']]:
+				self.load_profile(_profile)
+				break
 		
-		#self.ui.lne_name.setText(profile['name'])
+		if _current=='New Profile':
+			self.new_profile()
+			self.load_profile(self.profile,clear=True)
+	
+	def new_profile(self):
+		self.profile = {}
 	
 	def save_profile(self):
 		self.profile['name'] = str(self.ui.lne_name.text())
@@ -55,18 +68,36 @@ class profile_GUI(QtGui.QDialog):
 		self.profile['username'] = str(self.ui.lne_username.text())
 		self.profile['password'] = str(self.ui.lne_password.text())
 		self.profile['security'] = str(self.ui.cmb_security.currentText())
-		self.profile['auto_connect'] = True
+		self.profile['auto_connect'] = self.ui.chk_auto_connect.isChecked()
+		
+		self.parent.crescendo.client.add_profile(self.profile)
 		
 		print 'Profile updated'
 	
-	def load_profile(self,profile):
+	def load_profile(self,profile,clear=False):
 		self.profile = profile
+		
+		if clear:
+			self.ui.lne_name.clear()
+			self.ui.lne_ip.clear()
+			self.ui.lne_port.clear()
+			self.ui.lne_username.clear()
+			self.ui.lne_password.clear()
+			self.ui.chk_auto_connect.setChecked(False)
+			self.ui.cmb_security.setCurrentIndex(0)
+			return
 		
 		self.ui.lne_name.setText(profile['name'])
 		self.ui.lne_ip.setText(profile['host'])
 		self.ui.lne_port.setText(str(profile['port']))
 		
-		_find = self.ui.cmb_security.findText(profile['security'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
+		_find = self.ui.cmb_profiles.findText(profile['name'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
+		self.ui.cmb_profiles.setCurrentIndex(_find)
+		
+		if profile.has_key('security'):
+			_find = self.ui.cmb_security.findText(profile['security'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
+		else:
+			_find = None
 		
 		if not _find==None:
 			self.ui.cmb_security.setCurrentIndex(_find)
@@ -80,6 +111,21 @@ class profile_GUI(QtGui.QDialog):
 			self.ui.lne_password.setText(profile['password'])
 		else:
 			self.ui.lne_password.clear()
+		
+		if profile.has_key('auto_connect'):
+			self.ui.chk_auto_connect.setChecked(profile['auto_connect'])
+	
+	def load_profile_list(self,profiles):
+		self.ui.cmb_profiles.clear()
+		self.ui.cmb_profiles.addItem('New Profile')
+		
+		self.profiles = profiles
+		
+		for entry in profiles:
+			if entry['name']=='Unknown':
+				self.ui.cmb_profiles.addItem(entry['host'])
+			else:
+				self.ui.cmb_profiles.addItem(entry['name'])
 
 class Crescendo_GUI(QtGui.QMainWindow):
 	def __init__(self, parent=None):
@@ -109,14 +155,15 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_current = str(self.ui.lst_nodes.currentItem().text())
 		_profile = self.crescendo.client.has_profile(host=_current,name=_current)
 		
+		self.profilegui.load_profile_list(self.crescendo.client.profiles)
 		self.profilegui.load_profile(_profile)
-		
 		self.profilegui.show()
 	
 	def show_dialog_new(self):
-		_profile = self.crescendo.client.new_profile()
-	
-		self.profilegui.new_profile(_profile)
+		#_profile = self.crescendo.client.new_profile()
+		
+		self.profilegui.load_profile_list(self.crescendo.client.profiles)
+		self.profilegui.new_profile()
 		self.profilegui.show()
 	
 	def remove_node(self,node):

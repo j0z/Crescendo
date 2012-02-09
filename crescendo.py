@@ -68,25 +68,23 @@ class crescendo:
 	
 	def parse_profiles(self):
 		for profile in self.profiles:
-			if profile['auto_connect']:
+			if profile['auto_connect'] and not profile['host'] in self.ip_list:
 				self.ip_list.append(profile['host'])
 			
 			#Now we tack on some extra keys to help keep track of things...
 			profile['connection_fails']=0
 	
 	def save_profiles(self):
-		_temp_info = {'profiles':self.profiles}
+		_temp_list = []
+		
+		for profile in self.profiles:
+			if len(profile): _temp_list.append(profile)
+		
+		_temp_info = {'profiles':_temp_list}
 	
 		_f = open('profiles.conf','w')
 		_f.write(json.dumps(_temp_info).replace(',',',\n'))
 		_f.close()
-	
-	def new_profile(self):
-		_temp_info = {}
-		
-		self.profiles.append(_temp_info)
-		
-		return _temp_info
 	
 	def has_profile(self,host=None,port=None,name=None):
 		#Sometimes we don't know everything about a node, but this
@@ -97,6 +95,8 @@ class crescendo:
 		
 		for profile in self.profiles:
 			_matches = 0
+			
+			if not len(profile): continue
 			
 			if host and profile['host']==host:
 				_matches+=1
@@ -117,6 +117,20 @@ class crescendo:
 		
 		if _highest: return _highest['profile']
 		else: return False
+	
+	def add_profile(self,profile):
+		for _profile in self.profiles:
+			if _profile['name']==profile['name']:
+				_profile = profile
+				
+				self.ip_list.append(profile['host'])
+				#TODO: Duplicate warning! Maybe we don't want to update.
+				return True
+		
+		self.ip_list.append(profile['host'])
+		self.profiles.append(profile)
+		
+		#return _temp_info
 	
 	def add_profile_from_node(self,node):
 		_temp_info = {'host':node['host'][0],'port':node['host'][1]}
@@ -157,15 +171,15 @@ class crescendo:
 	def connect_node_list(self):
 		for node in self.node_list:
 			if not node['connected']:
+				if not node.has_key('host'): continue
+				
 				_profile = self.has_profile(host=node['host'][0],port=node['host'][1])
 				
-				if _profile:# or node['host'][0]=='127.0.0.1':
+				if _profile:
 					self.client.add_client(node['host'],profile=_profile)
-					print 'Yes, we have a profile for '+node['host'][0]
 					node['connected']=True
 				else:
 					self.add_profile_from_node(node)
-					print 'No, we dont have a profile for '+node['host'][0]
 				
 				self.log('[node] Connecting to %s:%s' % node['host'])
 	
