@@ -6,10 +6,6 @@ Warning
 -------
 Crescendo is, at this point in time, not entirely secure. There are a few things that could potentially be exploited if you pushed in the right places, but not much damage can be done (*probably* none.)
 
-In addition, not all variables have been implemented yet. Therefore, the below examples for `config.conf` and `node.conf` should be used. Custom configs will not work completely. Why?
-
-The next "big thing" I have to do is implement network profiles. This will allow you to connect to a variety of nodes via the UI. It's a long process, though, and I've logged many, many hours into this project and just want to get a version out to the public to see the reaction (if any.)
-
 Installation
 ------------
 By default, Crescendo contains no configuration files and will NOT run out-of-box. You'll need to do two things:
@@ -64,6 +60,21 @@ This is read by the server (node.)
     "share_dir":"files",
     "ignore_filename":["-sample"],
     "ignore_filetypes":["sfv","srr","nfo","nzb"]}
+	
+##Setup
+In addition to the above configuration, you'll need to need to connect to a node to start downloading files.
+
+At the top of the GUI is a green "+" icon. Click it, and enter the details of the node you want to connect to. Right now there are a few quirks:
+
+* The name MUST match the name of the node exactly.
+* Duplicate names are not allowed.
+
+First, you should probably connect to the node running on your PC. For me, I would enter "127.0.0.1" for IP, 9001 for the port, "auth", username to "test", and finally set password to "test". I check "Connect on startup" also. In a few moments it will connect.
+
+You can also edit node info a variety of ways:
+
+* Click the green "+" again and select the node you want to change.
+* Doubleclick the node in the node list.
 
 Running
 -------
