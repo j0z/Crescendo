@@ -70,7 +70,7 @@ You can run `crescendo_qt.py` directly. It will run the client and node in uniso
 
 First, don't panic. By default Crescendo has no configured "node profiles." Click the green "+" near the top of the window and fill out the details for the node running on your local machine. Use `127.0.0.1` as the IP, and I highly suggest checking "Connect on startup". Of course, you can skip this step if you aren't running a node. Click "Okay" and wait a moment. If you entered all the right details, then your node will show up in the bottom list of nodes.
 
-If you know the details of another node, hit the green "+" again and fill out the form again.
+If you know the details of another node, hit the green "+" again and fill out the form.
 
 If you messed up something, you can hit "+" and select the node you want to edit, or just double-click its entry in the node list. **As of the latest version, you have to restart for these changes to take effect.**
 
