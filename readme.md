@@ -8,7 +8,7 @@ Crescendo is, at this point in time, not entirely secure. There are a few things
 
 Installation (Guide)
 ====================
-While Crescendo is usable, there are currently a few things that make running it a bit difficult. I'll describe exactly how to install it from the ground up in this sections.
+While Crescendo is usable, there are currently a few things that make running it a bit difficult. I'll describe exactly how to install it from the ground up in this section.
 
 Requirements
 ------------
@@ -50,8 +50,36 @@ Linux users:
 
 You'll need: the IP of the node, its port, and login details. Contact the node's owner to get these.
 
+Writing Configuration Files
+---------------------------
+In brief, Crescendo has two configuration files: `node.conf` and `config.conf`. There is also a third one named `profiles.conf`, but it is generated automatically.
+
+`config.conf` is a leftover from an earlier version of Crescendo. Its function has long since been replaced by other built-in features, but a few things have yet to be coded out.
+
+`node.conf` is actually used to a great extent. It is read by the server half of Crescendo.
+
+In the section below this ("Installation (Detailed)"), I give an example of both config files. You can copy them directly.
+
+**BUT WAIT, THERE'S MORE**
+
+`config.conf` has a key named "host". **This needs to be set to your local IP, which you found using the above commands.** In future versions, you won't have to do this, but for now, you do. Sorry!
+
+Running Crescendo
+-----------------
+You can run `crescendo_qt.py` directly. It will run the client and node in unison. However, you won't see anything.
+
+First, don't panic. By default Crescendo has no configured "node profiles." Click the green "+" near the top of the window and fill out the details for the node running on your local machine. Use `127.0.0.1` as the IP, and I highly suggest checking "Connect on startup". Of course, you can skip this step if you aren't running a node. Click "Okay" and wait a moment. If you entered all the right details, then your node will show up in the bottom list of nodes.
+
+If you know the details of another node, hit the green "+" again and fill out the form again.
+
+If you messed up something, you can hit "+" and select the node you want to edit, or just double-click its entry in the node list. **As of the latest version, you have to restart for these changes to take effect.**
+
+Congratulations!
+----------------
+If you're lucky, you should now be connected to a node/series of notes. Some of these might be broadcast nodes, and you'll see a number of grey IP addresses in your node list. These are all nodes you can connect to by double-clicking them and filling out their various details.
+
 Installation (Detailed)
------------------------
+=======================
 By default, Crescendo contains no configuration files and will NOT run out-of-box. You'll need to do two things:
 
 ##Create config.conf
