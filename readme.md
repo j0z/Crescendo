@@ -6,8 +6,52 @@ Warning
 -------
 Crescendo is, at this point in time, not entirely secure. There are a few things that could potentially be exploited if you pushed in the right places, but not much damage can be done (*probably* none.)
 
-Installation
+Installation (Guide)
+====================
+While Crescendo is usable, there are currently a few things that make running it a bit difficult. I'll describe exactly how to install it from the ground up in this sections.
+
+Requirements
 ------------
+* Windows/Linux
+* Python (2.6 and above, and maybe 2.5. NOT Python 3.)
+* [Twisted](http://twistedmatrix.com/trac/)
+
+Installing Python+Twisted
+------------------
+First, install your version of Python.
+
+Second, go to [twisted's website](http://twistedmatrix.com/trac/) and install the version compatiable with your version of Python.
+
+Installing Crescendo
+--------------------
+* If you don't have `git` installed...
+
+You can [download the repo here as a .zip or .tar.gz](https://github.com/flags/Crescendo/downloads)
+
+* If you DO have `git` installed...
+
+    git clone git://github.com/flags/Crescendo.git
+
+Configuring Crescendo
+---------------------
+Here are where the quirks come into effect. Find the following information and be ready to enter it:
+
+* Your local IP (your LAN ip, NOT your public IP)
+
+Windows users:
+
+	ipconfig
+
+Linux users:
+
+	ifconfig
+
+* The connection details of any other nodes you want to connect to (obviously not needed if you're building your own network.)
+
+You'll need: the IP of the node, its port, and login details. Contact the node's owner to get these.
+
+Installation (Detailed)
+-----------------------
 By default, Crescendo contains no configuration files and will NOT run out-of-box. You'll need to do two things:
 
 ##Create config.conf
