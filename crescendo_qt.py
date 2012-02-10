@@ -39,6 +39,7 @@ class profile_GUI(QtGui.QDialog):
 		
 		self.ui.cmb_profiles.currentIndexChanged.connect(self.select_profile)
 		self.profile = None
+		self.profiles = None
 	
 	def accept(self):
 		self.save_profile()
@@ -48,7 +49,7 @@ class profile_GUI(QtGui.QDialog):
 		pass
 	
 	def select_profile(self):
-		if not self.profile: return
+		if not self.profiles: return
 		
 		for _profile in self.profiles:
 			_current = str(self.ui.cmb_profiles.itemText(self.ui.cmb_profiles.currentIndex()))
