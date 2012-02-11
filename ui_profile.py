@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\profile.ui'
 #
-# Created: Thu Feb 09 00:05:30 2012
+# Created: Sat Feb 11 13:11:45 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(240, 221)
+        Dialog.resize(240, 250)
         self.verticalLayout_2 = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.cmb_profiles = QtGui.QComboBox(Dialog)
@@ -67,6 +67,7 @@ class Ui_Dialog(object):
         self.cmb_security.setObjectName(_fromUtf8("cmb_security"))
         self.cmb_security.addItem(_fromUtf8(""))
         self.cmb_security.addItem(_fromUtf8(""))
+        self.cmb_security.addItem(_fromUtf8(""))
         self.gridLayout_2.addWidget(self.cmb_security, 0, 2, 1, 1)
         self.label_6 = QtGui.QLabel(Dialog)
         self.label_6.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -100,8 +101,9 @@ class Ui_Dialog(object):
         self.label_2.setText(QtGui.QApplication.translate("Dialog", "Port:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Security:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_5.setText(QtGui.QApplication.translate("Dialog", "User:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmb_security.setItemText(0, QtGui.QApplication.translate("Dialog", "password", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmb_security.setItemText(1, QtGui.QApplication.translate("Dialog", "auth", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmb_security.setItemText(0, QtGui.QApplication.translate("Dialog", "open", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmb_security.setItemText(1, QtGui.QApplication.translate("Dialog", "password", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmb_security.setItemText(2, QtGui.QApplication.translate("Dialog", "auth", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("Dialog", "Pass:", None, QtGui.QApplication.UnicodeUTF8))
         self.chk_auto_connect.setText(QtGui.QApplication.translate("Dialog", "Connect on startup", None, QtGui.QApplication.UnicodeUTF8))
 

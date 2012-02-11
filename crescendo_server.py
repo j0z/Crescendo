@@ -75,6 +75,7 @@ class Connection(basic.LineReceiver):
 				if self.state=='GETPASSWD':
 					if self.node.info['security']=='password': self.handle_PASSWORD(line['val'])
 					elif self.node.info['security']=='auth': self.handle_AUTH(line['val'].split(':')[0],line['val'].split(':')[1])
+					elif self.node.info['security']=='open': self.sendLine('put::pwd::okay')
 			
 			elif line['opt']=='fie':
 				self.download_position = 0

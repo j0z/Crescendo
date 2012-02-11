@@ -198,12 +198,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for row in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(row).text() == name:
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(128,128,128))
-		
+	
+	def update_node(self,node,info):
 		#TODO: Should this be in update_node?
 		#Maybe a node is dead, but still on the list for whatever reason.
 		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
-	
-	def update_node(self,node,info):
+		
 		for row in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(row).text() == node:
 				self.ui.lst_nodes.item(row).setText(info['name'])

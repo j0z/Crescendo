@@ -172,8 +172,6 @@ class Client(basic.LineReceiver):
 	
 	def connectionLost(self, reason):
 		print '[Failure] Client is shutting down for some reason'
-		#print reason
-		#self.parent.restart()
 	
 	def parse_line(self, line):
 		#Server expects a line similar to: GET/PUT::OPT::VAL
@@ -210,25 +208,33 @@ class Client(basic.LineReceiver):
 		elif line['com']=='put':
 			if line['opt']=='hnd':
 				if not line['val']=='error':
-					self.parent.log('[client->server] Handshake accepted')
+					self.parent.log('[client->%s] Handshake accepted' % (self.profile['name']))
 					
 					#Here we identify what login method the node/network uses
-					if line['val']=='auth':
+					if line['val']=='auth' and self.profile['security']=='auth':
 						if self.profile.has_key('username') and self.profile.has_key('password'):
-							#print 'HAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAMEHAD USERNAME!'
 							#Handle auth by reading from the profile associated with this node
 							self.sendLine('put::pwd::%s:%s' % (self.profile['username'],self.profile['password']))
-					elif line['val']=='password':
+					elif line['val']=='password' and self.profile['security']=='password':
 						if self.profile.has_key('password'):
 							self.sendLine('put::pwd::%s' % self.profile['password'])
+					elif line['val']=='open':
+						self.sendLine('put::pwd::okay')
+						
+						if not self.profile['security']=='open':
+							self.parent.log('[client->%s.Warning] Node requires no authentication' % (self.profile['name']))
+					else:
+						self.parent.log('[client->%s.Failed] Authentication failed' % (self.profile['name']))
+						self.transport.loseConnection()
+					
 					self.state = 'password'
 				else:
-					self.parent.log('[client->server] Server didn\'t like us. Abort.')
+					self.parent.log('[client->%s] Server didn\'t like us. Abort.' % (self.profile['name']))
 					self.stop()
 					
 			elif line['opt']=='pwd':
 				if line['val']=='okay':
-					self.parent.log('[client->server] Password accepted')
+					self.parent.log('[client->%s] Password accepted' % (self.profile['name']))
 					
 					#We start our loops now
 					self.ping_loop.start(10)
@@ -236,7 +242,7 @@ class Client(basic.LineReceiver):
 					self.sendLine('get::inf::derp')
 					self.state = 'running'
 				else:
-					self.parent.log('[client->server] Password incorrect. Abort.')
+					self.parent.log('[client->%s] Password incorrect. Abort.' % (self.profile['name']))
 					self.stop()
 			
 			elif line['opt']=='inf':
@@ -372,7 +378,8 @@ class ClientParent(ClientFactory):
 		#ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
 
 	def clientConnectionFailed(self, connector, reason):
-		print 'Connection to %s failed. Reason: %s' % (self.host[0],reason)
+		pass
+		#print 'Connection to %s failed. Reason: %s' % (self.host[0],reason)
 	
 class connect(threading.Thread):
 	def __init__(self,parent):
