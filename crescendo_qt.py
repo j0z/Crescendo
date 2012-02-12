@@ -192,7 +192,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				return
 		
 		self.ui.lst_nodes.addItem(name)
-		self.ui.cmb_newslist.addItem(name)
 		self.info['nodes'].append({'name':name,'files':[]})
 		
 		#Can't believe I'm doing this.
@@ -211,11 +210,11 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				
 				_find = self.ui.cmb_newslist.findText(node,QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
 				
-				if info.has_key('news'):
+				print _find
+				
+				if info.has_key('news') and _find==-1:
 					self.info['nodes'][row]['news'] = info['news']
-					self.ui.cmb_newslist.setItemText(_find,info['name'])
-				else:
-					self.ui.cmb_newslist.removeItem(_find)
+					self.ui.cmb_newslist.addItem(info['name'])
 				
 				self.info['nodes'][row]['host'] = self.info['nodes'][row]['name']
 				self.info['nodes'][row]['name'] = info['name']
