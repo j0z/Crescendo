@@ -4,7 +4,7 @@ The distribution of nodes is a direct result of connecting users (clients) who b
 
 Example
 ------
-Clients, by default, submit any nodes running on the local machine to any node it connects to. Client A is running a node called "video" and Client B runs "music", and both know about a node called "central." Node A connects to "central" and adds the node "video" to it's broadcast list. Client B connects and adds "music" to the list also. Central then sends "video" to Client B, and "music" to Client A. If either "music" or "video" is a broadcast node, then each client adds its local node to their broadcast list also.
+Clients, by default, submit any nodes running on the local machine to any node it connects to. Client A is running a node called "video" and Client B runs "music", and both know about a node called "central." Node A connects to "central" and adds the node "video" to its broadcast list. Client B connects and adds "music" to the list also. Central then sends "video" to Client B, and "music" to Client A. If either "music" or "video" is a broadcast node, then each client adds its local node to their broadcast list also.
 
 Protected networks
 ==================
