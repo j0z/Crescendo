@@ -126,9 +126,6 @@ class Client(basic.LineReceiver):
 		else:
 			self.profile = None
 		
-		#print self.profile
-		
-		#self.file = None
 		self.main_parent = self.parent.parent.parent
 		self.main_parent.add_node_callback(self.host,self)
 		
@@ -181,7 +178,6 @@ class Client(basic.LineReceiver):
 	
 	def lineReceived(self, line):
 		self.last_seen = time.time()
-		#print repr(line)
 		
 		if line.count('\r\n\r\n')>=2:
 			for _l in line.split('\r\n\r\n'):
@@ -246,22 +242,19 @@ class Client(basic.LineReceiver):
 					self.stop()
 			
 			elif line['opt']=='inf':
-			
 				#We grab the total number of nodes being broadcasted and compare
 				#them to the amount that were in the last info packet to the info
 				#packet received a few lines down.
 				_nodes=None
+				
 				if self.parent.info and self.parent.info.has_key('broadcasting'):
 					_nodes = str(len(self.parent.info['broadcasting']))
 				
 				#Get the info packet and run it through json
-				#try:
 				self.parent.info = json.loads(line['val'])
 				self.parent.info['host'] = self.host
 				self.parent.info['files'] = self.file_list_temp
 				self.main_parent.add_node_info(self.host,self.parent.info)
-				#except:
-				#	pass
 				
 				#If broadcast node, handle it accordingly
 				#TODO: Some clients might not want to listen to broadcasts...
@@ -341,8 +334,6 @@ class ClientParent(ClientFactory):
 		self.info = None
 		
 		self.debug = True
-		
-		#self.deferred = defer.Deferred()
 	
 	def log(self, text):
 		if self.debug: self.parent.parent.log(text)

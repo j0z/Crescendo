@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\profile.ui'
 #
-# Created: Sat Feb 11 13:11:45 2012
+# Created: Sat Feb 11 13:39:40 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!

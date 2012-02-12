@@ -34,6 +34,7 @@ class Connection(basic.LineReceiver):
 		self.last_seen = time.time()
 		self.download_position = 0
 		self.is_downloader = False
+		self.authed = False
 		
 		self.name = ''	
 	
@@ -76,14 +77,16 @@ class Connection(basic.LineReceiver):
 					if self.node.info['security']=='password': self.handle_PASSWORD(line['val'])
 					elif self.node.info['security']=='auth': self.handle_AUTH(line['val'].split(':')[0],line['val'].split(':')[1])
 					elif self.node.info['security']=='open': self.sendLine('put::pwd::okay')
+					
+					self.authed = True
 			
-			elif line['opt']=='fie':
+			elif line['opt']=='fie' and (self.authed or self.is_downloader):
 				self.download_position = 0
 			
 			elif line['opt']=='png':
 				self.last_seen = time.time()
 			
-			elif line['opt']=='bro':
+			elif line['opt']=='bro' and self.authed:
 				_n = tuple(line['val'].split(':'))
 				
 				if self.node.info['broadcast']:
@@ -99,7 +102,7 @@ class Connection(basic.LineReceiver):
 				self.sendLine('put::dwn::okay')
 		
 		elif line['com']=='get':
-			if line['opt']=='inf':
+			if line['opt']=='inf' and self.authed:
 				
 				#Start our looping calls now.
 				#Starts pinging clients
@@ -138,7 +141,7 @@ class Connection(basic.LineReceiver):
 				
 				self.setLineMode()
 			
-			elif line['opt']=='fli':
+			elif line['opt']=='fli' and self.authed:
 				#Send our list of files down the pipe, in chunks of 32
 				_cur = int(line['val'])
 				_max = _cur+32
@@ -168,6 +171,7 @@ class Connection(basic.LineReceiver):
 	def handle_PASSWORD(self, passwd):
 		if not hashlib.sha224(passwd).hexdigest()==self.node.info['passwd']:
 			self.sendLine('put::pwd::wrong')
+			self.transport.loseConnection()
 			return
 		
 		self.sendLine('put::pwd::okay')
@@ -179,6 +183,7 @@ class Connection(basic.LineReceiver):
 			self.node.add_client((self.host.host,self.name))
 		else:
 			self.sendLine('put::pwd::wrong')
+			self.transport.loseConnection()
 	
 	def ping(self):
 		self.sendLine('get::pin::null')
@@ -300,6 +305,15 @@ class start_server(threading.Thread):
 		
 		if self.info['broadcast']:
 			self.info['broadcasting'] = []
+		
+		if self.info.has_key('news_file'):
+			self.info['news'] = ''
+			_news = open(self.info['news_file'],'r')
+			
+			for line in _news.readlines():
+				self.info['news']+=line
+			
+			_news.close()
 		
 		self.node = None
 		self.running = False

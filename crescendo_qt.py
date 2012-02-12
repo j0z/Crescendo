@@ -190,6 +190,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				return
 		
 		self.ui.lst_nodes.addItem(name)
+		self.ui.cmb_newslist.addItem(entry['host'])
 		self.info['nodes'].append({'name':name,'files':[]})
 		
 		#Can't believe I'm doing this.
@@ -200,8 +201,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(128,128,128))
 	
 	def update_node(self,node,info):
-		#TODO: Should this be in update_node?
-		#Maybe a node is dead, but still on the list for whatever reason.
 		self.ui.lab_connected_nodes.setText('Connected nodes: %s' % str(len(self.info['nodes'])))
 		
 		for row in range(self.ui.lst_nodes.count()):
@@ -210,9 +209,13 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				self.info['nodes'][row]['host'] = self.info['nodes'][row]['name']
 				self.info['nodes'][row]['name'] = info['name']
 				self.info['nodes'][row]['files'] = info['files']
+				#if self.info['nodes'][row].has_key('news'):
+				#	self.info['nodes'][row]['news'] = info['news']
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(0,0,0))
 				
 				break
+		
+		
 	
 	def select_node(self):
 		self.ui.lst_files.clear()
@@ -293,7 +296,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		#TODO: Send over file path and double check it.
 		_search = self.ui.lst_queue.findItems(file['name'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchRecursive))[0]
 		
-		_search.setText(1,_filesize+' (%.2f%%)' % ((progress/float(self.ui.prg_download.maximum()))*100))
+		_search.setText(1,_filesize+' (%.2f%%)' % ((progress/float(self.ui.prg_download.maximum()))*100.0))
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()

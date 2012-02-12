@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\main_alt.ui'
+# Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Tue Feb 07 16:32:54 2012
+# Created: Sat Feb 11 23:45:03 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,9 +44,9 @@ class Ui_MainWindow(object):
         self.btn_connect.setIcon(icon1)
         self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
         self.horizontalLayout_2.addWidget(self.btn_connect)
-        self.lne_ip = QtGui.QLineEdit(self.centralwidget)
-        self.lne_ip.setObjectName(_fromUtf8("lne_ip"))
-        self.horizontalLayout_2.addWidget(self.lne_ip)
+        self.lne_filter = QtGui.QLineEdit(self.centralwidget)
+        self.lne_filter.setObjectName(_fromUtf8("lne_filter"))
+        self.horizontalLayout_2.addWidget(self.lne_filter)
         self.lab_connected_nodes = QtGui.QLabel(self.centralwidget)
         self.lab_connected_nodes.setObjectName(_fromUtf8("lab_connected_nodes"))
         self.horizontalLayout_2.addWidget(self.lab_connected_nodes)
@@ -69,6 +69,25 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.lst_nodes, 0, 0, 1, 1)
         self.gridLayout_3.addLayout(self.gridLayout_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.tab_4 = QtGui.QWidget()
+        self.tab_4.setObjectName(_fromUtf8("tab_4"))
+        self.gridLayout_9 = QtGui.QGridLayout(self.tab_4)
+        self.gridLayout_9.setObjectName(_fromUtf8("gridLayout_9"))
+        self.gridLayout_8 = QtGui.QGridLayout()
+        self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+        self.txt_news = QtGui.QTextBrowser(self.tab_4)
+        self.txt_news.setObjectName(_fromUtf8("txt_news"))
+        self.gridLayout_8.addWidget(self.txt_news, 0, 0, 1, 1)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.cmb_newslist = QtGui.QComboBox(self.tab_4)
+        self.cmb_newslist.setObjectName(_fromUtf8("cmb_newslist"))
+        self.horizontalLayout_3.addWidget(self.cmb_newslist)
+        spacerItem1 = QtGui.QSpacerItem(570, 20, QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem1)
+        self.gridLayout_8.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
+        self.gridLayout_9.addLayout(self.gridLayout_8, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tab_4, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
         self.gridLayout_5 = QtGui.QGridLayout(self.tab_2)
@@ -86,8 +105,8 @@ class Ui_MainWindow(object):
         self.btn_clear_downloads = QtGui.QPushButton(self.tab_2)
         self.btn_clear_downloads.setObjectName(_fromUtf8("btn_clear_downloads"))
         self.horizontalLayout_7.addWidget(self.btn_clear_downloads)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_7.addItem(spacerItem1)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem2)
         self.gridLayout_5.addLayout(self.horizontalLayout_7, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab_3 = QtGui.QWidget()
@@ -140,7 +159,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -149,6 +168,7 @@ class Ui_MainWindow(object):
         self.btn_connect.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.lab_connected_nodes.setText(QtGui.QApplication.translate("MainWindow", "Connected Nodes: ", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Nodes", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("MainWindow", "News", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_queue.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_queue.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Progress", None, QtGui.QApplication.UnicodeUTF8))
         self.lst_queue.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
