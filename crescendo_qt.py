@@ -264,10 +264,11 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def grab_file(self):
 		_nr = -1
 		
-		for _n in range(self.ui.lst_nodes.count()):
-			if self.ui.lst_nodes.item(_n).text()==self.ui.lst_files.currentItem().text(3):
-				_nr = _n
-				break
+		if self.ui.lst_files.currentItem():
+			for _n in range(self.ui.lst_nodes.count()):
+				if self.ui.lst_nodes.item(_n).text()==self.ui.lst_files.currentItem().text(3):
+					_nr = _n
+					break
 		
 		if _nr==-1:
 			print 'Pick a file first.'
@@ -295,7 +296,10 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.select_node(filter=str(self.ui.lne_filter.text()))
 	
 	def clear_downloads(self):
-		self.ui.lst_queue.clear()
+		_search = self.ui.lst_queue.findItems('100.00',QtCore.Qt.MatchFlags(QtCore.Qt.MatchContains),column=1)
+		
+		for _i in _search:
+			self.ui.lst_queue.takeTopLevelItem(self.ui.lst_queue.indexFromItem(_i).row())
 	
 	def grabbed_file(self,file):
 		self.ui.lab_downloaded_files.setText('Downloaded files: %s' % str(len(self.crescendo.client.downloaded_files)))
@@ -314,10 +318,12 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		if _temp_filesize>=file['size']:
 			self.ui.prg_download.setValue(0)
 		
+		_percent = (progress/float(self.ui.prg_download.maximum()))*100.0
+		if _percent>100: _percent = 100
+		
 		#TODO: Send over file path and double check it.
 		_search = self.ui.lst_queue.findItems(file['name'],QtCore.Qt.MatchFlags(QtCore.Qt.MatchRecursive))[0]
-		
-		_search.setText(1,_filesize+' (%.2f%%)' % ((progress/float(self.ui.prg_download.maximum()))*100.0))
+		_search.setText(1,_filesize+' (%.2f%%)' % _percent)
 	
 	def closeEvent(self, event):
 		self.crescendo.shutdown()
