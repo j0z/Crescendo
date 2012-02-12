@@ -272,7 +272,7 @@ class Client(basic.LineReceiver):
 					#	For now it works because the node config is read when we create self.server
 					#	in crescendo.py. When the config file format changes we'll need to edit this.
 					if self.main_parent.server.info['searchable'] and self.main_parent.has_node(('127.0.0.1',9001)):
-						self.sendLine('put::bro::%s:%s' % (self.main_parent.info['host']))
+						self.sendLine('put::bro::okay')
 					
 					#I would like to add some kind of message here if the node was added
 					#or not... just so the user can know that they are getting nodes
@@ -408,24 +408,12 @@ class connect(threading.Thread):
 		
 		try:
 			reactor.run(installSignalHandlers=0)
-			#print 'reactor running'
 		except:
 			pass
 
 	def add_client(self,host,profile=None):
-		#Client(host[0],host[1])
-		#self.point = TCP4ClientEndpoint(reactor, host[0], host[1])
-		#self.ClientParent = ClientParent(host,self)
-		#self.point.connect(self.ClientParent)
-		
-		#self.clients.append(self.ClientParent)
-		#Client(host,self)
 		factory = ClientParent(host,self,profile)
 		self.clients.append(factory)
 		reactor.connectTCP(host[0], host[1], factory)
 
 		if not self.running: self.start()
-
-#point = TCP4ClientEndpoint(reactor, 'localhost', 9001)
-#point.connect(ClientParent(reactor))
-#reactor.run()

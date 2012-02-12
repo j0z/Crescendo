@@ -87,7 +87,7 @@ class Connection(basic.LineReceiver):
 				self.last_seen = time.time()
 			
 			elif line['opt']=='bro' and self.authed:
-				_n = tuple(line['val'].split(':'))
+				_n = (self.host.host,self.host.port)
 				
 				if self.node.info['broadcast']:
 					if not _n in self.node.info['broadcasting']:
