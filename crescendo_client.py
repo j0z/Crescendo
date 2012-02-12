@@ -406,11 +406,11 @@ class connect(threading.Thread):
 		self.running = True
 		self.reactor = reactor
 		
-		#try:
-		#reactor.run(installSignalHandlers=0)
-		#print 'reactor running'
-		#except:
-		#	pass
+		try:
+			reactor.run(installSignalHandlers=0)
+			#print 'reactor running'
+		except:
+			pass
 
 	def add_client(self,host,profile=None):
 		#Client(host[0],host[1])

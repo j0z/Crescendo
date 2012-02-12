@@ -247,7 +247,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_selected = str(self.ui.cmb_newslist.itemText(self.ui.cmb_newslist.currentIndex()))
 		
 		for node in self.info['nodes']:
-			if node['name']==_selected:
+			if node['name']==_selected and node.has_key('news'):
 				self.ui.txt_news.setHtml(node['news'])
 				break
 		
