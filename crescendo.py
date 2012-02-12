@@ -24,7 +24,6 @@ class crescendo:
 		_f.close()
 		
 		self.info = json.loads(_temp_info)
-		self.info['host'] = tuple(self.info['host'])
 		
 		#Load profiles.conf
 		_temp_info = ''

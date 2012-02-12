@@ -278,8 +278,7 @@ class Client(basic.LineReceiver):
 					#or not... just so the user can know that they are getting nodes
 					#from a broadcast node.
 					for node in self.parent.info['broadcasting']:
-						if not str(node[0]) == self.main_parent.info['host'][0]:
-							self.main_parent.add_node((str(node[0]),int(node[1])))
+						self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 				#Finally, we let the node know that we need its file listing
 				#TODO: Check to see if the size of our list is the size of the node's list
