@@ -152,6 +152,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.ui.btn_grab.clicked.connect(self.grab_file)
 		self.ui.btn_connect.clicked.connect(self.show_dialog_new)
 		self.ui.btn_clear_downloads.clicked.connect(self.clear_downloads)
+		self.ui.lne_filter.textChanged.connect(self.filter)
 	
 	def log(self,text):
 		self.ui.lst_log.insertItem(0,text)
@@ -223,7 +224,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				
 				break
 	
-	def select_node(self):
+	def select_node(self,filter=None):
 		self.ui.lst_files.clear()
 		
 		_nselected = self.ui.lst_nodes.selectedItems()
@@ -240,11 +241,14 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				if _temp_filesize > 1000000: _filesize ='%s MB' % (_temp_filesize/1000000)
 				else: _filesize ='%s kb' % (_temp_filesize/1024)
 				
+				if isinstance(filter,str):
+					if not file['name'].lower().count(filter.lower()): continue
+				
 				i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root'],selected.text()])
 				self.ui.lst_files.addTopLevelItem(i)
 	
-	def select_newslist(self):
-		_selected = str(self.ui.cmb_newslist.itemText(self.ui.cmb_newslist.currentIndex()))
+	def select_newslist(self,selected=None):
+		_selected = str(self.ui.cmb_newslist.itemText(selected))
 		
 		for node in self.info['nodes']:
 			if node['name']==_selected and node.has_key('news'):
@@ -286,6 +290,9 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		_h = self.info['nodes'][_nr]['host']
 		
 		self.crescendo.client.get_file(_h,_name)
+	
+	def filter(self):
+		self.select_node(filter=str(self.ui.lne_filter.text()))
 	
 	def clear_downloads(self):
 		self.ui.lst_queue.clear()

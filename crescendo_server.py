@@ -336,7 +336,10 @@ class start_server(threading.Thread):
 		self.running = True
 		
 		if self.use_threading:
-			reactor.run(installSignalHandlers=0)
+			try:
+				reactor.run(installSignalHandlers=0)
+			except:
+				self.log('[reactor.Warning] Client started reactor for us. How nice!')
 		else:
 			reactor.run()
 	
