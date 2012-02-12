@@ -306,7 +306,7 @@ class start_server(threading.Thread):
 		if self.info['broadcast']:
 			self.info['broadcasting'] = []
 		
-		if self.info.has_key('news_file'):
+		if self.info.has_key('news_file') and os.path.exists(self.info['news_file']):
 			self.info['news'] = ''
 			_news = open(self.info['news_file'],'r')
 			

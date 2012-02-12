@@ -146,6 +146,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.crescendo.start()
 		
 		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
+		self.ui.cmb_newslist.currentIndexChanged.connect(self.select_newslist)
 		self.ui.lst_nodes.itemClicked.connect(self.select_node)
 		self.ui.lst_nodes.itemDoubleClicked.connect(self.show_dialog)
 		self.ui.btn_grab.clicked.connect(self.grab_file)
@@ -190,7 +191,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				return
 		
 		self.ui.lst_nodes.addItem(name)
-		self.ui.cmb_newslist.addItem(entry['host'])
+		self.ui.cmb_newslist.addItem(name)
 		self.info['nodes'].append({'name':name,'files':[]})
 		
 		#Can't believe I'm doing this.
@@ -206,16 +207,21 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		for row in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(row).text() == node:
 				self.ui.lst_nodes.item(row).setText(info['name'])
+				
+				_find = self.ui.cmb_newslist.findText(node,QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
+				
+				if info.has_key('news'):
+					self.info['nodes'][row]['news'] = info['news']
+					self.ui.cmb_newslist.setItemText(_find,info['name'])
+				else:
+					self.ui.cmb_newslist.removeItem(_find)
+				
 				self.info['nodes'][row]['host'] = self.info['nodes'][row]['name']
 				self.info['nodes'][row]['name'] = info['name']
 				self.info['nodes'][row]['files'] = info['files']
-				#if self.info['nodes'][row].has_key('news'):
-				#	self.info['nodes'][row]['news'] = info['news']
 				self.ui.lst_nodes.item(row).setTextColor(QtGui.QColor(0,0,0))
 				
 				break
-		
-		
 	
 	def select_node(self):
 		self.ui.lst_files.clear()
@@ -236,6 +242,14 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				
 				i=QtGui.QTreeWidgetItem([file['name'],str(_filesize),file['root'],selected.text()])
 				self.ui.lst_files.addTopLevelItem(i)
+	
+	def select_newslist(self):
+		_selected = str(self.ui.cmb_newslist.itemText(self.ui.cmb_newslist.currentIndex()))
+		
+		for node in self.info['nodes']:
+			if node['name']==_selected:
+				self.ui.txt_news.setHtml(node['news'])
+				break
 		
 	def connect_node(self):
 		if self.ui.lne_ip.text().count(':'):	
@@ -248,7 +262,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		
 		for _n in range(self.ui.lst_nodes.count()):
 			if self.ui.lst_nodes.item(_n).text()==self.ui.lst_files.currentItem().text(3):
-				_nr = _n#self.ui.lst_nodes.row(_n)
+				_nr = _n
 				break
 		
 		if _nr==-1:
