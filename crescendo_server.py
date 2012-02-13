@@ -86,14 +86,13 @@ class Connection(basic.LineReceiver):
 			elif line['opt']=='png':
 				self.last_seen = time.time()
 			
-			elif line['opt']=='bro' and self.authed:
+			elif line['opt']=='bro' and self.node.info['broadcast'] and self.authed:
 				_n = (self.host.host,self.host.port)
 				
-				if self.node.info['broadcast']:
-					if not _n in self.node.info['broadcasting']:
-						self.node.info['broadcasting'].append(_n)
-						self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
-						self.sendLine('put::bro::okay')
+				if not _n in self.node.info['broadcasting']:
+					self.node.info['broadcasting'].append(_n)
+					self.node.log('[broadcast] Now broadcasting %s:%s' % _n)
+					self.sendLine('put::bro::okay')
 			
 			#TODO: Document!
 			elif line['opt']=='dwn':
@@ -142,28 +141,32 @@ class Connection(basic.LineReceiver):
 				self.setLineMode()
 			
 			elif line['opt']=='fli' and self.authed:
-				#Send our list of files down the pipe, in chunks of 32
-				_cur = int(line['val'])
-				_max = _cur+32
-				_done = False
-				
-				if _max>=len(self.node.file_list):
-					_max=(len(self.node.file_list)-_cur)
-					_done = True
-				
-				if _cur==len(self.node.file_list):
-					self.sendLine('put::fli::okay')
-					return
-				
-				_packet = []
-				for f in range(_cur,_max):
-					#print f,self.node.file_list[f]
-					_packet.append(self.node.file_list[f])
-				
-				if len(_packet):
-					self.sendLine('put::fli::%s' % (json.dumps(_packet)))
-				
-				if _done: self.sendLine('put::fli::okay')
+				if line['val']=='None':
+					#If 'None', send our list of files down the pipe, in chunks of 32
+					_cur = int(0)
+					_max = _cur+32
+					_done = False
+					
+					if _max>=len(self.node.file_list):
+						_max=(len(self.node.file_list)-_cur)
+						_done = True
+					
+					#TODO: Wut
+					#if _cur==len(self.node.file_list):
+					#	self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
+					#	return
+					
+					_packet = []
+					for f in range(_cur,_max):
+						_packet.append(self.node.file_list[f])
+					
+					if len(_packet):
+						self.sendLine('put::fli::%s' % (json.dumps(_packet)))
+					
+					if _done: self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
+				else:
+					print line['val']
+					#print self.node.update_file_list(line['val'])
 				
 		else:
 			print 'Garbage: '+str(line)
@@ -206,6 +209,8 @@ class Node(ServerFactory):
 		self.connections = []
 		
 		self.files = []
+		self.info['file_list_version'] = None
+		self.file_lists = []
 		self.populate_file_list()
 
 	def log(self,text):
@@ -239,7 +244,17 @@ class Node(ServerFactory):
 					self.file_list.append(_f.info)
 					#self.info['files'].append(_f.info)
 		
+		self.info['file_list_version'] = hashlib.sha224(str(self.file_list)).hexdigest()
+		self.file_lists.append({'version':self.info['file_list_version'],'list':self.file_list[:]})
+		
 		self.log('[Files] Sharing %s files' % len(self.file_list))
+	
+	def update_file_list(self,version):
+		for file_list in self.file_lists:
+			if file_list['version']==version:
+				return list(set(file_list['list'],self.file_list))
+		
+		return False
 	
 	def auth_user(self,usr,pas):
 		for user in self.parent.auth_db['users']:

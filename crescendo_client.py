@@ -134,6 +134,7 @@ class Client(basic.LineReceiver):
 		self.last_seen = time.time()
 		
 		self.file_list_temp = []
+		self.file_list_version = None
 	
 	def stop(self):
 		self.main_parent.remove_node(self.host)
@@ -281,12 +282,13 @@ class Client(basic.LineReceiver):
 						self.main_parent.add_node((str(node[0]),int(node[1])))
 				
 				#Finally, we let the node know that we need its file listing
-				#TODO: Check to see if the size of our list is the size of the node's list
-				if not len(self.file_list_temp):
-					self.sendLine('get::fli::0')
+				#TODO: Have the server keep track of previous versions, then diff
+				if not self.parent.info['file_list_version'] == self.file_list_version:
+					self.sendLine('get::fli::%s' % self.file_list_version)
 			
 			elif line['opt']=='fli':
-				if line['val']=='okay':
+				if line['val'][:4]=='okay':
+					self.file_list_version = line['val'].split(':')[1]
 					self.parent.info['files'] = self.file_list_temp[:]
 				else:
 					_tlist = json.loads(line['val'])
