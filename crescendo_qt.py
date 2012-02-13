@@ -210,8 +210,6 @@ class Crescendo_GUI(QtGui.QMainWindow):
 				
 				_find = self.ui.cmb_newslist.findText(node,QtCore.Qt.MatchFlags(QtCore.Qt.MatchExactly))
 				
-				print _find
-				
 				if info.has_key('news') and _find==-1:
 					self.info['nodes'][row]['news'] = info['news']
 					self.ui.cmb_newslist.addItem(info['name'])
