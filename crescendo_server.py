@@ -141,9 +141,9 @@ class Connection(basic.LineReceiver):
 				self.setLineMode()
 			
 			elif line['opt']=='fli' and self.authed:
-				if line['val']=='None':
+				if not len(line['val'])==56:
 					#If 'None', send our list of files down the pipe, in chunks of 32
-					_cur = int(0)
+					_cur = int(line['val'])
 					_max = _cur+32
 					_done = False
 					
@@ -151,10 +151,9 @@ class Connection(basic.LineReceiver):
 						_max=(len(self.node.file_list)-_cur)
 						_done = True
 					
-					#TODO: Wut
-					#if _cur==len(self.node.file_list):
-					#	self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
-					#	return
+					if _cur==len(self.node.file_list):
+						self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
+						return
 					
 					_packet = []
 					for f in range(_cur,_max):
@@ -166,7 +165,10 @@ class Connection(basic.LineReceiver):
 					if _done: self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
 				else:
 					print line['val']
-					#print self.node.update_file_list(line['val'])
+					_version = self.node.update_file_list(line['val'])
+					
+					#if _version:
+						
 				
 		else:
 			print 'Garbage: '+str(line)
@@ -242,7 +244,6 @@ class Node(ServerFactory):
 					
 					self.files.append(_f)
 					self.file_list.append(_f.info)
-					#self.info['files'].append(_f.info)
 		
 		self.info['file_list_version'] = hashlib.sha224(str(self.file_list)).hexdigest()
 		self.file_lists.append({'version':self.info['file_list_version'],'list':self.file_list[:]})

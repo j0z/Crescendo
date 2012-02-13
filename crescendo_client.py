@@ -284,7 +284,9 @@ class Client(basic.LineReceiver):
 				#Finally, we let the node know that we need its file listing
 				#TODO: Have the server keep track of previous versions, then diff
 				if not self.parent.info['file_list_version'] == self.file_list_version:
-					self.sendLine('get::fli::%s' % self.file_list_version)
+					if not self.file_list_version:
+						self.sendLine('get::fli::0')
+					else: self.sendLine('get::fli::%s' % self.file_list_version)
 			
 			elif line['opt']=='fli':
 				if line['val'][:4]=='okay':
