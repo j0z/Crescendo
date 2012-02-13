@@ -36,16 +36,6 @@ Configuring Crescendo
 ---------------------
 Here are where the quirks come into effect. Find the following information and be ready to enter it:
 
-* Your local IP (your LAN ip, NOT your public IP)
-
-Windows users:
-
-	ipconfig
-
-Linux users:
-
-	ifconfig
-
 * The connection details of any other nodes you want to connect to (obviously not needed if you're building your own network.)
 
 You'll need: the IP of the node, its port, and login details. Contact the node's owner to get these.
@@ -54,15 +44,11 @@ Writing Configuration Files
 ---------------------------
 In brief, Crescendo has two configuration files: `node.conf` and `config.conf`. There is also a third one named `profiles.conf`, but it is generated automatically.
 
-`config.conf` is a leftover from an earlier version of Crescendo. Its function has long since been replaced by other built-in features, but a few things have yet to be coded out.
+`config.conf` currently defines one variable: The location of the download. In the future, more will be added.
 
 `node.conf` is actually used to a great extent. It is read by the server half of Crescendo.
 
 In the section below this ("Installation (Detailed)"), I give an example of both config files. You can copy them directly.
-
-**BUT WAIT, THERE'S MORE**
-
-`config.conf` has a key named "host". **This needs to be set to your local IP, which you found using the above commands.** In future versions, you won't have to do this, but for now, you do. Sorry!
 
 Running Crescendo
 -----------------
@@ -85,15 +71,10 @@ By default, Crescendo contains no configuration files and will NOT run out-of-bo
 ##Create config.conf
 This is read by the client, and sets up a few things:
 
-`node_name`: This isn't used at the moment. You'll still need it, though.
-
-`host`: Your local IP:port. Port should be 9001.
-
 `save_dir`: Where Crescendo will store downloaded items.
 
 ##Example: 
     {"node_name":"flagship",
-    "host":["10.234.16.131",9001],
     "save_dir":"downloads"}
 
 ##Create node.conf
