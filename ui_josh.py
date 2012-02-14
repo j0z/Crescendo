@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main_josh.ui'
 #
-# Created: Mon Feb 13 15:23:51 2012
+# Created: Tue Feb 14 02:30:00 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -245,6 +245,7 @@ class Ui_MainWindow(object):
         self.lst_files.setFrameShape(QtGui.QFrame.NoFrame)
         self.lst_files.setFrameShadow(QtGui.QFrame.Plain)
         self.lst_files.setLineWidth(0)
+        self.lst_files.setSelectionMode(QtGui.QAbstractItemView.ContiguousSelection)
         self.lst_files.setIndentation(0)
         self.lst_files.setRootIsDecorated(False)
         self.lst_files.setHeaderHidden(False)

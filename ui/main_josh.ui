@@ -489,6 +489,9 @@ QScrollBar::sub-line:horizontal {
     <property name="lineWidth">
      <number>0</number>
     </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::ContiguousSelection</enum>
+    </property>
     <property name="indentation">
      <number>0</number>
     </property>
