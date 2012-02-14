@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\main.ui'
 #
-# Created: Sun Feb 12 17:55:10 2012
+# Created: Tue Feb 14 02:13:39 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -122,6 +122,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         self.gridLayout.addWidget(self.tabWidget, 3, 0, 1, 1)
         self.lst_files = QtGui.QTreeWidget(self.centralwidget)
+        self.lst_files.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.lst_files.setIndentation(0)
         self.lst_files.setObjectName(_fromUtf8("lst_files"))
         self.gridLayout.addWidget(self.lst_files, 2, 0, 1, 1)

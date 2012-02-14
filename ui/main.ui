@@ -227,6 +227,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QTreeWidget" name="lst_files">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
         <property name="indentation">
          <number>0</number>
         </property>

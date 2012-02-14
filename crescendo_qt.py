@@ -233,9 +233,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def select_node(self,filter=None):
 		self.ui.lst_files.clear()
 		
-		_nselected = self.ui.lst_nodes.selectedItems()
-		
-		for selected in _nselected:
+		for selected in self.ui.lst_nodes.selectedItems():
 			_n = self.ui.lst_nodes.row(selected)
 			
 			if _n>=len(self.info['nodes']): _n=len(self.info['nodes'])-1
@@ -270,33 +268,32 @@ class Crescendo_GUI(QtGui.QMainWindow):
 	def grab_file(self):
 		_nr = -1
 		
-		if self.ui.lst_files.currentItem():
+		for selected in self.ui.lst_files.selectedItems():
+			#if self.ui.lst_files.currentItem():
 			for _n in range(self.ui.lst_nodes.count()):
-				if self.ui.lst_nodes.item(_n).text()==self.ui.lst_files.currentItem().text(3):
+				if self.ui.lst_nodes.item(_n).text()==selected.text(3):
 					_nr = _n
 					break
-		
-		if _nr==-1:
-			print 'Pick a file first.'
-			return
-		
-		_name= self.ui.lst_files.currentItem().text(0)
-		_size = self.ui.lst_files.currentItem().text(1)
-		_path = self.ui.lst_files.currentItem().text(2)
-		
-		_type = str(self.ui.lst_files.currentItem().text(1).split(' ')[1])
-		_temp_filesize = int(self.ui.lst_files.currentItem().text(1).split(' ')[0])
-		if _type == 'kb': _filesize = _temp_filesize*1024
-		elif _type == 'MB': _filesize = _temp_filesize*1000000
-		
-		self.ui.prg_download.setMaximum(_filesize)
-		
-		i=QtGui.QTreeWidgetItem([_name,str(0),_size,_path])
-		self.ui.lst_queue.addTopLevelItem(i)
-		
-		_h = self.info['nodes'][_nr]['host']
-		
-		self.crescendo.client.get_file(_h,_name)
+			
+			#if _nr==-1:
+			#	print 'Pick a file first.'
+			#	return
+			
+			_name= selected.text(0)
+			_size = selected.text(1)
+			_path = selected.text(2)
+			
+			_type = str(selected.text(1).split(' ')[1])
+			_temp_filesize = int(selected.text(1).split(' ')[0])
+			if _type == 'kb': _filesize = _temp_filesize*1024
+			elif _type == 'MB': _filesize = _temp_filesize*1000000
+			
+			i=QtGui.QTreeWidgetItem([_name,str(0),_size,_path])
+			self.ui.lst_queue.addTopLevelItem(i)
+			
+			_h = self.info['nodes'][_nr]['host']
+			
+			self.crescendo.client.get_file(_h,_name)
 	
 	def filter(self):
 		self.select_node(filter=str(self.ui.lne_filter.text()))
@@ -314,6 +311,8 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		file = json.loads(str(file))
 		
 		_temp_filesize = int(progress)
+		
+		self.ui.prg_download.setMaximum(file['size'])
 		
 		if _temp_filesize>=self.ui.prg_download.value():
 			self.ui.prg_download.setValue(_temp_filesize)
