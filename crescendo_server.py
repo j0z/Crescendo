@@ -6,6 +6,13 @@ from twisted.internet import reactor
 from twisted.internet import task
 from twisted.protocols import basic
 
+try:
+	import markdown
+	__markdown__ = True
+except:
+	__markdown__ = False
+
+#TODO: What are we going to do with this?
 import subprocess
 
 if os.sep == '\\':
@@ -346,6 +353,12 @@ class start_server(threading.Thread):
 			
 			for line in _news.readlines():
 				self.info['news']+=line
+			
+			if self.info['news_file'].rpartition('.')[2]=='md':
+				global __markdown__
+				
+				if __markdown__:
+					self.info['news'] = markdown.markdown(self.info['news'])
 			
 			_news.close()
 		
