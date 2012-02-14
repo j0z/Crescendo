@@ -43,6 +43,8 @@ class profile_GUI(QtGui.QDialog):
 		self.ui.cmb_profiles.currentIndexChanged.connect(self.select_profile)
 		self.profile = None
 		self.profiles = None
+		
+		self.ui.btn_connect.clicked.connect(self.connect_profile)
 	
 	def accept(self):
 		self.save_profile()
@@ -50,6 +52,9 @@ class profile_GUI(QtGui.QDialog):
 	
 	def closeEvent(self, event): 
 		pass
+	
+	def connect_profile(self):
+		self.parent.crescendo.client.connect_profile(self.profile)
 	
 	def select_profile(self):
 		if not self.profiles: return

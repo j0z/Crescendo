@@ -122,14 +122,18 @@ class crescendo:
 			if _profile['name']==profile['name']:
 				_profile = profile
 				
-				self.ip_list.append(profile['host'])
+				#self.ip_list.append(profile['host'])
 				#TODO: Duplicate warning! Maybe we don't want to update.
 				return True
 		
-		self.ip_list.append(profile['host'])
+		#self.ip_list.append(profile['host'])
 		self.profiles.append(profile)
 		
 		#return _temp_info
+	
+	def connect_profile(self,profile):
+		if not profile['host'] in self.ip_list:
+			self.ip_list.append(profile['host'])
 	
 	def add_profile_from_node(self,node):
 		_temp_info = {'host':node['host'][0],'port':node['host'][1]}

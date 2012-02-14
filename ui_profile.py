@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\profile.ui'
 #
-# Created: Sat Feb 11 13:39:40 2012
+# Created: Tue Feb 14 02:00:23 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,10 +78,16 @@ class Ui_Dialog(object):
         self.lne_password.setObjectName(_fromUtf8("lne_password"))
         self.gridLayout_2.addWidget(self.lne_password, 3, 2, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_2)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.btn_connect = QtGui.QPushButton(Dialog)
+        self.btn_connect.setObjectName(_fromUtf8("btn_connect"))
+        self.horizontalLayout.addWidget(self.btn_connect)
         self.chk_auto_connect = QtGui.QCheckBox(Dialog)
         self.chk_auto_connect.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.chk_auto_connect.setObjectName(_fromUtf8("chk_auto_connect"))
-        self.verticalLayout_2.addWidget(self.chk_auto_connect)
+        self.horizontalLayout.addWidget(self.chk_auto_connect)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.btn_yesno = QtGui.QDialogButtonBox(Dialog)
         self.btn_yesno.setOrientation(QtCore.Qt.Horizontal)
         self.btn_yesno.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
@@ -105,5 +111,6 @@ class Ui_Dialog(object):
         self.cmb_security.setItemText(1, QtGui.QApplication.translate("Dialog", "password", None, QtGui.QApplication.UnicodeUTF8))
         self.cmb_security.setItemText(2, QtGui.QApplication.translate("Dialog", "auth", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("Dialog", "Pass:", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_connect.setText(QtGui.QApplication.translate("Dialog", "Connect", None, QtGui.QApplication.UnicodeUTF8))
         self.chk_auto_connect.setText(QtGui.QApplication.translate("Dialog", "Connect on startup", None, QtGui.QApplication.UnicodeUTF8))
 
