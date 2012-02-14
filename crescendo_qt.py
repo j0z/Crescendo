@@ -19,6 +19,9 @@ class Crescendo_Thread(QtCore.QThread):
 	def set_download_progress(self,progress,file):
 		self.emit(QtCore.SIGNAL("output(int,QString)"), int(progress),file)
 	
+	def got_file_list(self):
+		self.emit(QtCore.SIGNAL("None"))
+	
 	def shutdown(self):
 		self.client.shutdown()
 	
@@ -146,6 +149,7 @@ class Crescendo_GUI(QtGui.QMainWindow):
 		self.crescendo.start()
 		
 		self.connect(self.crescendo, QtCore.SIGNAL("output(int,QString)"), self.set_download_progress)
+		self.connect(self.crescendo, QtCore.SIGNAL("None"), self.select_node)
 		self.ui.cmb_newslist.currentIndexChanged.connect(self.select_newslist)
 		self.ui.lst_nodes.itemClicked.connect(self.select_node)
 		self.ui.lst_nodes.itemDoubleClicked.connect(self.show_dialog)

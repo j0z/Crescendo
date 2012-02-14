@@ -164,12 +164,9 @@ class Connection(basic.LineReceiver):
 					
 					if _done: self.sendLine('put::fli::okay:%s' % self.node.info['file_list_version'])
 				else:
-					print line['val']
-					_version = self.node.update_file_list(line['val'])
+					_packet = self.node.update_file_list(line['val'])
+					self.sendLine('put::fli::%s' % (json.dumps(_packet)))
 					
-					#if _version:
-						
-				
 		else:
 			print 'Garbage: '+str(line)
 
@@ -195,6 +192,8 @@ class Connection(basic.LineReceiver):
 		
 		if time.time()-self.last_seen > 30:
 			self.transport.loseConnection()
+		
+		self.node.populate_file_list()
 	
 	def broadcast(self):
 		self.sendLine('put::inf::%s' % (json.dumps(self.node.info)))
@@ -212,8 +211,10 @@ class Node(ServerFactory):
 		
 		self.files = []
 		self.info['file_list_version'] = None
+		self.file_list = []
 		self.file_lists = []
-		self.populate_file_list()
+		self.last_checked_files=None
+		self.populate_file_list(initial=True)
 
 	def log(self,text):
 		if self.parent: self.parent.log(text)
@@ -222,7 +223,10 @@ class Node(ServerFactory):
 	def stop(self):
 		pass
 	
-	def populate_file_list(self):
+	def populate_file_list(self,initial=False):
+		if not initial and time.time()-self.last_checked_files<5:
+			return
+		
 		self.file_list = []
 		
 		for root, dirs, files in os.walk(self.info['share_dir']):
@@ -245,15 +249,29 @@ class Node(ServerFactory):
 					self.files.append(_f)
 					self.file_list.append(_f.info)
 		
-		self.info['file_list_version'] = hashlib.sha224(str(self.file_list)).hexdigest()
-		self.file_lists.append({'version':self.info['file_list_version'],'list':self.file_list[:]})
+		_temp_version = hashlib.sha224(str(self.file_list)).hexdigest()
 		
-		self.log('[Files] Sharing %s files' % len(self.file_list))
+		if not self.info['file_list_version'] == _temp_version:
+			self.info['file_list_version'] = _temp_version
+			self.file_lists.append({'version':self.info['file_list_version'],'list':self.file_list[:]})
+			
+			self.log('[Files] Sharing %s files' % len(self.file_list))
+			self.last_checked_files = time.time()
 	
 	def update_file_list(self,version):
 		for file_list in self.file_lists:
 			if file_list['version']==version:
-				return list(set(file_list['list'],self.file_list))
+				_ret = self.file_list[:]
+				
+				#TODO: This is hilarious
+				#TODO: We should add a list to remove items that were removed
+				#Here we remove the items that were added to the list
+				for file1 in self.file_list:
+					for file2 in file_list['list']:
+						if file1['name']==file2['name']:
+							_ret.remove(file1)
+				
+				return _ret
 		
 		return False
 	
@@ -335,7 +353,8 @@ class start_server(threading.Thread):
 		self.running = False
 	
 	def log(self,text):
-		print text
+		if self.parent: self.parent.log(text)
+		else: print text
 	
 	def start(self):
 		if self.use_threading:

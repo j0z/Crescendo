@@ -195,6 +195,10 @@ class crescendo:
 				else:
 					self.log('[node-%s:%s] Connection is a zombie. Dying' % node['host'],flush=True)
 	
+	def got_file_list(self):
+		if self.callback:
+			self.callback.crescendo.got_file_list()
+	
 	def has_node(self,host):
 		for node in self.node_list:
 			if node['host'][0]==host[0]: return node
